@@ -1,0 +1,646 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FF082CFD2C206D1D00055F9A /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = FF082CFC2C206D1D00055F9A /* RiveRuntime */; };
+		FF7AAFA12C20E6640080E20F /* welcomeButton.riv in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFA02C20E6640080E20F /* welcomeButton.riv */; };
+		FF932EEE2C207C0E00613637 /* IntroBeforeLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */; };
+		FF932EF42C20D92300613637 /* WelcomeView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EF32C20D92300613637 /* WelcomeView1.swift */; };
+		FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */; };
+		FFDCD33E2C1F554300E2142A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD33D2C1F554300E2142A /* ContentView.swift */; };
+		FFDCD3402C1F554500E2142A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFDCD33F2C1F554500E2142A /* Assets.xcassets */; };
+		FFDCD3432C1F554500E2142A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFDCD3422C1F554500E2142A /* Preview Assets.xcassets */; };
+		FFDCD34D2C1F554600E2142A /* WhoolidayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD34C2C1F554600E2142A /* WhoolidayTests.swift */; };
+		FFDCD3572C1F554600E2142A /* WhoolidayUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD3562C1F554600E2142A /* WhoolidayUITests.swift */; };
+		FFDCD3592C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD3582C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift */; };
+		FFDCD3682C2023A100E2142A /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFDCD3672C2023A100E2142A /* Launch Screen.storyboard */; };
+		FFDCD36E2C2025F700E2142A /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD36D2C2025F700E2142A /* SplashScreenView.swift */; };
+		FFDCD3702C20261F00E2142A /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD36F2C20261F00E2142A /* ContainerView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FFDCD3492C1F554600E2142A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFDCD3302C1F554300E2142A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFDCD3372C1F554300E2142A;
+			remoteInfo = Whooliday;
+		};
+		FFDCD3532C1F554600E2142A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFDCD3302C1F554300E2142A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFDCD3372C1F554300E2142A;
+			remoteInfo = Whooliday;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FF7AAFA02C20E6640080E20F /* welcomeButton.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = welcomeButton.riv; sourceTree = "<group>"; };
+		FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroBeforeLogin.swift; sourceTree = "<group>"; };
+		FF932EF32C20D92300613637 /* WelcomeView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView1.swift; sourceTree = "<group>"; };
+		FFDCD3382C1F554300E2142A /* Whooliday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whooliday.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayApp.swift; sourceTree = "<group>"; };
+		FFDCD33D2C1F554300E2142A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FFDCD33F2C1F554500E2142A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FFDCD3422C1F554500E2142A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FFDCD3482C1F554600E2142A /* WhoolidayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhoolidayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFDCD34C2C1F554600E2142A /* WhoolidayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayTests.swift; sourceTree = "<group>"; };
+		FFDCD3522C1F554600E2142A /* WhoolidayUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhoolidayUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFDCD3562C1F554600E2142A /* WhoolidayUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayUITests.swift; sourceTree = "<group>"; };
+		FFDCD3582C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		FFDCD3672C2023A100E2142A /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
+		FFDCD36D2C2025F700E2142A /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SplashScreenView.swift; path = "Preview Content/SplashScreenView.swift"; sourceTree = "<group>"; };
+		FFDCD36F2C20261F00E2142A /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContainerView.swift; path = "Preview Content/ContainerView.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FFDCD3352C1F554300E2142A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF082CFD2C206D1D00055F9A /* RiveRuntime in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFDCD3452C1F554600E2142A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFDCD34F2C1F554600E2142A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FFDCD32F2C1F554300E2142A = {
+			isa = PBXGroup;
+			children = (
+				FFDCD33A2C1F554300E2142A /* Whooliday */,
+				FFDCD34B2C1F554600E2142A /* WhoolidayTests */,
+				FFDCD3552C1F554600E2142A /* WhoolidayUITests */,
+				FFDCD3392C1F554300E2142A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FFDCD3392C1F554300E2142A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFDCD3382C1F554300E2142A /* Whooliday.app */,
+				FFDCD3482C1F554600E2142A /* WhoolidayTests.xctest */,
+				FFDCD3522C1F554600E2142A /* WhoolidayUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFDCD33A2C1F554300E2142A /* Whooliday */ = {
+			isa = PBXGroup;
+			children = (
+				FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */,
+				FFDCD33D2C1F554300E2142A /* ContentView.swift */,
+				FFDCD36D2C2025F700E2142A /* SplashScreenView.swift */,
+				FFDCD36F2C20261F00E2142A /* ContainerView.swift */,
+				FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */,
+				FF932EF32C20D92300613637 /* WelcomeView1.swift */,
+				FF7AAFA02C20E6640080E20F /* welcomeButton.riv */,
+				FFDCD33F2C1F554500E2142A /* Assets.xcassets */,
+				FFDCD3412C1F554500E2142A /* Preview Content */,
+			);
+			path = Whooliday;
+			sourceTree = "<group>";
+		};
+		FFDCD3412C1F554500E2142A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				FFDCD3672C2023A100E2142A /* Launch Screen.storyboard */,
+				FFDCD3422C1F554500E2142A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FFDCD34B2C1F554600E2142A /* WhoolidayTests */ = {
+			isa = PBXGroup;
+			children = (
+				FFDCD34C2C1F554600E2142A /* WhoolidayTests.swift */,
+			);
+			path = WhoolidayTests;
+			sourceTree = "<group>";
+		};
+		FFDCD3552C1F554600E2142A /* WhoolidayUITests */ = {
+			isa = PBXGroup;
+			children = (
+				FFDCD3562C1F554600E2142A /* WhoolidayUITests.swift */,
+				FFDCD3582C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift */,
+			);
+			path = WhoolidayUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FFDCD3372C1F554300E2142A /* Whooliday */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFDCD35C2C1F554600E2142A /* Build configuration list for PBXNativeTarget "Whooliday" */;
+			buildPhases = (
+				FFDCD3342C1F554300E2142A /* Sources */,
+				FFDCD3352C1F554300E2142A /* Frameworks */,
+				FFDCD3362C1F554300E2142A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Whooliday;
+			packageProductDependencies = (
+				FF082CFC2C206D1D00055F9A /* RiveRuntime */,
+			);
+			productName = Whooliday;
+			productReference = FFDCD3382C1F554300E2142A /* Whooliday.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FFDCD3472C1F554600E2142A /* WhoolidayTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFDCD35F2C1F554600E2142A /* Build configuration list for PBXNativeTarget "WhoolidayTests" */;
+			buildPhases = (
+				FFDCD3442C1F554600E2142A /* Sources */,
+				FFDCD3452C1F554600E2142A /* Frameworks */,
+				FFDCD3462C1F554600E2142A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FFDCD34A2C1F554600E2142A /* PBXTargetDependency */,
+			);
+			name = WhoolidayTests;
+			productName = WhoolidayTests;
+			productReference = FFDCD3482C1F554600E2142A /* WhoolidayTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		FFDCD3512C1F554600E2142A /* WhoolidayUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFDCD3622C1F554600E2142A /* Build configuration list for PBXNativeTarget "WhoolidayUITests" */;
+			buildPhases = (
+				FFDCD34E2C1F554600E2142A /* Sources */,
+				FFDCD34F2C1F554600E2142A /* Frameworks */,
+				FFDCD3502C1F554600E2142A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FFDCD3542C1F554600E2142A /* PBXTargetDependency */,
+			);
+			name = WhoolidayUITests;
+			productName = WhoolidayUITests;
+			productReference = FFDCD3522C1F554600E2142A /* WhoolidayUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FFDCD3302C1F554300E2142A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					FFDCD3372C1F554300E2142A = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					FFDCD3472C1F554600E2142A = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = FFDCD3372C1F554300E2142A;
+					};
+					FFDCD3512C1F554600E2142A = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = FFDCD3372C1F554300E2142A;
+					};
+				};
+			};
+			buildConfigurationList = FFDCD3332C1F554300E2142A /* Build configuration list for PBXProject "Whooliday" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FFDCD32F2C1F554300E2142A;
+			packageReferences = (
+				FF082CFB2C206B8400055F9A /* XCRemoteSwiftPackageReference "rive-ios" */,
+			);
+			productRefGroup = FFDCD3392C1F554300E2142A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FFDCD3372C1F554300E2142A /* Whooliday */,
+				FFDCD3472C1F554600E2142A /* WhoolidayTests */,
+				FFDCD3512C1F554600E2142A /* WhoolidayUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FFDCD3362C1F554300E2142A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFDCD3682C2023A100E2142A /* Launch Screen.storyboard in Resources */,
+				FFDCD3432C1F554500E2142A /* Preview Assets.xcassets in Resources */,
+				FFDCD3402C1F554500E2142A /* Assets.xcassets in Resources */,
+				FF7AAFA12C20E6640080E20F /* welcomeButton.riv in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFDCD3462C1F554600E2142A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFDCD3502C1F554600E2142A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FFDCD3342C1F554300E2142A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFDCD3702C20261F00E2142A /* ContainerView.swift in Sources */,
+				FF932EF42C20D92300613637 /* WelcomeView1.swift in Sources */,
+				FFDCD33E2C1F554300E2142A /* ContentView.swift in Sources */,
+				FF932EEE2C207C0E00613637 /* IntroBeforeLogin.swift in Sources */,
+				FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */,
+				FFDCD36E2C2025F700E2142A /* SplashScreenView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFDCD3442C1F554600E2142A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFDCD34D2C1F554600E2142A /* WhoolidayTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFDCD34E2C1F554600E2142A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFDCD3572C1F554600E2142A /* WhoolidayUITests.swift in Sources */,
+				FFDCD3592C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FFDCD34A2C1F554600E2142A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFDCD3372C1F554300E2142A /* Whooliday */;
+			targetProxy = FFDCD3492C1F554600E2142A /* PBXContainerItemProxy */;
+		};
+		FFDCD3542C1F554600E2142A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFDCD3372C1F554300E2142A /* Whooliday */;
+			targetProxy = FFDCD3532C1F554600E2142A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		FFDCD35A2C1F554600E2142A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FFDCD35B2C1F554600E2142A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FFDCD35D2C1F554600E2142A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Whooliday/Preview Content\"";
+				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Whooliday;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FFDCD35E2C1F554600E2142A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Whooliday/Preview Content\"";
+				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Whooliday;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FFDCD3602C1F554600E2142A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WhoolidayTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Whooliday.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Whooliday";
+			};
+			name = Debug;
+		};
+		FFDCD3612C1F554600E2142A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WhoolidayTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Whooliday.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Whooliday";
+			};
+			name = Release;
+		};
+		FFDCD3632C1F554600E2142A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WhoolidayUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Whooliday;
+			};
+			name = Debug;
+		};
+		FFDCD3642C1F554600E2142A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WhoolidayUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Whooliday;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FFDCD3332C1F554300E2142A /* Build configuration list for PBXProject "Whooliday" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFDCD35A2C1F554600E2142A /* Debug */,
+				FFDCD35B2C1F554600E2142A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFDCD35C2C1F554600E2142A /* Build configuration list for PBXNativeTarget "Whooliday" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFDCD35D2C1F554600E2142A /* Debug */,
+				FFDCD35E2C1F554600E2142A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFDCD35F2C1F554600E2142A /* Build configuration list for PBXNativeTarget "WhoolidayTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFDCD3602C1F554600E2142A /* Debug */,
+				FFDCD3612C1F554600E2142A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFDCD3622C1F554600E2142A /* Build configuration list for PBXNativeTarget "WhoolidayUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFDCD3632C1F554600E2142A /* Debug */,
+				FFDCD3642C1F554600E2142A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FF082CFB2C206B8400055F9A /* XCRemoteSwiftPackageReference "rive-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rive-app/rive-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.13.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FF082CFC2C206D1D00055F9A /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF082CFB2C206B8400055F9A /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = FFDCD3302C1F554300E2142A /* Project object */;
+}
