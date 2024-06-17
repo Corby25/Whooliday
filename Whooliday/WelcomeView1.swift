@@ -30,7 +30,6 @@ struct WelcomeView1: View {
             .onTapGesture {
                 button.play()
             }
-        
     }
 }
 
