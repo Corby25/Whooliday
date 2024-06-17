@@ -27,7 +27,6 @@ struct WelcomeView1: View {
                     .opacity(0.2)
                     .offset(y: 10)
             )
-            
             .onTapGesture {
                 button.play()
             }
