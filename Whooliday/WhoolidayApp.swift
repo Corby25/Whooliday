@@ -11,6 +11,7 @@ import SwiftUI
 struct WhoolidayApp: App {
     var body: some Scene {
         WindowGroup {
+            
             ContainerView()
         }
     }

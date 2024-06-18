@@ -9,6 +9,18 @@
 /* Begin PBXBuildFile section */
 		FF082CFD2C206D1D00055F9A /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = FF082CFC2C206D1D00055F9A /* RiveRuntime */; };
 		FF7AAFA12C20E6640080E20F /* welcomeButton.riv in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFA02C20E6640080E20F /* welcomeButton.riv */; };
+		FF7AAFA82C21699A0080E20F /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFA42C21699A0080E20F /* Inter-Regular.ttf */; };
+		FF7AAFA92C21699A0080E20F /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFA52C21699A0080E20F /* Inter-SemiBold.ttf */; };
+		FF7AAFAA2C21699A0080E20F /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFA62C21699A0080E20F /* Poppins-Bold.ttf */; };
+		FF7AAFAE2C2170D00080E20F /* logo.svg in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFAC2C2170C70080E20F /* logo.svg */; };
+		FF7AAFB42C2176320080E20F /* TT-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFB32C2176320080E20F /* TT-Regular.ttf */; };
+		FF7AAFB62C2176BC0080E20F /* TT-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFB52C2176BC0080E20F /* TT-SemiBold.ttf */; };
+		FF7AAFB82C2177B60080E20F /* TT Hoves Pro Trial Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFB72C2177B60080E20F /* TT Hoves Pro Trial Bold.ttf */; };
+		FF7AAFC22C218CD60080E20F /* pag1.riv in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFC12C218CD60080E20F /* pag1.riv */; };
+		FF7AAFC42C21C9580080E20F /* WelcomeView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7AAFC32C21C9580080E20F /* WelcomeView2.swift */; };
+		FF7AAFC72C21CF7C0080E20F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = FF7AAFC62C21CF7C0080E20F /* Lottie */; };
+		FF7AAFCD2C21D4260080E20F /* beach.lottie in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFCC2C21D4260080E20F /* beach.lottie */; };
+		FF7AAFCF2C21DA200080E20F /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7AAFCE2C21DA200080E20F /* test.swift */; };
 		FF932EEE2C207C0E00613637 /* IntroBeforeLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */; };
 		FF932EF42C20D92300613637 /* WelcomeView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EF32C20D92300613637 /* WelcomeView1.swift */; };
 		FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */; };
@@ -41,7 +53,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		FF7AAFA02C20E6640080E20F /* welcomeButton.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = welcomeButton.riv; sourceTree = "<group>"; };
+		FF7AAFA02C20E6640080E20F /* welcomeButton.riv */ = {isa = PBXFileReference; lastKnownFileType = file; name = welcomeButton.riv; path = ../welcomeButton.riv; sourceTree = "<group>"; };
+		FF7AAFA42C21699A0080E20F /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
+		FF7AAFA52C21699A0080E20F /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		FF7AAFA62C21699A0080E20F /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		FF7AAFAB2C2169BD0080E20F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FF7AAFAC2C2170C70080E20F /* logo.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = logo.svg; sourceTree = "<group>"; };
+		FF7AAFB32C2176320080E20F /* TT-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT-Regular.ttf"; sourceTree = "<group>"; };
+		FF7AAFB52C2176BC0080E20F /* TT-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT-SemiBold.ttf"; sourceTree = "<group>"; };
+		FF7AAFB72C2177B60080E20F /* TT Hoves Pro Trial Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Hoves Pro Trial Bold.ttf"; sourceTree = "<group>"; };
+		FF7AAFB92C2178050080E20F /* TT Hoves Pro Trial ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Hoves Pro Trial ExtraBold.ttf"; sourceTree = "<group>"; };
+		FF7AAFC12C218CD60080E20F /* pag1.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = pag1.riv; sourceTree = "<group>"; };
+		FF7AAFC32C21C9580080E20F /* WelcomeView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView2.swift; sourceTree = "<group>"; };
+		FF7AAFCC2C21D4260080E20F /* beach.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = beach.lottie; sourceTree = "<group>"; };
+		FF7AAFCE2C21DA200080E20F /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroBeforeLogin.swift; sourceTree = "<group>"; };
 		FF932EF32C20D92300613637 /* WelcomeView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView1.swift; sourceTree = "<group>"; };
 		FFDCD3382C1F554300E2142A /* Whooliday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whooliday.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +90,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF082CFD2C206D1D00055F9A /* RiveRuntime in Frameworks */,
+				FF7AAFC72C21CF7C0080E20F /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +111,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FF7AAFA72C21699A0080E20F /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				FF7AAFB92C2178050080E20F /* TT Hoves Pro Trial ExtraBold.ttf */,
+				FF7AAFB72C2177B60080E20F /* TT Hoves Pro Trial Bold.ttf */,
+				FF7AAFB52C2176BC0080E20F /* TT-SemiBold.ttf */,
+				FF7AAFB32C2176320080E20F /* TT-Regular.ttf */,
+				FF7AAFA42C21699A0080E20F /* Inter-Regular.ttf */,
+				FF7AAFA52C21699A0080E20F /* Inter-SemiBold.ttf */,
+				FF7AAFA62C21699A0080E20F /* Poppins-Bold.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		FF7AAFAD2C2170C70080E20F /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				FF7AAFAC2C2170C70080E20F /* logo.svg */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
+		FF7AAFBA2C2186570080E20F /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				FF7AAFCC2C21D4260080E20F /* beach.lottie */,
+				FF7AAFC12C218CD60080E20F /* pag1.riv */,
+				FF7AAFA02C20E6640080E20F /* welcomeButton.riv */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		FFDCD32F2C1F554300E2142A = {
 			isa = PBXGroup;
 			children = (
@@ -108,15 +166,20 @@
 		FFDCD33A2C1F554300E2142A /* Whooliday */ = {
 			isa = PBXGroup;
 			children = (
+				FF7AAFAB2C2169BD0080E20F /* Info.plist */,
 				FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */,
 				FFDCD33D2C1F554300E2142A /* ContentView.swift */,
 				FFDCD36D2C2025F700E2142A /* SplashScreenView.swift */,
 				FFDCD36F2C20261F00E2142A /* ContainerView.swift */,
 				FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */,
 				FF932EF32C20D92300613637 /* WelcomeView1.swift */,
-				FF7AAFA02C20E6640080E20F /* welcomeButton.riv */,
+				FF7AAFC32C21C9580080E20F /* WelcomeView2.swift */,
+				FF7AAFBA2C2186570080E20F /* Images */,
+				FF7AAFAD2C2170C70080E20F /* Icons */,
+				FF7AAFA72C21699A0080E20F /* Font */,
 				FFDCD33F2C1F554500E2142A /* Assets.xcassets */,
 				FFDCD3412C1F554500E2142A /* Preview Content */,
+				FF7AAFCE2C21DA200080E20F /* test.swift */,
 			);
 			path = Whooliday;
 			sourceTree = "<group>";
@@ -165,6 +228,7 @@
 			name = Whooliday;
 			packageProductDependencies = (
 				FF082CFC2C206D1D00055F9A /* RiveRuntime */,
+				FF7AAFC62C21CF7C0080E20F /* Lottie */,
 			);
 			productName = Whooliday;
 			productReference = FFDCD3382C1F554300E2142A /* Whooliday.app */;
@@ -240,6 +304,7 @@
 			mainGroup = FFDCD32F2C1F554300E2142A;
 			packageReferences = (
 				FF082CFB2C206B8400055F9A /* XCRemoteSwiftPackageReference "rive-ios" */,
+				FF7AAFC52C21CF7C0080E20F /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = FFDCD3392C1F554300E2142A /* Products */;
 			projectDirPath = "";
@@ -257,10 +322,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF7AAFB82C2177B60080E20F /* TT Hoves Pro Trial Bold.ttf in Resources */,
+				FF7AAFA92C21699A0080E20F /* Inter-SemiBold.ttf in Resources */,
 				FFDCD3682C2023A100E2142A /* Launch Screen.storyboard in Resources */,
+				FF7AAFAA2C21699A0080E20F /* Poppins-Bold.ttf in Resources */,
+				FF7AAFC22C218CD60080E20F /* pag1.riv in Resources */,
+				FF7AAFA82C21699A0080E20F /* Inter-Regular.ttf in Resources */,
 				FFDCD3432C1F554500E2142A /* Preview Assets.xcassets in Resources */,
+				FF7AAFCD2C21D4260080E20F /* beach.lottie in Resources */,
+				FF7AAFB62C2176BC0080E20F /* TT-SemiBold.ttf in Resources */,
 				FFDCD3402C1F554500E2142A /* Assets.xcassets in Resources */,
+				FF7AAFB42C2176320080E20F /* TT-Regular.ttf in Resources */,
 				FF7AAFA12C20E6640080E20F /* welcomeButton.riv in Resources */,
+				FF7AAFAE2C2170D00080E20F /* logo.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,7 +362,9 @@
 				FFDCD3702C20261F00E2142A /* ContainerView.swift in Sources */,
 				FF932EF42C20D92300613637 /* WelcomeView1.swift in Sources */,
 				FFDCD33E2C1F554300E2142A /* ContentView.swift in Sources */,
+				FF7AAFC42C21C9580080E20F /* WelcomeView2.swift in Sources */,
 				FF932EEE2C207C0E00613637 /* IntroBeforeLogin.swift in Sources */,
+				FF7AAFCF2C21DA200080E20F /* test.swift in Sources */,
 				FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */,
 				FFDCD36E2C2025F700E2142A /* SplashScreenView.swift in Sources */,
 			);
@@ -457,6 +533,7 @@
 				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Whooliday/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -487,6 +564,7 @@
 				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Whooliday/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -632,6 +710,14 @@
 				minimumVersion = 5.13.2;
 			};
 		};
+		FF7AAFC52C21CF7C0080E20F /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -639,6 +725,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FF082CFB2C206B8400055F9A /* XCRemoteSwiftPackageReference "rive-ios" */;
 			productName = RiveRuntime;
+		};
+		FF7AAFC62C21CF7C0080E20F /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF7AAFC52C21CF7C0080E20F /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

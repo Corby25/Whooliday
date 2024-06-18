@@ -15,10 +15,11 @@ struct ContainerView: View {
    
     var body: some View {
         if !isSleshScreenViewPresented{
-            ContentView()
+            SplashScreenView()
         }
         else{
-            SplashScreenView()
+            
+            WelcomeView1()
         }
     }
 }
