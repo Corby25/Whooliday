@@ -24,6 +24,7 @@ struct WelcomeView1: View {
                 .font(.custom("TT Hoves Pro Trial Regular", size: 18, relativeTo: .body))
                 .buttonStyle(PlainButtonStyle())
                 .frame(width: 330, alignment: .trailing)
+            
                 
 
             imgAnimation.view()
