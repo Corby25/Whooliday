@@ -1,5 +1,13 @@
 import SwiftUI
 import Firebase
+import GoogleSignInSwift
+
+@MainActor
+final class AuthenticationViewModel: ObservableObject {
+    func signInGoogle() async throws {
+        
+    }
+}
 
 struct SigninView: View {
     @State private var email: String = ""
@@ -39,6 +47,17 @@ struct SigninView: View {
                         .foregroundColor(.white)
                         .background(Color.blue)
                         .cornerRadius(5.0)
+                }
+                
+                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
+                    Task {
+                        do {
+                            try await model.signInGoogle()
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    
                 }
                 
                 Spacer()

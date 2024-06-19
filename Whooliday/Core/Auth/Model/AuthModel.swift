@@ -8,6 +8,9 @@
 import Foundation
 import Firebase
 import FirebaseFirestoreSwift
+import GoogleSignIn
+import GoogleSignInSwift
+import FirebaseAuth
 
 @MainActor
 class AuthModel: ObservableObject {
@@ -49,6 +52,41 @@ class AuthModel: ObservableObject {
             throw error
         }
         
+    }
+    
+    func signInGoogle() async throws {
+        guard let topVC = Utilities.shared.topViewController() else {
+            throw URLError(.cannotFindHost)
+        }
+        
+        let gidSignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: topVC)
+        
+        guard let idToken = gidSignInResult.user.idToken?.tokenString else {
+            throw URLError(.badServerResponse)
+        }
+        let accessToken = gidSignInResult.user.accessToken.tokenString
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+        
+        do {
+            let result = try await Auth.auth().signIn(with: credential)
+            self.userSession = result.user
+            await fetchUser()
+            
+            // Check if user already exists in Firestore
+            let userRef = Firestore.firestore().collection("users").document(result.user.uid)
+            let snapshot = try await userRef.getDocument()
+            
+            if !snapshot.exists {
+                // User doesn't exist in Firestore, create a new user document
+                let user = User(id: result.user.uid, name: gidSignInResult.user.profile?.name ?? "Unknown", email: result.user.email ?? "Unknown")
+                let encodedUser = try Firestore.Encoder().encode(user)
+                try await userRef.setData(encodedUser)
+            }
+        } catch {
+            print("DEBUG: failed to login user with Google sign-in \(error.localizedDescription)")
+            throw error
+        }
     }
      
     
