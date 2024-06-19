@@ -10,17 +10,17 @@ import SwiftUI
 struct ContainerView: View {
     
     // save state of the splash screen
-    
-    @State private var isSleshScreenViewPresented = true
+    @EnvironmentObject var model: AuthModel
    
     var body: some View {
-        if !isSleshScreenViewPresented{
-            SplashScreenView()
+        Group {
+            if model.userSession != nil {
+                ProfileView()
+            } else {
+                SigninView()
+            }
         }
-        else{
-            
-            WelcomeView1()
-        }
+       
     }
 }
 
