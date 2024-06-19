@@ -11,7 +11,7 @@ struct Signup: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var name: String = ""
-    @EnvironmentObject var model: AuthModel
+    //@EnvironmentObject var model: AuthModel
     
     var body: some View {
         VStack(spacing: 20) {
@@ -34,9 +34,10 @@ struct Signup: View {
                 .cornerRadius(5.0)
             
             Button(action: {
+                /*
                 {
                     try await model.signUp(withEmail: email, password: password, name: name)
-                }
+                }*/
             }) {
                 Text("Signup")
                     .frame(minWidth: 0, maxWidth: .infinity)

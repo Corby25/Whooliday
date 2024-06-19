@@ -29,6 +29,8 @@
 		FF7AAFC42C21C9580080E20F /* WelcomeView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7AAFC32C21C9580080E20F /* WelcomeView2.swift */; };
 		FF7AAFC72C21CF7C0080E20F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = FF7AAFC62C21CF7C0080E20F /* Lottie */; };
 		FF7AAFCD2C21D4260080E20F /* beach.lottie in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFCC2C21D4260080E20F /* beach.lottie */; };
+		FF8ABCE92C22C3D100E57A80 /* SplashScreenView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8ABCE82C22C3D100E57A80 /* SplashScreenView2.swift */; };
+		FF8ABCEB2C22C3F100E57A80 /* introSplash.riv in Resources */ = {isa = PBXBuildFile; fileRef = FF8ABCEA2C22C3F100E57A80 /* introSplash.riv */; };
 		FF932EEE2C207C0E00613637 /* IntroBeforeLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */; };
 		FF932EF42C20D92300613637 /* WelcomeView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EF32C20D92300613637 /* WelcomeView1.swift */; };
 		FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */; };
@@ -78,6 +80,8 @@
 		FF7AAFC12C218CD60080E20F /* pag1.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = pag1.riv; sourceTree = "<group>"; };
 		FF7AAFC32C21C9580080E20F /* WelcomeView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView2.swift; sourceTree = "<group>"; };
 		FF7AAFCC2C21D4260080E20F /* beach.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = beach.lottie; sourceTree = "<group>"; };
+		FF8ABCE82C22C3D100E57A80 /* SplashScreenView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenView2.swift; sourceTree = "<group>"; };
+		FF8ABCEA2C22C3F100E57A80 /* introSplash.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = introSplash.riv; sourceTree = "<group>"; };
 		FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroBeforeLogin.swift; sourceTree = "<group>"; };
 		FF932EF32C20D92300613637 /* WelcomeView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView1.swift; sourceTree = "<group>"; };
 		FFDCD3382C1F554300E2142A /* Whooliday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whooliday.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,6 +217,7 @@
 			children = (
 				FF7AAFCC2C21D4260080E20F /* beach.lottie */,
 				FF7AAFC12C218CD60080E20F /* pag1.riv */,
+				FF8ABCEA2C22C3F100E57A80 /* introSplash.riv */,
 				FF7AAFA02C20E6640080E20F /* welcomeButton.riv */,
 			);
 			path = Images;
@@ -245,6 +250,7 @@
 				FF7AAFAB2C2169BD0080E20F /* Info.plist */,
 				6C39E15A2C22758200B83BBD /* Core */,
 				FFDCD36D2C2025F700E2142A /* SplashScreenView.swift */,
+				FF8ABCE82C22C3D100E57A80 /* SplashScreenView2.swift */,
 				FFDCD36F2C20261F00E2142A /* ContainerView.swift */,
 				6C39E15E2C227E6D00B83BBD /* Model */,
 				FF7AAFBA2C2186570080E20F /* Images */,
@@ -410,6 +416,7 @@
 				FF7AAFCD2C21D4260080E20F /* beach.lottie in Resources */,
 				FF7AAFB62C2176BC0080E20F /* TT-SemiBold.ttf in Resources */,
 				FFDCD3402C1F554500E2142A /* Assets.xcassets in Resources */,
+				FF8ABCEB2C22C3F100E57A80 /* introSplash.riv in Resources */,
 				FF7AAFB42C2176320080E20F /* TT-Regular.ttf in Resources */,
 				FF7AAFA12C20E6640080E20F /* welcomeButton.riv in Resources */,
 				FF7AAFAE2C2170D00080E20F /* logo.svg in Resources */,
@@ -444,6 +451,7 @@
 				6C39E1542C226D4800B83BBD /* Signin.swift in Sources */,
 				FF7AAFC42C21C9580080E20F /* WelcomeView2.swift in Sources */,
 				FF932EEE2C207C0E00613637 /* IntroBeforeLogin.swift in Sources */,
+				FF8ABCE92C22C3D100E57A80 /* SplashScreenView2.swift in Sources */,
 				6C39E1582C2273E500B83BBD /* AuthModel.swift in Sources */,
 				FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */,
 				6C39E1602C227E8D00B83BBD /* User.swift in Sources */,

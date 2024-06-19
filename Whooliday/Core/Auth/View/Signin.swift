@@ -29,9 +29,10 @@ struct Signin: View {
                     .cornerRadius(5.0)
                 
                 Button(action: {
+                    /*
                     {
                         try await model.signIn(withEmail: email, password:password)
-                    }
+                    }*/
                 }) {
                     Text("Login")
                         .frame(minWidth: 0, maxWidth: .infinity)

@@ -20,7 +20,7 @@ class AuthModel: ObservableObject {
     func signIn(withEmail email: String, password: String) async throws {
         
     }
-    
+    /*
     func signUp(withEmail email: String, password: String, name: String) async throws {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -33,6 +33,7 @@ class AuthModel: ObservableObject {
         }
         
     }
+     */
     
     func signOut() {
         
