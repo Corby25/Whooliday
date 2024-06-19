@@ -83,6 +83,8 @@ struct SignupView: View {
             alertMessage = "The email is not in the correct format, please try again"
         case 17004:
             alertMessage = "There is already another user with this email, please try again"
+        case 17007:
+            alertMessage = "There is already another user with this email, please try again"
         default:
             alertMessage = "Something went wrong, please try again"
         }

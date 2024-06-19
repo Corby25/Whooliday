@@ -48,6 +48,7 @@ class AuthModel: ObservableObject {
             await fetchUser()
         } catch {
             print("DEBUG: failed to register user with error \(error.localizedDescription)")
+            //print((error as NSError).code)
             
             throw error
         }
@@ -89,6 +90,16 @@ class AuthModel: ObservableObject {
         }
     }
      
+    func resetPassword(email: String) async throws {
+        do {
+            try await Auth.auth().sendPasswordReset(withEmail: email)
+        } catch {
+            print("DEBUG: failed to register user with error \(error.localizedDescription)")
+            print((error as NSError).code)
+            
+            throw error
+        }
+    }
     
     func signOut() {
         do {

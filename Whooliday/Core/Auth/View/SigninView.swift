@@ -32,6 +32,29 @@ struct SigninView: View {
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(5.0)
                 
+                HStack {
+                    Spacer()
+                    Text("Reset password")
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            if email.isEmpty || !isValidEmail(email) {
+                                alertMessage = "Please enter a valid email address."
+                                showAlert = true
+                            } else {
+                                Task {
+                                    do {
+                                        try await model.resetPassword(email: email)
+                                        alertMessage = "Password reset email sent."
+                                        showAlert = true
+                                    } catch {
+                                        alertMessage = "Failed to send password reset email, please try again."
+                                        showAlert = true
+                                    }
+                                }
+                            }
+                        }
+                }
+                
                 Button(action: {
                     Task {
                         do {
@@ -101,6 +124,12 @@ struct SigninView: View {
         
         // Blank the password field
         password = ""
+    }
+    
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+        return emailPredicate.evaluate(with: email)
     }
 }
 
