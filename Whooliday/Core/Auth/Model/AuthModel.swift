@@ -71,7 +71,6 @@ class AuthModel: ObservableObject {
         do {
             let result = try await Auth.auth().signIn(with: credential)
             self.userSession = result.user
-            await fetchUser()
             
             // Check if user already exists in Firestore
             let userRef = Firestore.firestore().collection("users").document(result.user.uid)
@@ -83,6 +82,7 @@ class AuthModel: ObservableObject {
                 let encodedUser = try Firestore.Encoder().encode(user)
                 try await userRef.setData(encodedUser)
             }
+            await fetchUser()
         } catch {
             print("DEBUG: failed to login user with Google sign-in \(error.localizedDescription)")
             throw error
