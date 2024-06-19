@@ -9,10 +9,12 @@ import SwiftUI
 
 @main
 struct WhoolidayApp: App {
+    @StateObject var model = AuthModel()
+
     var body: some Scene {
         WindowGroup {
-            
             ContainerView()
+                .environmentObject(model)
         }
     }
 }
