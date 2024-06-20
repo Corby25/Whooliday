@@ -20,6 +20,7 @@
 		6CC6B4C72C23709600B34008 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC6B4C62C23709600B34008 /* GoogleSignInSwift */; };
 		6CC6B4C92C2372CC00B34008 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6CC6B4C82C2372CC00B34008 /* GoogleService-Info.plist */; };
 		6CC6B4CC2C237BD400B34008 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC6B4CB2C237BD400B34008 /* Utilities.swift */; };
+		6CC6B4CE2C23B4A900B34008 /* beach.json in Resources */ = {isa = PBXBuildFile; fileRef = 6CC6B4CD2C23B4A900B34008 /* beach.json */; };
 		FF082CFD2C206D1D00055F9A /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = FF082CFC2C206D1D00055F9A /* RiveRuntime */; };
 		FF7AAFA12C20E6640080E20F /* welcomeButton.riv in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFA02C20E6640080E20F /* welcomeButton.riv */; };
 		FF7AAFA82C21699A0080E20F /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFA42C21699A0080E20F /* Inter-Regular.ttf */; };
@@ -35,14 +36,10 @@
 		FF7AAFCD2C21D4260080E20F /* beach.lottie in Resources */ = {isa = PBXBuildFile; fileRef = FF7AAFCC2C21D4260080E20F /* beach.lottie */; };
 		FF8ABCE92C22C3D100E57A80 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8ABCE82C22C3D100E57A80 /* SplashScreenView.swift */; };
 		FF8ABCEB2C22C3F100E57A80 /* introSplash.riv in Resources */ = {isa = PBXBuildFile; fileRef = FF8ABCEA2C22C3F100E57A80 /* introSplash.riv */; };
-		FF932EEE2C207C0E00613637 /* IntroBeforeLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */; };
 		FF932EF42C20D92300613637 /* WelcomeView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EF32C20D92300613637 /* WelcomeView1.swift */; };
 		FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */; };
 		FFDCD3402C1F554500E2142A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFDCD33F2C1F554500E2142A /* Assets.xcassets */; };
 		FFDCD3432C1F554500E2142A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFDCD3422C1F554500E2142A /* Preview Assets.xcassets */; };
-		FFDCD34D2C1F554600E2142A /* WhoolidayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD34C2C1F554600E2142A /* WhoolidayTests.swift */; };
-		FFDCD3572C1F554600E2142A /* WhoolidayUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD3562C1F554600E2142A /* WhoolidayUITests.swift */; };
-		FFDCD3592C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD3582C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift */; };
 		FFDCD3682C2023A100E2142A /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFDCD3672C2023A100E2142A /* Launch Screen.storyboard */; };
 		FFDCD3702C20261F00E2142A /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD36F2C20261F00E2142A /* ContainerView.swift */; };
 /* End PBXBuildFile section */
@@ -72,7 +69,8 @@
 		6CC6B4C12C234BA900B34008 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		6CC6B4C82C2372CC00B34008 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6CC6B4CB2C237BD400B34008 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		FF7AAFA02C20E6640080E20F /* welcomeButton.riv */ = {isa = PBXFileReference; lastKnownFileType = file; name = welcomeButton.riv; path = ../welcomeButton.riv; sourceTree = "<group>"; };
+		6CC6B4CD2C23B4A900B34008 /* beach.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = beach.json; sourceTree = "<group>"; };
+		FF7AAFA02C20E6640080E20F /* welcomeButton.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = welcomeButton.riv; sourceTree = "<group>"; };
 		FF7AAFA42C21699A0080E20F /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
 		FF7AAFA52C21699A0080E20F /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		FF7AAFA62C21699A0080E20F /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
@@ -87,17 +85,13 @@
 		FF7AAFCC2C21D4260080E20F /* beach.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = beach.lottie; sourceTree = "<group>"; };
 		FF8ABCE82C22C3D100E57A80 /* SplashScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		FF8ABCEA2C22C3F100E57A80 /* introSplash.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = introSplash.riv; sourceTree = "<group>"; };
-		FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroBeforeLogin.swift; sourceTree = "<group>"; };
 		FF932EF32C20D92300613637 /* WelcomeView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView1.swift; sourceTree = "<group>"; };
 		FFDCD3382C1F554300E2142A /* Whooliday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whooliday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayApp.swift; sourceTree = "<group>"; };
 		FFDCD33F2C1F554500E2142A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FFDCD3422C1F554500E2142A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FFDCD3482C1F554600E2142A /* WhoolidayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhoolidayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFDCD34C2C1F554600E2142A /* WhoolidayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayTests.swift; sourceTree = "<group>"; };
 		FFDCD3522C1F554600E2142A /* WhoolidayUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhoolidayUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFDCD3562C1F554600E2142A /* WhoolidayUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayUITests.swift; sourceTree = "<group>"; };
-		FFDCD3582C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		FFDCD3672C2023A100E2142A /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
 		FFDCD36F2C20261F00E2142A /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContainerView.swift; path = "Preview Content/ContainerView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -183,7 +177,6 @@
 		6C39E15B2C2275B400B83BBD /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
-				FF932EED2C207C0E00613637 /* IntroBeforeLogin.swift */,
 				FF932EF32C20D92300613637 /* WelcomeView1.swift */,
 				FF7AAFC32C21C9580080E20F /* WelcomeView2.swift */,
 			);
@@ -239,6 +232,7 @@
 		FF7AAFBA2C2186570080E20F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6CC6B4CD2C23B4A900B34008 /* beach.json */,
 				FF7AAFCC2C21D4260080E20F /* beach.lottie */,
 				FF7AAFC12C218CD60080E20F /* pag1.riv */,
 				FF8ABCEA2C22C3F100E57A80 /* introSplash.riv */,
@@ -251,8 +245,6 @@
 			isa = PBXGroup;
 			children = (
 				FFDCD33A2C1F554300E2142A /* Whooliday */,
-				FFDCD34B2C1F554600E2142A /* WhoolidayTests */,
-				FFDCD3552C1F554600E2142A /* WhoolidayUITests */,
 				FFDCD3392C1F554300E2142A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -270,6 +262,7 @@
 		FFDCD33A2C1F554300E2142A /* Whooliday */ = {
 			isa = PBXGroup;
 			children = (
+				6CC6B4C82C2372CC00B34008 /* GoogleService-Info.plist */,
 				6C39E1592C22756600B83BBD /* App */,
 				FF7AAFAB2C2169BD0080E20F /* Info.plist */,
 				6C39E15A2C22758200B83BBD /* Core */,
@@ -292,24 +285,6 @@
 				FFDCD3422C1F554500E2142A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		FFDCD34B2C1F554600E2142A /* WhoolidayTests */ = {
-			isa = PBXGroup;
-			children = (
-				FFDCD34C2C1F554600E2142A /* WhoolidayTests.swift */,
-			);
-			path = WhoolidayTests;
-			sourceTree = "<group>";
-		};
-		FFDCD3552C1F554600E2142A /* WhoolidayUITests */ = {
-			isa = PBXGroup;
-			children = (
-				FFDCD3562C1F554600E2142A /* WhoolidayUITests.swift */,
-				FFDCD3582C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift */,
-				6CC6B4C82C2372CC00B34008 /* GoogleService-Info.plist */,
-			);
-			path = WhoolidayUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -437,6 +412,7 @@
 				6CC6B4C92C2372CC00B34008 /* GoogleService-Info.plist in Resources */,
 				FFDCD3682C2023A100E2142A /* Launch Screen.storyboard in Resources */,
 				FF7AAFAA2C21699A0080E20F /* Poppins-Bold.ttf in Resources */,
+				6CC6B4CE2C23B4A900B34008 /* beach.json in Resources */,
 				FF7AAFC22C218CD60080E20F /* pag1.riv in Resources */,
 				FF7AAFA82C21699A0080E20F /* Inter-Regular.ttf in Resources */,
 				FFDCD3432C1F554500E2142A /* Preview Assets.xcassets in Resources */,
@@ -476,7 +452,6 @@
 				6C39E15D2C227C9300B83BBD /* SignupView.swift in Sources */,
 				6C39E1542C226D4800B83BBD /* SigninView.swift in Sources */,
 				FF7AAFC42C21C9580080E20F /* WelcomeView2.swift in Sources */,
-				FF932EEE2C207C0E00613637 /* IntroBeforeLogin.swift in Sources */,
 				6CC6B4CC2C237BD400B34008 /* Utilities.swift in Sources */,
 				FF8ABCE92C22C3D100E57A80 /* SplashScreenView.swift in Sources */,
 				6C39E1582C2273E500B83BBD /* AuthModel.swift in Sources */,
@@ -490,7 +465,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFDCD34D2C1F554600E2142A /* WhoolidayTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,8 +472,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFDCD3572C1F554600E2142A /* WhoolidayUITests.swift in Sources */,
-				FFDCD3592C1F554600E2142A /* WhoolidayUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
