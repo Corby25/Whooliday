@@ -25,7 +25,7 @@ struct ContainerView: View {
                 WelcomeView1(isFirstLaunch: $isFirstLaunch)
             } else {
                 if model.userSession != nil {
-                    ProfileView()
+                    FavoritesView()
                 } else {
                     SigninView()
                 }
