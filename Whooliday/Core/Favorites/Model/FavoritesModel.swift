@@ -123,19 +123,37 @@ class FavoritesModel: ObservableObject {
                         // Extract basic properties from the snapshot data
                         guard let maxPrice = data["maxPrice"] as? Double,
                               let numGuests = data["numGuests"] as? Int,
-                              let x = data["x"] as? Double,
-                              let y = data["y"] as? Double else {
-                            print("Failed to parse basic properties for filter \(index)")
+                              let latitude = data["latitude"] as? Double,
+                              let longitude = data["longitude"] as? Double,
+                              let adultsNumber = data["adultsNumber"] as? Int,
+                              let currency = data["currency"] as? String,
+                              let locale = data["locale"] as? String,
+                              let orderBy = data["orderBy"] as? String,
+                              let roomNumber = data["roomNumber"] as? Int,
+                              let units = data["units"] as? String,
+                              let checkInTimestamp = data["checkIn"] as? Timestamp,
+                              let checkOutTimestamp = data["checkOut"] as? Timestamp else {
+                            print("Failed to parse filter \(index) data.")
                             fetchNext = false
                             continue
                         }
-                        
+                        let checkIn = checkInTimestamp.dateValue() // Convert Timestamp to Date
+                        let checkOut = checkOutTimestamp.dateValue() // Convert Timestamp to Date
+                                            
                         // Create a Filter object with basic properties
                         let filterData = Filter(id: snapshot.documentID,
                                                 maxPrice: maxPrice,
                                                 numGuests: numGuests,
-                                                x: x,
-                                                y: y,
+                                                latitude: latitude,
+                                                longitude: longitude,
+                                                adultsNumber: adultsNumber,
+                                                currency: currency,
+                                                locale: locale,
+                                                orderBy: orderBy,
+                                                roomNumber: roomNumber,
+                                                units: units,
+                                                checkIn: checkIn,
+                                                checkOut: checkOut,
                                                 hotels: []) // Initialize empty hotels array
                         
                         // Update @Published property on the main thread
@@ -182,7 +200,6 @@ class FavoritesModel: ObservableObject {
         
         while fetchNext {
             let hotelDocRef = hotelsCollectionRef.document("hotel\(index)")
-            
             do {
                 // Attempt to get the document snapshot asynchronously
                 let snapshot = try await hotelDocRef.getDocument()
@@ -196,8 +213,10 @@ class FavoritesModel: ObservableObject {
                         // Update @Published property on the main thread
                     DispatchQueue.main.async {
                                         if let hotelData = hotelData {
+
                                             // Find the corresponding filter in self.filters and append the hotel ID
                                             if let filterIndex = self.filters.firstIndex(where: { $0.id == filterID }) {
+
                                                 self.filters[filterIndex].hotels.append(hotelData)
                                             }
                                         }

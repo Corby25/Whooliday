@@ -49,38 +49,26 @@ struct FiltersListView: View {
                 VStack(alignment: .leading) {
                     Text("Max Price: \(filter.maxPrice)")
                     Text("Num Guests: \(filter.numGuests)")
-                    Text("X: \(filter.x)")
-                    Text("Y: \(filter.y)")
+                    Text("Latitude: \(filter.latitude)")
+                    Text("Longitude: \(filter.longitude)")
+                    Text("Adults Number: \(filter.adultsNumber)")
+                    Text("Currency: \(filter.currency)")
+                    Text("Locale: \(filter.locale)")
+                    Text("Order By: \(filter.orderBy)")
+                    Text("Room Number: \(filter.roomNumber)")
+                    Text("Units: \(filter.units)")
+                    Text("Check In: \(formattedDate(date: filter.checkIn))")
+                    Text("Check Out: \(formattedDate(date: filter.checkOut))")
                 }
             }
         }
         .navigationTitle("Filters")
+        
     }
-}
-
-struct FilterDetailView: View {
-    var filter: Filter
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("Max Price: \(filter.maxPrice)")
-            Text("Num Guests: \(filter.numGuests)")
-            Text("X: \(filter.x)")
-            Text("Y: \(filter.y)")
-            
-            if !filter.hotels.isEmpty {
-                NavigationLink(destination: HotelsListView(hotels: filter.hotels)) {
-                    Text("View Hotels")
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-            } else {
-                Text("No hotels available")
-            }
-        }
-        .padding()
-        .navigationTitle("Filter Detail")
+    private func formattedDate(date: Date) -> String {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .none
+            return formatter.string(from: date)
     }
 }
