@@ -49,6 +49,14 @@
 		FF92C1B02C2732C700D2CA45 /* DestinationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1A52C2732C700D2CA45 /* DestinationSearchView.swift */; };
 		FF92C1B12C2732C700D2CA45 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1A62C2732C700D2CA45 /* ExploreView.swift */; };
 		FF92C1B22C2732C700D2CA45 /* SearchAndFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1A72C2732C700D2CA45 /* SearchAndFilterBar.swift */; };
+		FF92C1BE2C27335400D2CA45 /* CustomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1B32C27335400D2CA45 /* CustomNavBar.swift */; };
+		FF92C1BF2C27335400D2CA45 /* TestNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1B42C27335400D2CA45 /* TestNavBarView.swift */; };
+		FF92C1C02C27335400D2CA45 /* ContainerTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1B62C27335400D2CA45 /* ContainerTabBarView.swift */; };
+		FF92C1C12C27335400D2CA45 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1B72C27335400D2CA45 /* TabBarItem.swift */; };
+		FF92C1C22C27335400D2CA45 /* TabBarItemsPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1B82C27335400D2CA45 /* TabBarItemsPreferenceKey.swift */; };
+		FF92C1C32C27335400D2CA45 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1B92C27335400D2CA45 /* TabBarView.swift */; };
+		FF92C1C42C27335400D2CA45 /* ListingImageCarouseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1BB2C27335400D2CA45 /* ListingImageCarouseView.swift */; };
+		FF92C1C52C27335400D2CA45 /* TabBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF92C1BC2C27335400D2CA45 /* TabBarComponent.swift */; };
 		FF932EF42C20D92300613637 /* WelcomeView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF932EF32C20D92300613637 /* WelcomeView1.swift */; };
 		FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */; };
 		FFDCD3402C1F554500E2142A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFDCD33F2C1F554500E2142A /* Assets.xcassets */; };
@@ -111,6 +119,14 @@
 		FF92C1A52C2732C700D2CA45 /* DestinationSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationSearchView.swift; sourceTree = "<group>"; };
 		FF92C1A62C2732C700D2CA45 /* ExploreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
 		FF92C1A72C2732C700D2CA45 /* SearchAndFilterBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAndFilterBar.swift; sourceTree = "<group>"; };
+		FF92C1B32C27335400D2CA45 /* CustomNavBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavBar.swift; sourceTree = "<group>"; };
+		FF92C1B42C27335400D2CA45 /* TestNavBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestNavBarView.swift; sourceTree = "<group>"; };
+		FF92C1B62C27335400D2CA45 /* ContainerTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerTabBarView.swift; sourceTree = "<group>"; };
+		FF92C1B72C27335400D2CA45 /* TabBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
+		FF92C1B82C27335400D2CA45 /* TabBarItemsPreferenceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemsPreferenceKey.swift; sourceTree = "<group>"; };
+		FF92C1B92C27335400D2CA45 /* TabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		FF92C1BB2C27335400D2CA45 /* ListingImageCarouseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingImageCarouseView.swift; sourceTree = "<group>"; };
+		FF92C1BC2C27335400D2CA45 /* TabBarComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarComponent.swift; sourceTree = "<group>"; };
 		FF932EF32C20D92300613637 /* WelcomeView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView1.swift; sourceTree = "<group>"; };
 		FFDCD3382C1F554300E2142A /* Whooliday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whooliday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFDCD33B2C1F554300E2142A /* WhoolidayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayApp.swift; sourceTree = "<group>"; };
@@ -192,6 +208,7 @@
 		6C39E15A2C22758200B83BBD /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				FF92C1BD2C27335400D2CA45 /* Components */,
 				FF92C1A82C2732C700D2CA45 /* Search */,
 				6C95A5262C247F680098ECAC /* Favorites */,
 				6CC6B4CA2C237BC100B34008 /* Utilities */,
@@ -358,6 +375,37 @@
 				FF92C1A72C2732C700D2CA45 /* SearchAndFilterBar.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		FF92C1B52C27335400D2CA45 /* NavBar */ = {
+			isa = PBXGroup;
+			children = (
+				FF92C1B32C27335400D2CA45 /* CustomNavBar.swift */,
+				FF92C1B42C27335400D2CA45 /* TestNavBarView.swift */,
+			);
+			path = NavBar;
+			sourceTree = "<group>";
+		};
+		FF92C1BA2C27335400D2CA45 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				FF92C1B62C27335400D2CA45 /* ContainerTabBarView.swift */,
+				FF92C1B72C27335400D2CA45 /* TabBarItem.swift */,
+				FF92C1B82C27335400D2CA45 /* TabBarItemsPreferenceKey.swift */,
+				FF92C1B92C27335400D2CA45 /* TabBarView.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		FF92C1BD2C27335400D2CA45 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				FF92C1B52C27335400D2CA45 /* NavBar */,
+				FF92C1BA2C27335400D2CA45 /* TabBar */,
+				FF92C1BB2C27335400D2CA45 /* ListingImageCarouseView.swift */,
+				FF92C1BC2C27335400D2CA45 /* TabBarComponent.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		FFDCD32F2C1F554300E2142A = {
@@ -569,26 +617,34 @@
 				FFDCD3702C20261F00E2142A /* ContainerView.swift in Sources */,
 				FF932EF42C20D92300613637 /* WelcomeView1.swift in Sources */,
 				FF92C1AA2C2732C700D2CA45 /* Listing.swift in Sources */,
+				FF92C1C42C27335400D2CA45 /* ListingImageCarouseView.swift in Sources */,
 				6C39E15D2C227C9300B83BBD /* SignupView.swift in Sources */,
 				FF92C1AD2C2732C700D2CA45 /* ExploreService.swift in Sources */,
 				FF92C1AC2C2732C700D2CA45 /* ListingDetailView.swift in Sources */,
 				FF92C1AF2C2732C700D2CA45 /* ExploreViewModel.swift in Sources */,
 				FF92C1B22C2732C700D2CA45 /* SearchAndFilterBar.swift in Sources */,
 				FF92C1B12C2732C700D2CA45 /* ExploreView.swift in Sources */,
+				FF92C1BE2C27335400D2CA45 /* CustomNavBar.swift in Sources */,
 				6C39E1542C226D4800B83BBD /* SigninView.swift in Sources */,
 				FF7AAFC42C21C9580080E20F /* WelcomeView2.swift in Sources */,
 				FF92C1A92C2732C700D2CA45 /* DeveloperPreview.swift in Sources */,
 				6CC6B4CC2C237BD400B34008 /* Utilities.swift in Sources */,
+				FF92C1C52C27335400D2CA45 /* TabBarComponent.swift in Sources */,
 				FF92C1AB2C2732C700D2CA45 /* CompactListingView.swift in Sources */,
 				FF8ABCE92C22C3D100E57A80 /* SplashScreenView.swift in Sources */,
+				FF92C1C22C27335400D2CA45 /* TabBarItemsPreferenceKey.swift in Sources */,
+				FF92C1BF2C27335400D2CA45 /* TestNavBarView.swift in Sources */,
 				6C39E1582C2273E500B83BBD /* AuthModel.swift in Sources */,
+				FF92C1C12C27335400D2CA45 /* TabBarItem.swift in Sources */,
 				FF92C1AE2C2732C700D2CA45 /* LoadingView.swift in Sources */,
+				FF92C1C02C27335400D2CA45 /* ContainerTabBarView.swift in Sources */,
 				6C95A5282C24809D0098ECAC /* FavoritesView.swift in Sources */,
 				FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */,
 				6C95A52C2C2480E00098ECAC /* FavoritesModel.swift in Sources */,
 				6C95A52E2C248BEA0098ECAC /* Favorites.swift in Sources */,
 				6CC6B4C22C234BA900B34008 /* ProfileView.swift in Sources */,
 				6C39E1602C227E8D00B83BBD /* User.swift in Sources */,
+				FF92C1C32C27335400D2CA45 /* TabBarView.swift in Sources */,
 				FF92C1B02C2732C700D2CA45 /* DestinationSearchView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
