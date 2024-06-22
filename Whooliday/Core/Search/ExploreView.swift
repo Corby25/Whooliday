@@ -41,7 +41,7 @@ struct ExploreView: View {
                                         if showCompactView {
                                             CompactListingView(listing: listing)
                                         } else {
-                                            ListingView(listing: listing)
+                                            ListingDetailView(listing: listing)
                                                 .frame(height: 400)
                                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                         }

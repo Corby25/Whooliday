@@ -25,7 +25,7 @@ struct ContainerView: View {
                 WelcomeView1(isFirstLaunch: $isFirstLaunch)
             } else {
                 if model.userSession != nil {
-                    FavoritesView()
+                    ContentView() // Show the navigation bar with tab views
                 } else {
                     SigninView()
                 }
@@ -34,6 +34,29 @@ struct ContainerView: View {
     }
 }
 
+struct ContentView: View {
+    var body: some View {
+        TabView {
+            ExploreView()
+                .tabItem {
+                    Image(systemName: "magnifyingglass")
+                    Text("Explore")
+                }
+            
+            FavoritesView()
+                .tabItem {
+                    Image(systemName: "star.fill")
+                    Text("Favorites")
+                }
+            
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.fill")
+                    Text("Profile")
+                }
+        }
+    }
+}
 
 #Preview {
     ContainerView()

@@ -55,7 +55,7 @@ class ExploreService: ExploreServiceProtocol{
                 throw NSError(domain: "ExploreService", code: 0, userInfo: [NSLocalizedDescriptionKey: "Latitude and longitude not set"])
             }
             
-            let baseURLString = "http://localhost:3000/api/search"
+            let baseURLString = "http://34.16.172.170:5000/api/search"
             
             guard var urlComponents = URLComponents(string: baseURLString) else {
                 throw URLError(.badURL)
@@ -100,7 +100,7 @@ class ExploreService: ExploreServiceProtocol{
        }
     
     func fetchListings() async throws -> [Listing] {
-        let urlString = "http://localhost:3000/api/search"
+        let urlString = "http://34.16.172.170:5000/api/search"
         guard let url = URL(string: urlString) else {
             throw URLError(.badURL)
         }
