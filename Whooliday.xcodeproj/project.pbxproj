@@ -229,6 +229,7 @@
 		6C39E15E2C227E6D00B83BBD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FF92C1992C2732C700D2CA45 /* Listing.swift */,
 				6C39E15F2C227E8D00B83BBD /* User.swift */,
 				6C95A52D2C248BEA0098ECAC /* Favorites.swift */,
 			);
@@ -310,14 +311,6 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
-		FF92C19A2C2732C700D2CA45 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				FF92C1992C2732C700D2CA45 /* Listing.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		FF92C19C2C2732C700D2CA45 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,7 +322,6 @@
 		FF92C19E2C2732C700D2CA45 /* Listings */ = {
 			isa = PBXGroup;
 			children = (
-				FF92C19A2C2732C700D2CA45 /* Model */,
 				FF92C19C2C2732C700D2CA45 /* View */,
 				FF92C19D2C2732C700D2CA45 /* ListingDetailView.swift */,
 			);

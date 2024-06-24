@@ -2,6 +2,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Combine
 import FirebaseAuth
+import Foundation
 
 class FavoritesModel: ObservableObject {
     @Published var hotels: [Hotel] = []
@@ -23,31 +24,37 @@ class FavoritesModel: ObservableObject {
     }
     
     
-    private func fetchHotels() async {
+    private func fetchHotels() async{
         let hotelsCollectionRef = db.collection("users").document(userID).collection("favorites").document("hotels")
-        
-        // Start with index 1
         var index = 1
         var fetchNext = true
-        
+
         while fetchNext {
             let hotelDocRef = hotelsCollectionRef.collection("hotel\(index)").document("hotel\(index)")
-            
+
             do {
                 // Attempt to get the document snapshot asynchronously
                 let snapshot = try await hotelDocRef.getDocument()
                 
                 // Check if the document exists
                 if snapshot.exists {
-                    
                     // Attempt to decode hotel data from the snapshot
-                    let hotelData = try? snapshot.data(as: Hotel.self)
+                    var hotelData = try snapshot.data(as: Hotel.self)
                     
-                    
-                    DispatchQueue.main.async {self.hotels.append(hotelData!)}
-                    
-                    // Increment index for the next document
-                    index += 1
+                    // Fetch additional details from the API
+                    if let apiHotelData = await fetchHotelDetails(from: hotelData) {
+                        hotelData.name = apiHotelData.name
+                        hotelData.strikethroughPrice = apiHotelData.strikethrough_price
+                        hotelData.reviewCount = apiHotelData.review_count
+                        hotelData.reviewScore = apiHotelData.review_score
+                        hotelData.images = apiHotelData.images
+                    }
+                        
+                        DispatchQueue.main.async {
+                            self.hotels.append(hotelData)
+                        }
+
+                        index += 1
                 } else {
                     // No more documents found, stop fetching
                     fetchNext = false
@@ -58,48 +65,45 @@ class FavoritesModel: ObservableObject {
             }
         }
     }
-    
-    /*private func fetchFilters() async {
-        let filtersCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters")
-        
-        // Start with index 1
-        var index = 1
-        var fetchNext = true
-        
-        while fetchNext {
-            let filterDocRef = filtersCollectionRef.collection("filter\(index)").document("filter\(index)")
-            
-            do {
-                // Attempt to get the document snapshot asynchronously
-                let snapshot = try await filterDocRef.getDocument()
-                
-                // Check if the document exists
-                if snapshot.exists {
-                    print("Fetching filter \(index)")
-                    
-                    // Attempt to decode filter data from the snapshot
-                    let filterData = try? snapshot.data(as: Filter.self)
-                        // Update @Published property on the main thread
-                        DispatchQueue.main.async {
-                            self.filters.append(filterData!)
-                        }
-                        
-                        // Fetch nested hotels for this filter if they exist
-                    try? await fetchNestedHotels(for: filterData!)
-                        
-                        // Increment index for the next document
-                        index += 1
-                    
-                } else {
-                    // No more documents found, stop fetching
-                    fetchNext = false
-                }
-            } catch {
-                print("Error fetching filter \(index): \(error)")
-                fetchNext = false
-            }
+
+
+    private func fetchHotelDetails(from hotel: Hotel) async -> Listing? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+
+        let checkInDate = dateFormatter.string(from: hotel.checkIn)
+        let checkOutDate = dateFormatter.string(from: hotel.checkOut)
+
+        let urlString = "http://34.16.172.170:3000/api/fetchHotelByID?locale=it&filter_by_currency=\(hotel.currency)&checkin_date=\(checkInDate)&hotel_id=\(hotel.hotelID)&adults_number=\(hotel.adultsNumber)&checkout_date=\(checkOutDate)&units=metric"
+
+        guard let url = URL(string: urlString) else { return nil }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let decodedResponse = try JSONDecoder().decode(APIHotelResponse.self, from: data)
+            print("fetched")
+            return Listing(
+                id: decodedResponse.id,
+                latitude: decodedResponse.latitude,
+                longitude: decodedResponse.longitude,
+                name: decodedResponse.name,
+                strikethrough_price: hotel.newPrice,
+                review_count: decodedResponse.review_count ?? 0,
+                review_score: decodedResponse.review_score ?? 0.0,
+                images: decodedResponse.images ?? []
+            )
+        } catch {
+            print("Error fetching hotel details from API: \(error)")
+            return nil
         }
-    }*/
+    }
+    
+    
+    private func dateToString(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: date)
+    }
     
     private func fetchFilters() async {
         let filtersCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters")
@@ -207,24 +211,26 @@ class FavoritesModel: ObservableObject {
                 // Check if the document exists
                 if snapshot.exists {
                     // Attempt to decode hotel data from the snapshot
-                    let hotelData = try? snapshot.data(as: Hotel.self)
-                        // Handle the fetched hotel as needed
-                        
-                        // Update @Published property on the main thread
-                    DispatchQueue.main.async {
-                                        if let hotelData = hotelData {
-
-                                            // Find the corresponding filter in self.filters and append the hotel ID
-                                            if let filterIndex = self.filters.firstIndex(where: { $0.id == filterID }) {
-
-                                                self.filters[filterIndex].hotels.append(hotelData)
-                                            }
-                                        }
-                                    }
-                        
-                        // Increment index for the next document
-                        index += 1
+                    var hotelData = try snapshot.data(as: Hotel.self)
                     
+                    // Fetch additional details from the API
+                    if let apiHotelData = await fetchHotelDetails(from: hotelData) {
+                        hotelData.name = apiHotelData.name
+                        hotelData.strikethroughPrice = apiHotelData.strikethrough_price
+                        hotelData.reviewCount = apiHotelData.review_count
+                        hotelData.reviewScore = apiHotelData.review_score
+                        hotelData.images = apiHotelData.images
+                    }
+                    
+                    DispatchQueue.main.async {
+                        // Find the corresponding filter in self.filters and append the hotel data
+                        if let filterIndex = self.filters.firstIndex(where: { $0.id == filterID }) {
+                            self.filters[filterIndex].hotels.append(hotelData)
+                        }
+                    }
+                    
+                    // Increment index for the next document
+                    index += 1
                 } else {
                     // No more documents found, stop fetching
                     fetchNext = false
@@ -233,6 +239,26 @@ class FavoritesModel: ObservableObject {
                 print("Error fetching nested hotel for filter \(filterID): \(error)")
                 fetchNext = false
                 throw error // Propagate error up the call stack if needed
+            }
+        }
+    }
+    
+
+    func deleteHotel(_ hotel: Hotel) {
+        let indexString = String(hotel.index)
+        let hotelDocumentRef = db.collection("users").document(userID)
+                                 .collection("favorites").document("hotels").collection("hotel\(indexString)")
+                                 .document("hotel\(indexString)")
+        
+        hotelDocumentRef.updateData(["isDeleted": true]) { error in
+            if let error = error {
+                print("Error updating document: \(error.localizedDescription)")
+            } else {
+                print("Document successfully updated to mark as deleted")
+                // Optionally remove the hotel from the local array
+                DispatchQueue.main.async {
+                    self.hotels.removeAll { $0.id == hotel.id }
+                }
             }
         }
     }
