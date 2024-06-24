@@ -7,6 +7,8 @@ import Foundation
 class FavoritesModel: ObservableObject {
     @Published var hotels: [Hotel] = []
     @Published var filters: [Filter] = []
+    @Published var isLoadingHotels = false
+    @Published var isLoadingFilterHotels = false
     
     private var db = Firestore.firestore()
     private var userID: String
@@ -24,7 +26,10 @@ class FavoritesModel: ObservableObject {
     }
     
     
-    private func fetchHotels() async{
+    func fetchHotels() async{
+        DispatchQueue.main.async {
+            self.isLoadingHotels = true
+        }
         let hotelsCollectionRef = db.collection("users").document(userID).collection("favorites").document("hotels")
         var index = 1
         var fetchNext = true
@@ -63,6 +68,10 @@ class FavoritesModel: ObservableObject {
                 print("Error fetching hotel\(index): \(error)")
                 fetchNext = false
             }
+        }
+        
+        DispatchQueue.main.async {
+            self.isLoadingHotels = false
         }
     }
 
@@ -170,9 +179,6 @@ class FavoritesModel: ObservableObject {
                             self.filters.append(filterData)
                         }
                         
-                        // Fetch nested hotels for this filter if they exist
-                        try? await fetchNestedHotels(for: filterData)
-                        
                         // Increment index for the next document
                         indexWhile += 1
                     } else {
@@ -192,60 +198,61 @@ class FavoritesModel: ObservableObject {
         }
     }
 
-
-
-    private func fetchNestedHotels(for filter: Filter) async throws {
-        guard let filterID = filter.id else {
-            print("Filter ID is nil, cannot fetch nested hotels.")
-            return
+    func fetchHotelsForFilter(_ filter: Filter) async {
+        DispatchQueue.main.async {
+            self.isLoadingFilterHotels = true
         }
-        
-        let hotelsCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters").collection(filterID).document(filterID).collection("hotels")
-        
-        // Start with index 1
-        var index = 1
-        var fetchNext = true
-        
-        while fetchNext {
-            let hotelDocRef = hotelsCollectionRef.document("hotel\(index)")
-            do {
-                // Attempt to get the document snapshot asynchronously
-                let snapshot = try await hotelDocRef.getDocument()
-                
-                // Check if the document exists
-                if snapshot.exists {
-                    // Attempt to decode hotel data from the snapshot
-                    var hotelData = try snapshot.data(as: Hotel.self)
+            guard let filterID = filter.id else {
+                print("Filter ID is nil, cannot fetch hotels.")
+                return
+            }
+
+            let hotelsCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters").collection(filterID).document(filterID).collection("hotels")
+            
+            var index = 1
+            var fetchNext = true
+            var fetchedHotels: [Hotel] = []
+
+            while fetchNext {
+                let hotelDocRef = hotelsCollectionRef.document("hotel\(index)")
+                do {
+                    let snapshot = try await hotelDocRef.getDocument()
                     
-                    // Fetch additional details from the API
-                    if let apiHotelData = await fetchHotelDetails(from: hotelData) {
-                        hotelData.name = apiHotelData.name
-                        hotelData.strikethroughPrice = apiHotelData.strikethrough_price
-                        hotelData.reviewCount = apiHotelData.review_count
-                        hotelData.reviewScore = apiHotelData.review_score
-                        hotelData.images = apiHotelData.images
-                    }
-                    
-                    DispatchQueue.main.async {
-                        // Find the corresponding filter in self.filters and append the hotel data
-                        if let filterIndex = self.filters.firstIndex(where: { $0.id == filterID }) {
-                            self.filters[filterIndex].hotels.append(hotelData)
+                    if snapshot.exists {
+                        var hotelData = try snapshot.data(as: Hotel.self)
+                        
+                        if let apiHotelData = await fetchHotelDetails(from: hotelData) {
+                            hotelData.name = apiHotelData.name
+                            hotelData.strikethroughPrice = apiHotelData.strikethrough_price
+                            hotelData.reviewCount = apiHotelData.review_count
+                            hotelData.reviewScore = apiHotelData.review_score
+                            hotelData.images = apiHotelData.images
                         }
+                        
+                        fetchedHotels.append(hotelData)
+                        index += 1
+                    } else {
+                        fetchNext = false
                     }
-                    
-                    // Increment index for the next document
-                    index += 1
-                } else {
-                    // No more documents found, stop fetching
+                } catch {
+                    print("Error fetching hotel for filter \(filterID): \(error)")
                     fetchNext = false
                 }
-            } catch {
-                print("Error fetching nested hotel for filter \(filterID): \(error)")
-                fetchNext = false
-                throw error // Propagate error up the call stack if needed
+            }
+
+            DispatchQueue.main.async {
+                if let filterIndex = self.filters.firstIndex(where: { $0.id == filterID }) {
+                    self.filters[filterIndex].hotels = fetchedHotels
+                    print("Updated filter at index \(filterIndex) with \(fetchedHotels.count) hotels")
+                    self.objectWillChange.send()
+
+                    
+                }else {
+                    print("Failed to find filter with ID: \(filterID)")}
+                self.isLoadingFilterHotels = false
             }
         }
-    }
+    
     
 
     func deleteHotel(_ hotel: Hotel) {
@@ -261,7 +268,6 @@ class FavoritesModel: ObservableObject {
                 print("Document successfully updated to mark as deleted")
                 // Optionally remove the hotel from the local array
                 DispatchQueue.main.async {
-                    print(hotel.index)
                     self.hotels[hotel.index-1].isDeleted = true
                 }
             }
@@ -280,8 +286,9 @@ class FavoritesModel: ObservableObject {
                 print("Filter document successfully updated to mark as deleted")
                 DispatchQueue.main.async {
                     // Update locally and notify UI
-                    print(index)
-                    self.filters[index].isDeleted = true
+                    self.filters.remove(at: index)
+                    //self.filters[index].isDeleted = true
+                    self.objectWillChange.send()
                 }
             }
         }

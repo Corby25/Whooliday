@@ -3,14 +3,6 @@ import SwiftUI
 struct FavoritesView: View {
     @StateObject private var favoritesModel = FavoritesModel()
     @State private var selectedTab = 0 // 0: Hotels, 1: Filters
-    
-    /*private var hasNewHotels: Bool {
-        return favoritesModel.hotels.contains(where: { $0.isNew })
-    }
-    
-    private var hasNewFilters: Bool {
-        return favoritesModel.filters.contains(where: { $0.hotels.contains(where: { $0.isNew }) })
-    }*/
 
     var body: some View {
         NavigationView {
@@ -35,26 +27,27 @@ struct FavoritesView: View {
     }
 }
 
-import SwiftUI
 
 struct HotelsListView: View {
     @State private var selectedHotel: Listing?
     var hotels: [Hotel]
-    var favoritesModel: FavoritesModel
-    var allowDeletion: Bool // Flag to determine if delete option should be shown
-
-    // Filter out deleted hotels for this view only if shouldFilterDeleted is true
-    var filteredHotels: [Hotel] {
-        allowDeletion ? hotels.filter { !$0.isDeleted } : hotels
-    }
-
+    @ObservedObject var favoritesModel: FavoritesModel
+    var allowDeletion: Bool
+    
     var body: some View {
         List {
-            ForEach(filteredHotels) { hotel in
-                HotelRowView(hotel: hotel, allowDeletion: allowDeletion, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
-            }
-            .if(allowDeletion) {
-                $0.onDelete(perform: deleteHotel)
+            if favoritesModel.isLoadingHotels {
+                ForEach(dummyHotels, id: \.index) { hotel in
+                    HotelRowView(hotel: hotel, allowDeletion: allowDeletion, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
+                        .shimmering()
+                }
+            } else {
+                ForEach(hotels.filter { !$0.isDeleted }) { hotel in
+                    HotelRowView(hotel: hotel, allowDeletion: allowDeletion, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
+                }
+                .if(allowDeletion) {
+                    $0.onDelete(perform: deleteHotel)
+                }
             }
         }
         .sheet(item: $selectedHotel) { listing in
@@ -64,7 +57,7 @@ struct HotelsListView: View {
 
     private func deleteHotel(at offsets: IndexSet) {
         for index in offsets {
-            let hotel = filteredHotels[index]
+            let hotel = hotels.filter { !$0.isDeleted }[index]
             favoritesModel.deleteHotel(hotel)
         }
     }
@@ -86,7 +79,7 @@ struct HotelRowView: View {
     var allowDeletion: Bool
     var favoritesModel: FavoritesModel
     @Binding var selectedHotel: Listing?
-
+    
     var body: some View {
         Button(action: {
             selectedHotel = hotelToListing(hotel: hotel)
@@ -132,15 +125,6 @@ struct HotelRowView: View {
                 }
             }
         }
-        .contextMenu {
-            if allowDeletion {
-                Button(action: {
-                    deleteHotel(hotel)
-                }) {
-                    Label("Delete", systemImage: "trash")
-                }
-            }
-        }
     }
 
     private func hotelToListing(hotel: Hotel) -> Listing {
@@ -157,56 +141,48 @@ struct HotelRowView: View {
     }
 
     private func deleteHotel(_ hotel: Hotel) {
-        // Implement hotel deletion logic using favoritesModel
         favoritesModel.deleteHotel(hotel)
     }
 }
 
-
 struct FiltersListView: View {
     var filters: [Filter]
     @ObservedObject var favoritesModel: FavoritesModel
-
+    @State private var selectedFilter: Filter?
+    
     var body: some View {
         List {
             ForEach(filters.filter { !$0.isDeleted }) { filter in
-                NavigationLink(destination: HotelsListView(hotels: filter.hotels, favoritesModel: favoritesModel, allowDeletion: false)) {
+                NavigationLink(
+                    destination: FilterHotelsListView(filter: filter, favoritesModel: favoritesModel),
+                    tag: filter,
+                    selection: $selectedFilter
+                ) {
                     VStack(alignment: .leading) {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("Max Price: \(filter.maxPrice)")
-                                Text("Num Guests: \(filter.numGuests)")
-                                Text("Latitude: \(filter.latitude)")
-                                Text("Longitude: \(filter.longitude)")
-                                Text("Adults Number: \(filter.adultsNumber)")
-                                Text("Currency: \(filter.currency)")
-                                Text("Locale: \(filter.locale)")
-                                Text("Order By: \(filter.orderBy)")
-                                Text("Room Number: \(filter.roomNumber)")
-                                Text("Units: \(filter.units)")
-                                Text("Check In: \(formattedDate(date: filter.checkIn))")
-                                Text("Check Out: \(formattedDate(date: filter.checkOut))")
-                            }
-                            Spacer()
-                            if filter.hotels.contains(where: { $0.isNew }) {
-                                Circle()
-                                    .fill(Color.blue)
-                                    .frame(width: 10, height: 10)
-                            }
-                        }
+                        Text("Max Price: \(filter.maxPrice)")
+                        Text("Num Guests: \(filter.numGuests)")
+                        Text("Latitude: \(filter.latitude)")
+                        Text("Longitude: \(filter.longitude)")
+                        Text("Adults Number: \(filter.adultsNumber)")
+                        Text("Currency: \(filter.currency)")
+                        Text("Locale: \(filter.locale)")
+                        Text("Order By: \(filter.orderBy)")
+                        Text("Room Number: \(filter.roomNumber)")
+                        Text("Units: \(filter.units)")
+                        Text("Check In: \(formattedDate(date: filter.checkIn))")
+                        Text("Check Out: \(formattedDate(date: filter.checkOut))")
                     }
-                    .foregroundColor(.black) // Ensuring black text color
                 }
             }
-            .onDelete { indexSet in
+            .onDelete(perform: deleteFilters)
+
+            /*.onDelete { indexSet in
                 deleteFilters(at: indexSet)
-            }
+            }*/
         }
     }
-    
     private func deleteFilters(at offsets: IndexSet) {
         for index in offsets {
-            let filter = filters[index]
             favoritesModel.deleteFilter(at: index)
         }
     }
@@ -217,6 +193,42 @@ struct FiltersListView: View {
         formatter.timeStyle = .none
         return formatter.string(from: date)
     }
+    
+}
+
+
+struct FilterHotelsListView: View {
+    let filter: Filter
+    @ObservedObject var favoritesModel: FavoritesModel
+    @State private var localHotels: [Hotel] = []
+    @State private var isLoading = false
+    
+    var body: some View {
+            Group {
+                if isLoading {
+                    List {
+                        ForEach(dummyHotels, id: \.index) { hotel in
+                            HotelRowView(hotel: hotel, allowDeletion: false, favoritesModel: favoritesModel, selectedHotel: .constant(nil))
+                                .shimmering()
+                        }
+                    }
+                } else {
+                    HotelsListView(hotels: localHotels, favoritesModel: favoritesModel, allowDeletion: false)
+                }
+            }
+            .onAppear {
+                isLoading = true
+                Task {
+                    await favoritesModel.fetchHotelsForFilter(filter)
+                    DispatchQueue.main.async {
+                        if let updatedFilter = favoritesModel.filters.first(where: { $0.id == filter.id }) {
+                            localHotels = updatedFilter.hotels
+                        }
+                        isLoading = false
+                    }
+                }
+            }
+        }
 }
 
 
