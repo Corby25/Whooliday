@@ -12,11 +12,12 @@ struct FavoritesView: View {
                     Text("Places").tag(1)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding()
+                .padding(.horizontal) // Only add horizontal padding
+                .padding(.vertical, 8) // Reduce vertical padding
 
                 if selectedTab == 0 {
                     // Display main hotels list with deletion enabled and filtering deleted hotels
-                    HotelsListView(hotels: favoritesModel.hotels, favoritesModel: favoritesModel, allowDeletion: true)
+                    HotelsListView(hotels: favoritesModel.hotels, favoritesModel: favoritesModel, isMain: true)
                 } else {
                     // Display filters list
                     FiltersListView(filters: favoritesModel.filters, favoritesModel: favoritesModel)
@@ -32,22 +33,27 @@ struct HotelsListView: View {
     @State private var selectedHotel: Listing?
     var hotels: [Hotel]
     @ObservedObject var favoritesModel: FavoritesModel
-    var allowDeletion: Bool
+    var isMain: Bool
     
     var body: some View {
         List {
             if favoritesModel.isLoadingHotels {
                 ForEach(dummyHotels, id: \.index) { hotel in
-                    HotelRowView(hotel: hotel, allowDeletion: allowDeletion, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
+                    HotelRowView(hotel: hotel, isMain: isMain, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
                         .shimmering()
                 }
             } else {
                 ForEach(hotels.filter { !$0.isDeleted }) { hotel in
-                    HotelRowView(hotel: hotel, allowDeletion: allowDeletion, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
+                    HotelRowView(hotel: hotel, isMain: isMain, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
                 }
-                .if(allowDeletion) {
+                .if(isMain) {
                     $0.onDelete(perform: deleteHotel)
                 }
+            }
+        }
+        .if(isMain) { view in
+            view.refreshable {
+                await favoritesModel.refreshHotels()
             }
         }
         .sheet(item: $selectedHotel) { listing in
@@ -76,7 +82,7 @@ extension View {
 
 struct HotelRowView: View {
     var hotel: Hotel
-    var allowDeletion: Bool
+    var isMain: Bool
     var favoritesModel: FavoritesModel
     @Binding var selectedHotel: Listing?
     
@@ -180,6 +186,9 @@ struct FiltersListView: View {
                 deleteFilters(at: indexSet)
             }*/
         }
+        .refreshable {
+            await favoritesModel.refreshFilters()
+        }
     }
     private func deleteFilters(at offsets: IndexSet) {
         for index in offsets {
@@ -208,12 +217,12 @@ struct FilterHotelsListView: View {
                 if isLoading {
                     List {
                         ForEach(dummyHotels, id: \.index) { hotel in
-                            HotelRowView(hotel: hotel, allowDeletion: false, favoritesModel: favoritesModel, selectedHotel: .constant(nil))
+                            HotelRowView(hotel: hotel, isMain: false, favoritesModel: favoritesModel, selectedHotel: .constant(nil))
                                 .shimmering()
                         }
                     }
                 } else {
-                    HotelsListView(hotels: localHotels, favoritesModel: favoritesModel, allowDeletion: false)
+                    HotelsListView(hotels: localHotels, favoritesModel: favoritesModel, isMain: false)
                 }
             }
             .onAppear {

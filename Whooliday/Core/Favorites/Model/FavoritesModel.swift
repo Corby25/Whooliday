@@ -293,5 +293,19 @@ class FavoritesModel: ObservableObject {
             }
         }
     }
+    
+    func refreshHotels() async {
+        DispatchQueue.main.async {
+            self.hotels.removeAll()
+            self.isLoadingHotels = true
+        }
+        await fetchHotels()
+    }
 
+    func refreshFilters() async {
+        DispatchQueue.main.async {
+            self.filters.removeAll()
+        }
+        await fetchFilters()
+    }
 }
