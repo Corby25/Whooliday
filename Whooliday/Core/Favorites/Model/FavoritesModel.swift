@@ -109,11 +109,11 @@ class FavoritesModel: ObservableObject {
         let filtersCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters")
         
         // Start with index 1
-        var index = 1
+        var indexWhile = 1
         var fetchNext = true
         
         while fetchNext {
-            let filterDocRef = filtersCollectionRef.collection("filter\(index)").document("filter\(index)")
+            let filterDocRef = filtersCollectionRef.collection("filter\(indexWhile)").document("filter\(indexWhile)")
             
             do {
                 // Attempt to get the document snapshot asynchronously
@@ -135,9 +135,11 @@ class FavoritesModel: ObservableObject {
                               let orderBy = data["orderBy"] as? String,
                               let roomNumber = data["roomNumber"] as? Int,
                               let units = data["units"] as? String,
+                              let isDeleted = data["isDeleted"] as? Bool,
+                              let index = data["index"] as? Int,
                               let checkInTimestamp = data["checkIn"] as? Timestamp,
                               let checkOutTimestamp = data["checkOut"] as? Timestamp else {
-                            print("Failed to parse filter \(index) data.")
+                            print("Failed to parse filter \(indexWhile) data.")
                             fetchNext = false
                             continue
                         }
@@ -158,6 +160,8 @@ class FavoritesModel: ObservableObject {
                                                 units: units,
                                                 checkIn: checkIn,
                                                 checkOut: checkOut,
+                                                isDeleted: isDeleted,
+                                                index: index,
                                                 hotels: []) // Initialize empty hotels array
                         
                         // Update @Published property on the main thread
@@ -170,9 +174,9 @@ class FavoritesModel: ObservableObject {
                         try? await fetchNestedHotels(for: filterData)
                         
                         // Increment index for the next document
-                        index += 1
+                        indexWhile += 1
                     } else {
-                        print("Failed to decode filter \(index) data.")
+                        print("Failed to decode filter \(indexWhile) data.")
                         fetchNext = false
                     }
                     
@@ -182,7 +186,7 @@ class FavoritesModel: ObservableObject {
                 }
                 
             } catch {
-                print("Error fetching filter \(index): \(error)")
+                print("Error fetching filter \(indexWhile): \(error)")
                 fetchNext = false
             }
         }
@@ -257,7 +261,27 @@ class FavoritesModel: ObservableObject {
                 print("Document successfully updated to mark as deleted")
                 // Optionally remove the hotel from the local array
                 DispatchQueue.main.async {
-                    self.hotels.removeAll { $0.id == hotel.id }
+                    print(hotel.index)
+                    self.hotels[hotel.index-1].isDeleted = true
+                }
+            }
+        }
+    }
+    
+    func deleteFilter(at index: Int) {
+        let indexInDb = index + 1
+        let filterDocumentRef = db.collection("users").document(userID)
+                                  .collection("favorites").document("filters").collection("filter\(String(indexInDb))").document("filter\(String(indexInDb))")
+
+        filterDocumentRef.updateData(["isDeleted": true]) { error in
+            if let error = error {
+                print("Error updating filter document: \(error.localizedDescription)")
+            } else {
+                print("Filter document successfully updated to mark as deleted")
+                DispatchQueue.main.async {
+                    // Update locally and notify UI
+                    print(index)
+                    self.filters[index].isDeleted = true
                 }
             }
         }

@@ -69,5 +69,7 @@ struct Filter: Identifiable, Codable {
     var units: String
     var checkIn: Date
     var checkOut: Date
+    var isDeleted: Bool
+    var index: Int
     var hotels: [Hotel]
 }

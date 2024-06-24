@@ -81,8 +81,6 @@ extension View {
     }
 }
 
-
-
 struct HotelRowView: View {
     var hotel: Hotel
     var allowDeletion: Bool
@@ -170,37 +168,49 @@ struct FiltersListView: View {
     @ObservedObject var favoritesModel: FavoritesModel
 
     var body: some View {
-        List(filters) { filter in
-            NavigationLink(destination: HotelsListView(hotels: filter.hotels, favoritesModel: favoritesModel, allowDeletion: false)) { // Set allowDeletion to false
-                VStack(alignment: .leading) {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("Max Price: \(filter.maxPrice)")
-                            Text("Num Guests: \(filter.numGuests)")
-                            Text("Latitude: \(filter.latitude)")
-                            Text("Longitude: \(filter.longitude)")
-                            Text("Adults Number: \(filter.adultsNumber)")
-                            Text("Currency: \(filter.currency)")
-                            Text("Locale: \(filter.locale)")
-                            Text("Order By: \(filter.orderBy)")
-                            Text("Room Number: \(filter.roomNumber)")
-                            Text("Units: \(filter.units)")
-                            Text("Check In: \(formattedDate(date: filter.checkIn))")
-                            Text("Check Out: \(formattedDate(date: filter.checkOut))")
-                        }
-                        Spacer()
-                        if filter.hotels.contains(where: { $0.isNew }) {
-                            Circle()
-                                .fill(Color.blue)
-                                .frame(width: 10, height: 10)
+        List {
+            ForEach(filters.filter { !$0.isDeleted }) { filter in
+                NavigationLink(destination: HotelsListView(hotels: filter.hotels, favoritesModel: favoritesModel, allowDeletion: false)) {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text("Max Price: \(filter.maxPrice)")
+                                Text("Num Guests: \(filter.numGuests)")
+                                Text("Latitude: \(filter.latitude)")
+                                Text("Longitude: \(filter.longitude)")
+                                Text("Adults Number: \(filter.adultsNumber)")
+                                Text("Currency: \(filter.currency)")
+                                Text("Locale: \(filter.locale)")
+                                Text("Order By: \(filter.orderBy)")
+                                Text("Room Number: \(filter.roomNumber)")
+                                Text("Units: \(filter.units)")
+                                Text("Check In: \(formattedDate(date: filter.checkIn))")
+                                Text("Check Out: \(formattedDate(date: filter.checkOut))")
+                            }
+                            Spacer()
+                            if filter.hotels.contains(where: { $0.isNew }) {
+                                Circle()
+                                    .fill(Color.blue)
+                                    .frame(width: 10, height: 10)
+                            }
                         }
                     }
+                    .foregroundColor(.black) // Ensuring black text color
                 }
-                .foregroundColor(.black) // Ensuring black text color
+            }
+            .onDelete { indexSet in
+                deleteFilters(at: indexSet)
             }
         }
     }
-
+    
+    private func deleteFilters(at offsets: IndexSet) {
+        for index in offsets {
+            let filter = filters[index]
+            favoritesModel.deleteFilter(at: index)
+        }
+    }
+    
     private func formattedDate(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
