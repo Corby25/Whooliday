@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift-master.dia",
+    "emit-module-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift-master-emit-module.dia",
+    "swift-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift-master.swiftdeps"
+  },
+  "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/FirebaseFirestoreSwift/Sources/FirebaseFirestoreSwift.swift" : {
+    "const-values" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift.swiftconstvalues",
+    "dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift.d",
+    "diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift.dia",
+    "index-unit-output-path" : "/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift.o",
+    "llvm-bc" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift.bc",
+    "object" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift.o",
+    "swift-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift.swiftdeps",
+    "swiftmodule" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/Previews/iphonesimulator/Whooliday/Intermediates.noindex/Firebase.build/Debug-iphonesimulator/FirebaseFirestoreSwift.build/Objects-normal/x86_64/FirebaseFirestoreSwift~partial.swiftmodule"
+  }
+}

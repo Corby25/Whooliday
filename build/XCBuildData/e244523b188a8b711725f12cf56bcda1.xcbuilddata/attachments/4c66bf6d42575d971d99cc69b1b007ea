@@ -1,0 +1,4 @@
+module opensslWrapper {
+umbrella "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/grpc-binary/openssl-grpc-Wrapper/include"
+export *
+}

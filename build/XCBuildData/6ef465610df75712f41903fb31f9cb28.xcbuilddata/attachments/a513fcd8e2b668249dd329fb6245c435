@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers-master.dia",
+    "emit-module-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers-master-emit-module.dia",
+    "swift-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers-master.swiftdeps"
+  },
+  "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/Sources/PromisesTestHelpers/PromisesTestHelpers.swift" : {
+    "const-values" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers.swiftconstvalues",
+    "dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers.d",
+    "diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers.dia",
+    "index-unit-output-path" : "/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers.o",
+    "llvm-bc" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers.bc",
+    "object" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers.o",
+    "swift-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers.swiftdeps",
+    "swiftmodule" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestHelpers~partial.swiftmodule"
+  },
+  "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/Sources/PromisesTestHelpers/PromisesTestInteroperability.swift" : {
+    "const-values" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestInteroperability.swiftconstvalues",
+    "dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestInteroperability.d",
+    "diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestInteroperability.dia",
+    "index-unit-output-path" : "/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestInteroperability.o",
+    "llvm-bc" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestInteroperability.bc",
+    "object" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestInteroperability.o",
+    "swift-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestInteroperability.swiftdeps",
+    "swiftmodule" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/promises/build/Promises.build/Debug-iphonesimulator/PromisesTestHelpers.build/Objects-normal/x86_64/PromisesTestInteroperability~partial.swiftmodule"
+  }
+}

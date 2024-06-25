@@ -1,0 +1,4 @@
+module GTMSessionFetcherFull {
+umbrella "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/gtm-session-fetcher/Sources/Full/Public"
+export *
+}

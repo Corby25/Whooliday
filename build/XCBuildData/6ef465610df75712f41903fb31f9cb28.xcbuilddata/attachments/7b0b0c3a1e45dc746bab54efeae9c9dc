@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift-master.dia",
+    "emit-module-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift-master-emit-module.dia",
+    "swift-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift-master.swiftdeps"
+  },
+  "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/FirebaseDatabaseSwift/Sources/FirebaseDatabaseSwift.swift" : {
+    "const-values" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift.swiftconstvalues",
+    "dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift.d",
+    "diagnostics" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift.dia",
+    "index-unit-output-path" : "/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift.o",
+    "llvm-bc" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift.bc",
+    "object" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift.o",
+    "swift-dependencies" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift.swiftdeps",
+    "swiftmodule" : "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/firebase-ios-sdk/build/Firebase.build/Debug-iphonesimulator/FirebaseDatabaseSwift.build/Objects-normal/x86_64/FirebaseDatabaseSwift~partial.swiftmodule"
+  }
+}

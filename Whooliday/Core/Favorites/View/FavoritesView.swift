@@ -34,6 +34,7 @@ struct HotelsListView: View {
     var hotels: [Hotel]
     @ObservedObject var favoritesModel: FavoritesModel
     var isMain: Bool
+    @StateObject var viewModel = ExploreViewModel(service: ExploreService())
     
     var body: some View {
         List {
@@ -56,9 +57,11 @@ struct HotelsListView: View {
                 await favoritesModel.refreshHotels()
             }
         }
+        /*
         .sheet(item: $selectedHotel) { listing in
-            ListingDetailView(listing: listing)
+            ListingDetailView(listing: listing, viewModel: viewModel)
         }
+         */
     }
 
     private func deleteHotel(at offsets: IndexSet) {
@@ -138,11 +141,20 @@ struct HotelRowView: View {
             id: Int(hotel.hotelID) ?? 0,
             latitude: 0.0,
             longitude: 0.0,
+            city: "",
+            state: "",
             name: hotel.name ?? "Unknown Hotel",
-            strikethrough_price: hotel.isNew ? hotel.oldPrice : nil,
+            strikethrough_price: hotel.isNew ? hotel.oldPrice : 0.0,
             review_count: hotel.reviewCount ?? 0,
             review_score: hotel.reviewScore ?? 0.0,
+            checkin: "",
+            checkout: "",
+            nAdults: 0,
+            nChildren: 0,
+            childrenAge: "",
+            currency: "",
             images: hotel.images ?? []
+            
         )
     }
 
@@ -236,6 +248,4 @@ struct FilterHotelsListView: View {
             }
         }
 }
-
-
 

@@ -1,0 +1,4 @@
+module grpcppWrapper {
+umbrella "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/grpc-binary/grpcpp-Wrapper/include"
+export *
+}

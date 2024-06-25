@@ -110,10 +110,20 @@ class FavoritesModel: ObservableObject {
                     id: decodedResponse.id,
                     latitude: decodedResponse.latitude,
                     longitude: decodedResponse.longitude,
+                    city: "",
+                    state: "",
                     name: decodedResponse.name,
                     strikethrough_price: hotel.newPrice,
                     review_count: decodedResponse.review_count ?? 0,
                     review_score: decodedResponse.review_score ?? 0.0,
+                    checkin: "",
+                    checkout: "",
+                    nAdults: 0,
+                    nChildren: 0,
+                    childrenAge: "",
+                    currency: "",
+                    
+                   
                     images: decodedResponse.images ?? []
                 )
             } else {

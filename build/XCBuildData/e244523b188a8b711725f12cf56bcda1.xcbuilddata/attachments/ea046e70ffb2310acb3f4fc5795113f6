@@ -1,0 +1,4 @@
+module nanopb {
+umbrella "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/nanopb/spm_headers"
+export *
+}

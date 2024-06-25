@@ -1,0 +1,4 @@
+module AppAuth {
+umbrella "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/AppAuth-iOS/Sources/AppAuth"
+export *
+}

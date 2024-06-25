@@ -33,6 +33,3 @@ struct ListingImageCarouseView: View {
     }
 }
 
-#Preview {
-    ListingDetailView(listing: Listing(id: 1, latitude: 0.0, longitude: 0.0, name: "Example Hotel", strikethrough_price: 199.99, review_count: 111, review_score: 8.8, images: ["https://example.com/image.jpg"]))
-}

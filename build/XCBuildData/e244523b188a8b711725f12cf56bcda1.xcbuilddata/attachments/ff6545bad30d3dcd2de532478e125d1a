@@ -1,0 +1,4 @@
+module abslWrapper {
+umbrella "/Users/fabiotagliani/Library/Developer/Xcode/DerivedData/Whooliday-hhobojyzyrzhunfuxslniltvjtsw/SourcePackages/checkouts/abseil-cpp-binary/absl-Wrapper/include"
+export *
+}

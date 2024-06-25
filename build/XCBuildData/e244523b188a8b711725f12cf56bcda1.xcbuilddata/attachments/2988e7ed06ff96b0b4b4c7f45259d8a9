@@ -1,0 +1,4 @@
+module Lottie {
+header "Lottie-Swift.h"
+export *
+}
