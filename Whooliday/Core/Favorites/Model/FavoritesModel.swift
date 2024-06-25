@@ -12,6 +12,7 @@ class FavoritesModel: ObservableObject {
     
     private var db = Firestore.firestore()
     private var userID: String
+
     
     init() {
         self.userID = Auth.auth().currentUser?.uid ?? ""
@@ -76,36 +77,55 @@ class FavoritesModel: ObservableObject {
     }
 
 
-    private func fetchHotelDetails(from hotel: Hotel) async -> Listing? {
+    private func fetchHotelDetails(from hotel: Hotel?) async -> Listing? {
+        guard let hotel = hotel else { return nil }
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-
+        
         let checkInDate = dateFormatter.string(from: hotel.checkIn)
         let checkOutDate = dateFormatter.string(from: hotel.checkOut)
-
-        let urlString = "http://34.16.172.170:3000/api/fetchHotelByID?locale=it&filter_by_currency=\(hotel.currency)&checkin_date=\(checkInDate)&hotel_id=\(hotel.hotelID)&adults_number=\(hotel.adultsNumber)&checkout_date=\(checkOutDate)&units=metric"
-
-        guard let url = URL(string: urlString) else { return nil }
-
+        
+        let userDocRef = db.collection("users").document(userID)
+        
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let decodedResponse = try JSONDecoder().decode(APIHotelResponse.self, from: data)
-            print("fetched")
-            return Listing(
-                id: decodedResponse.id,
-                latitude: decodedResponse.latitude,
-                longitude: decodedResponse.longitude,
-                name: decodedResponse.name,
-                strikethrough_price: hotel.newPrice,
-                review_count: decodedResponse.review_count ?? 0,
-                review_score: decodedResponse.review_score ?? 0.0,
-                images: decodedResponse.images ?? []
-            )
+            let userSnapshot = try await userDocRef.getDocument()
+            
+            if let userData = userSnapshot.data(),
+               let currency = userData["currency"] as? String,
+               let locale = userData["locale"] as? String {
+                
+                let urlString = "http://34.16.172.170:3000/api/fetchHotelByID?locale=\(locale)&filter_by_currency=\(currency)&checkin_date=\(checkInDate)&hotel_id=\(hotel.hotelID)&adults_number=\(hotel.adultsNumber)&checkout_date=\(checkOutDate)&units=metric"
+                
+                guard let url = URL(string: urlString) else {
+                    print("Invalid URL: \(urlString)")
+                    return nil
+                }
+                
+                let (data, _) = try await URLSession.shared.data(from: url)
+                let decodedResponse = try JSONDecoder().decode(APIHotelResponse.self, from: data)
+                print("Fetched hotel details from API")
+                
+                return Listing(
+                    id: decodedResponse.id,
+                    latitude: decodedResponse.latitude,
+                    longitude: decodedResponse.longitude,
+                    name: decodedResponse.name,
+                    strikethrough_price: hotel.newPrice,
+                    review_count: decodedResponse.review_count ?? 0,
+                    review_score: decodedResponse.review_score ?? 0.0,
+                    images: decodedResponse.images ?? []
+                )
+            } else {
+                print("Missing currency or locale information for user \(userID)")
+                return nil
+            }
         } catch {
-            print("Error fetching hotel details from API: \(error)")
+            print("Error fetching user data for \(userID): \(error)")
             return nil
         }
     }
+
     
     
     private func dateToString(_ date: Date) -> String {
@@ -139,8 +159,6 @@ class FavoritesModel: ObservableObject {
                               let latitude = data["latitude"] as? Double,
                               let longitude = data["longitude"] as? Double,
                               let adultsNumber = data["adultsNumber"] as? Int,
-                              let currency = data["currency"] as? String,
-                              let locale = data["locale"] as? String,
                               let orderBy = data["orderBy"] as? String,
                               let roomNumber = data["roomNumber"] as? Int,
                               let units = data["units"] as? String,
@@ -162,8 +180,6 @@ class FavoritesModel: ObservableObject {
                                                 latitude: latitude,
                                                 longitude: longitude,
                                                 adultsNumber: adultsNumber,
-                                                currency: currency,
-                                                locale: locale,
                                                 orderBy: orderBy,
                                                 roomNumber: roomNumber,
                                                 units: units,

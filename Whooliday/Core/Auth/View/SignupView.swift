@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Firebase
 
 struct SignupView: View {
     @State private var email: String = ""
@@ -15,6 +14,13 @@ struct SignupView: View {
     @EnvironmentObject var model: AuthModel
     @State private var showAlert = false
     @State private var alertMessage = ""
+    
+    // Array of countries
+    let countries = Country.allCountries
+    
+    // Selected country and currency
+    @State private var selectedCountry: Country? = Country(name: "Italy", alpha2Code: "IT")
+    @State private var selectedCurrency: Currency? = Currency(name: "Euro", code: "EUR") // Default currency
     
     var body: some View {
         VStack(spacing: 20) {
@@ -36,6 +42,28 @@ struct SignupView: View {
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(5.0)
             
+            // Country picker
+            Picker("Country", selection: $selectedCountry) {
+                ForEach(countries, id: \.self) { country in
+                    Text(country.name).tag(country as Country?)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
+            .padding()
+            .background(Color.gray.opacity(0.2))
+            .cornerRadius(5.0)
+            
+            // Currency picker
+            Picker("Currency", selection: $selectedCurrency) {
+                ForEach(Currency.allCurrencies, id: \.self) { currency in
+                    Text("\(currency.code) - \(currency.name)").tag(currency as Currency?)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
+            .padding()
+            .background(Color.gray.opacity(0.2))
+            .cornerRadius(5.0)
+            
             Button(action: {
                 Task {
                     if name.isEmpty {
@@ -45,7 +73,8 @@ struct SignupView: View {
                     }
                     
                     do {
-                        try await model.signUp(withEmail: email, password: password, name: name)
+                        // Sign up with email, password, name, selectedCountry, and selectedCurrency
+                        try await model.signUp(withEmail: email, password: password, name: name, country: selectedCountry, currency: selectedCurrency)
                     } catch {
                         handleSignUpError(error)
                     }
@@ -81,9 +110,7 @@ struct SignupView: View {
             alertMessage = "An email address must be provided, please try again"
         case 17008:
             alertMessage = "The email is not in the correct format, please try again"
-        case 17004:
-            alertMessage = "There is already another user with this email, please try again"
-        case 17007:
+        case 17004, 17007:
             alertMessage = "There is already another user with this email, please try again"
         default:
             alertMessage = "Something went wrong, please try again"
@@ -95,8 +122,4 @@ struct SignupView: View {
         // Blank the password field
         password = ""
     }
-}
-
-#Preview {
-    SignupView()
 }

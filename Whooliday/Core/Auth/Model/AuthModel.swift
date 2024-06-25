@@ -38,22 +38,28 @@ class AuthModel: ObservableObject {
         }
     }
     
-    func signUp(withEmail email: String, password: String, name: String) async throws {
-        do {
-            let result = try await Auth.auth().createUser(withEmail: email, password: password)
-            self.userSession = result.user
-            let user = User(id: result.user.uid, name: name, email: email)
-            let encodedUser = try Firestore.Encoder().encode(user)
-            try await Firestore.firestore().collection("users").document(user.id).setData(encodedUser)
-            await fetchUser()
-        } catch {
-            print("DEBUG: failed to register user with error \(error.localizedDescription)")
-            //print((error as NSError).code)
-            
-            throw error
+    func signUp(withEmail email: String, password: String, name: String, country: Country?, currency: Currency?) async throws {
+            do {
+                let result = try await Auth.auth().createUser(withEmail: email, password: password)
+                self.userSession = result.user
+                
+                // Determine the default values for country and currency
+                let defaultCountry = country ?? Country(name: "Italy", alpha2Code: "IT")
+                let defaultCurrency = currency ?? Currency(name: "Euro", code: "EUR")
+                
+                // Create the User object with the provided or default values
+                var user = User(id: result.user.uid, name: name, email: email, currency: defaultCurrency.code, locale: defaultCountry.alpha2Code.lowercased())
+                
+                // Encode and store user data in Firestore
+                let encodedUser = try Firestore.Encoder().encode(user)
+                try await Firestore.firestore().collection("users").document(user.id).setData(encodedUser)
+                
+                await fetchUser()
+            } catch {
+                print("DEBUG: failed to register user with error \(error.localizedDescription)")
+                throw error
+            }
         }
-        
-    }
     
     func signInGoogle() async throws {
         guard let topVC = Utilities.shared.topViewController() else {
@@ -79,7 +85,7 @@ class AuthModel: ObservableObject {
             
             if !snapshot.exists {
                 // User doesn't exist in Firestore, create a new user document
-                let user = User(id: result.user.uid, name: gidSignInResult.user.profile?.name ?? "Unknown", email: result.user.email ?? "Unknown")
+                let user = User(id: result.user.uid, name: gidSignInResult.user.profile?.name ?? "Unknown", email: result.user.email ?? "Unknown", currency: "EUR", locale: "it")
                 let encodedUser = try Firestore.Encoder().encode(user)
                 try await userRef.setData(encodedUser)
             }

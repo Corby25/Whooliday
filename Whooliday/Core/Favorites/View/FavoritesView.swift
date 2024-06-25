@@ -170,8 +170,6 @@ struct FiltersListView: View {
                         Text("Latitude: \(filter.latitude)")
                         Text("Longitude: \(filter.longitude)")
                         Text("Adults Number: \(filter.adultsNumber)")
-                        Text("Currency: \(filter.currency)")
-                        Text("Locale: \(filter.locale)")
                         Text("Order By: \(filter.orderBy)")
                         Text("Room Number: \(filter.roomNumber)")
                         Text("Units: \(filter.units)")
@@ -204,7 +202,6 @@ struct FiltersListView: View {
     }
     
 }
-
 
 struct FilterHotelsListView: View {
     let filter: Filter
