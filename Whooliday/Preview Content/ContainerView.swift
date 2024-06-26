@@ -37,6 +37,11 @@ struct ContainerView: View {
 struct ContentView: View {
     var body: some View {
         TabView {
+            HomeView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Home")
+                }
             ExploreView()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
@@ -58,7 +63,3 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContainerView()
-    
-}

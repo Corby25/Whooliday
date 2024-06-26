@@ -38,7 +38,10 @@
 		B41A9F722C2B6EA700C8F1E3 /* DestinationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F712C2B6EA700C8F1E3 /* DestinationSearchView.swift */; };
 		B41A9F742C2B6EBE00C8F1E3 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F732C2B6EBE00C8F1E3 /* ExploreView.swift */; };
 		B41A9F782C2B6F2300C8F1E3 /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F772C2B6F2300C8F1E3 /* ExploreViewModel.swift */; };
-		B41A9F7A2C2B6F5D00C8F1E3 /* MokExploreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F792C2B6F5D00C8F1E3 /* MokExploreService.swift */; };
+		B482FAAE2C2B823E00D6A0E2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAAD2C2B823E00D6A0E2 /* HomeView.swift */; };
+		B482FAB02C2B8B1400D6A0E2 /* CardViewBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAAF2C2B8B1400D6A0E2 /* CardViewBig.swift */; };
+		B482FAB22C2C0A4900D6A0E2 /* CardViewSmall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */; };
+		B482FAB62C2C14AC00D6A0E2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */; };
 		FF082CFD2C206D1D00055F9A /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = FF082CFC2C206D1D00055F9A /* RiveRuntime */; };
 		FF620DFF2C2ACF7B006371DF /* ShimmeringViewDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF620DFE2C2ACF7B006371DF /* ShimmeringViewDetail.swift */; };
 		FF620E032C2ACF86006371DF /* ExploreDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF620E022C2ACF86006371DF /* ExploreDetailService.swift */; };
@@ -94,14 +97,17 @@
 		B41A9F612C2B6D4400C8F1E3 /* Listing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		B41A9F632C2B6D7D00C8F1E3 /* ListingDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetailView.swift; sourceTree = "<group>"; };
 		B41A9F672C2B6DB600C8F1E3 /* CompactListingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompactListingView.swift; sourceTree = "<group>"; };
-		B41A9F692C2B6E0F00C8F1E3 /* MockExploreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MockExploreService.swift; path = "../../../../../../Library/Mobile Documents/com~apple~CloudDocs/newnew/MockExploreService.swift"; sourceTree = "<group>"; };
+		B41A9F692C2B6E0F00C8F1E3 /* MockExploreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockExploreService.swift; sourceTree = "<group>"; };
 		B41A9F6B2C2B6E3E00C8F1E3 /* ExploreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreService.swift; sourceTree = "<group>"; };
 		B41A9F6D2C2B6E5E00C8F1E3 /* SearchAndFilterBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAndFilterBar.swift; sourceTree = "<group>"; };
 		B41A9F6F2C2B6E8B00C8F1E3 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		B41A9F712C2B6EA700C8F1E3 /* DestinationSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationSearchView.swift; sourceTree = "<group>"; };
 		B41A9F732C2B6EBE00C8F1E3 /* ExploreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
 		B41A9F772C2B6F2300C8F1E3 /* ExploreViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
-		B41A9F792C2B6F5D00C8F1E3 /* MokExploreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MokExploreService.swift; sourceTree = "<group>"; };
+		B482FAAD2C2B823E00D6A0E2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		B482FAAF2C2B8B1400D6A0E2 /* CardViewBig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewBig.swift; sourceTree = "<group>"; };
+		B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewSmall.swift; sourceTree = "<group>"; };
+		B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		FF620DFE2C2ACF7B006371DF /* ShimmeringViewDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShimmeringViewDetail.swift; sourceTree = "<group>"; };
 		FF620E022C2ACF86006371DF /* ExploreDetailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDetailService.swift; sourceTree = "<group>"; };
 		FF620E042C2ACF90006371DF /* ListingItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingItemView.swift; sourceTree = "<group>"; };
@@ -195,6 +201,7 @@
 		6C39E15A2C22758200B83BBD /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B482FAAB2C2B81FE00D6A0E2 /* Home */,
 				FF620DF12C2ACD99006371DF /* Search */,
 				6CAB273C2C29BC1300122C3E /* Shimmering */,
 				FF92C1BD2C27335400D2CA45 /* Components */,
@@ -301,6 +308,33 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		B482FAAB2C2B81FE00D6A0E2 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B482FAB42C2C149900D6A0E2 /* Model */,
+				B482FAAC2C2B820500D6A0E2 /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		B482FAAC2C2B820500D6A0E2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B482FAAD2C2B823E00D6A0E2 /* HomeView.swift */,
+				B482FAAF2C2B8B1400D6A0E2 /* CardViewBig.swift */,
+				B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B482FAB42C2C149900D6A0E2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		FF620DEB2C2ACD99006371DF /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +368,6 @@
 				B41A9F6B2C2B6E3E00C8F1E3 /* ExploreService.swift */,
 				FF620E022C2ACF86006371DF /* ExploreDetailService.swift */,
 				B41A9F692C2B6E0F00C8F1E3 /* MockExploreService.swift */,
-				B41A9F792C2B6F5D00C8F1E3 /* MokExploreService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -595,28 +628,31 @@
 				FF92C1C52C27335400D2CA45 /* TabBarComponent.swift in Sources */,
 				B41A9F642C2B6D7D00C8F1E3 /* ListingDetailView.swift in Sources */,
 				B41A9F742C2B6EBE00C8F1E3 /* ExploreView.swift in Sources */,
+				B482FAAE2C2B823E00D6A0E2 /* HomeView.swift in Sources */,
 				FF8ABCE92C22C3D100E57A80 /* SplashScreenView.swift in Sources */,
 				B41A9F6E2C2B6E5E00C8F1E3 /* SearchAndFilterBar.swift in Sources */,
 				FF620E052C2ACF90006371DF /* ListingItemView.swift in Sources */,
 				FF92C1C22C27335400D2CA45 /* TabBarItemsPreferenceKey.swift in Sources */,
+				B482FAB22C2C0A4900D6A0E2 /* CardViewSmall.swift in Sources */,
 				FF620E032C2ACF86006371DF /* ExploreDetailService.swift in Sources */,
 				6CAB27472C2A319900122C3E /* ProfileViewModel.swift in Sources */,
 				FF92C1BF2C27335400D2CA45 /* TestNavBarView.swift in Sources */,
 				6C39E1582C2273E500B83BBD /* AuthModel.swift in Sources */,
 				FF92C1C12C27335400D2CA45 /* TabBarItem.swift in Sources */,
+				B482FAB62C2C14AC00D6A0E2 /* HomeViewModel.swift in Sources */,
 				FF92C1C02C27335400D2CA45 /* ContainerTabBarView.swift in Sources */,
 				6C95A5282C24809D0098ECAC /* FavoritesView.swift in Sources */,
 				FF620DFF2C2ACF7B006371DF /* ShimmeringViewDetail.swift in Sources */,
 				B41A9F702C2B6E8B00C8F1E3 /* LoadingView.swift in Sources */,
 				B41A9F782C2B6F2300C8F1E3 /* ExploreViewModel.swift in Sources */,
 				FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */,
+				B482FAB02C2B8B1400D6A0E2 /* CardViewBig.swift in Sources */,
 				B41A9F622C2B6D4400C8F1E3 /* Listing.swift in Sources */,
 				6CAB274B2C2A38C000122C3E /* Currency.swift in Sources */,
 				FF620E0F2C2ACFBC006371DF /* PriceChartView.swift in Sources */,
 				6C95A52C2C2480E00098ECAC /* FavoritesModel.swift in Sources */,
 				6C95A52E2C248BEA0098ECAC /* Favorites.swift in Sources */,
 				6CAB27492C2A381300122C3E /* Country.swift in Sources */,
-				B41A9F7A2C2B6F5D00C8F1E3 /* MokExploreService.swift in Sources */,
 				6C39E1602C227E8D00B83BBD /* User.swift in Sources */,
 				B41A9F6C2C2B6E3E00C8F1E3 /* ExploreService.swift in Sources */,
 				6CAB273E2C29BCDC00122C3E /* ShimmeringView.swift in Sources */,
