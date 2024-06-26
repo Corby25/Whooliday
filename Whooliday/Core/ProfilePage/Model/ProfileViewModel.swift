@@ -21,6 +21,17 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
+    @Published var sendEmail: Bool = false {
+        didSet {
+            updateUserEmailNotificationSetting(sendEmail)
+        }
+    }
+    
+    @Published var localNotifications: Bool = false {
+        didSet {
+            updateUserLocalNotificationSetting(localNotifications)
+        }
+    }
     
     private var userId: String?
     private var userListener: ListenerRegistration?
@@ -81,13 +92,37 @@ class ProfileViewModel: ObservableObject {
             }
             guard let data = snapshot?.data(),
                   let locale = data["locale"] as? String,
-                  let currency = data["currency"] as? String else { return }
-            
-            DispatchQueue.main.async {
-                self?.selectedCountry = locale
-                self?.selectedCurrency = currency
+                  let currency = data["currency"] as? String,
+                  let sendEmail = data["sendEmail"] as? Bool else { return }
+           
+           DispatchQueue.main.async {
+               self?.selectedCountry = locale
+               self?.selectedCurrency = currency
+               self?.sendEmail = sendEmail
             }
         }
+    }
+    
+    func updateUserEmailNotificationSetting(_ value: Bool) {
+        guard let userId = userId else { return }
+        Firestore.firestore().collection("users").document(userId).updateData(["sendEmail": value]) { error in
+            if let error = error {
+                print("Error updating email notification setting: \(error.localizedDescription)")
+            } else {
+                print("Email notification setting updated successfully")
+            }
+        }
+    }
+    
+    func updateUserLocalNotificationSetting(_ value: Bool) {
+        /*guard let userId = userId else { return }
+        Firestore.firestore().collection("users").document(userId).updateData(["localNotifications": value]) { error in
+            if let error = error {
+                print("Error updating local notification setting: \(error.localizedDescription)")
+            } else {
+                print("Local notification setting updated successfully")
+            }
+        }*/
     }
     
     deinit {

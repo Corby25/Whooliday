@@ -9,6 +9,7 @@ struct ProfileView: View {
     @State private var showCountryPicker = false
     @State private var showCurrencyPicker = false
     @State private var showAvatarPicker = false
+    @State private var showNotificationSettings = false
     @AppStorage("userAvatar") private var userAvatar = "listing-1" // Default avatar
     @State private var avatarUpdateTrigger = UUID()
     
@@ -39,7 +40,7 @@ struct ProfileView: View {
                                     .frame(width: 100, height: 100)
                                     .clipShape(Circle())
                                     .overlay(Circle().stroke(Color.blue, lineWidth: 2))
-                                    .id(avatarUpdateTrigger) // Add this line
+                                    .id(avatarUpdateTrigger)
                             }
                         }
                     }
@@ -53,8 +54,8 @@ struct ProfileView: View {
                             .font(.headline)
                             .foregroundColor(.white)
                         HStack {
-                            StatView(title: "Notifications sent", value: "42")
-                            StatView(title: "Euro saved", value: "€1,234")
+                            AnimatedStatView(title: "Number of notifications we sent you:", value: user.numNotifications)
+                            AnimatedStatView(title: "Number of favorites we kept track for you:", value: user.numFavorites)
                         }
                     }
                     .padding(.vertical, 30)
@@ -79,6 +80,13 @@ struct ProfileView: View {
                         })
                         .sheet(isPresented: $showCurrencyPicker) {
                             CurrencyPickerView(selectedCurrency: $viewModel.selectedCurrency)
+                        }
+                        
+                        ListItemButton(title: "Notifications", action: {
+                            showNotificationSettings = true
+                        })
+                        .sheet(isPresented: $showNotificationSettings) {
+                            NotificationSettingsView(viewModel: viewModel)
                         }
                         
                         ListItemButton(title: "Help", action: {
@@ -111,6 +119,86 @@ struct ProfileView: View {
             .onAppear {
                 viewModel.setUser(userID: user.id)
             }
+        }
+    }
+}
+
+struct HelloWorldView: View {
+    var body: some View {
+        Text("Hello, World!")
+            .font(.largeTitle)
+            .padding()
+    }
+}
+
+struct AnimatedStatView: View {
+    let title: String
+    let value: Int
+    @State private var animatedValue: Double = 0
+    private let animationDuration: Double = 1.0
+    
+    var body: some View {
+        VStack {
+            Text(title)
+                .font(.caption)
+                .multilineTextAlignment(.center)
+            Text("\(Int(animatedValue))")
+                .font(.title2)
+                .fontWeight(.bold)
+        }
+        .foregroundColor(.white)
+        .frame(maxWidth: .infinity)
+        .onAppear {
+            // Reset animatedValue to 0 before starting animation
+            animatedValue = 0
+            animateToValue(value)
+        }
+    }
+    
+    private func animateToValue(_ targetValue: Int) {
+        let startTime = Date()
+        let startValue = animatedValue
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+            let timeElapsed = Date().timeIntervalSince(startTime)
+            if timeElapsed >= animationDuration {
+                animatedValue = Double(targetValue)
+                timer.invalidate()
+            } else {
+                let progress = timeElapsed / animationDuration
+                animatedValue = startValue + Double(targetValue - Int(startValue)) * progress
+            }
+        }
+        RunLoop.current.add(timer, forMode: .common)
+    }
+}
+
+struct AnimatedStatView_Previews: PreviewProvider {
+    static var previews: some View {
+        AnimatedStatView(title: "Number of notifications we sent you:", value: 100)
+            .background(Color.blue)
+            .previewLayout(.sizeThatFits)
+    }
+}
+
+struct NotificationSettingsView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var viewModel: ProfileViewModel
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Email Notifications")) {
+                    Toggle("Enable Email Notifications", isOn: $viewModel.sendEmail)
+                }
+                
+                Section(header: Text("Local Notifications")) {
+                    Toggle("Enable Local Notifications", isOn: $viewModel.localNotifications)
+                }
+            }
+            .navigationBarTitle("Notification Settings", displayMode: .inline)
+            .navigationBarItems(trailing: Button("Done") {
+                presentationMode.wrappedValue.dismiss()
+            })
         }
     }
 }
@@ -200,8 +288,6 @@ struct CurrencyPickerView: View {
     }
 }
 
-// ... (rest of the code remains the same)
-
 struct ListItemButton: View {
     let title: String
     let action: () -> Void
@@ -225,23 +311,6 @@ struct ListItemButton: View {
                 Divider()
             }
         )
-    }
-}
-
-struct StatView: View {
-    let title: String
-    let value: String
-    
-    var body: some View {
-        VStack {
-            Text(value)
-                .font(.title2)
-                .fontWeight(.bold)
-            Text(title)
-                .font(.caption)
-        }
-        .foregroundColor(.white)
-        .frame(maxWidth: .infinity)
     }
 }
 
