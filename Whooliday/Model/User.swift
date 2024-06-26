@@ -13,6 +13,9 @@ struct User: Identifiable, Codable {
     let email: String
     let currency: String
     let locale: String
+    let numNotifications: Int
+    let numFavorites: Int
+    let sendEmail: Bool
     
     var initials: String {
         let formatter =  PersonNameComponentsFormatter()

@@ -226,6 +226,7 @@
 		6C39E15E2C227E6D00B83BBD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B41A9F612C2B6D4400C8F1E3 /* Listing.swift */,
 				6C39E15F2C227E8D00B83BBD /* User.swift */,
 				6C95A52D2C248BEA0098ECAC /* Favorites.swift */,
 			);
@@ -356,7 +357,6 @@
 		FF620DED2C2ACD99006371DF /* Listings */ = {
 			isa = PBXGroup;
 			children = (
-				FF620DEB2C2ACD99006371DF /* Model */,
 				FF620DEC2C2ACD99006371DF /* View */,
 			);
 			path = Listings;
