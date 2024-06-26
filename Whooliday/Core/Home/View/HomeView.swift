@@ -145,7 +145,7 @@ extension HomeViewModel {
             Place(id: "kd0jf", name: "Londra", country: "Regno Unito", region: "Inghilterra", rating: 4.6, imageUrl: "https://i.etsystatic.com/29318579/r/il/805ae0/3339810438/il_fullxfull.3339810438_4t71.jpg"),
             Place(id: "di03", name: "Londra", country: "Regno Unito", region: "Inghilterra", rating: 4.6, imageUrl: "https://i.etsystatic.com/29318579/r/il/805ae0/3339810438/il_fullxfull.3339810438_4t71.jpg")
         ]
-        viewModel.selectedContinent = "world"
+        viewModel.selectedContinent = "world" 
         return viewModel
     }
 }

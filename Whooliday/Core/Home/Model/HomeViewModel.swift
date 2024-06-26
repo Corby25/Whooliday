@@ -7,8 +7,6 @@
 
 import Foundation
 import FirebaseFirestore
-
-
 class HomeViewModel: ObservableObject {
     @Published var places: [Place] = []
     @Published var selectedContinent: String = "Mondo"

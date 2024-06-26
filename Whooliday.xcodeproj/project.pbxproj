@@ -336,14 +336,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		FF620DEB2C2ACD99006371DF /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				B41A9F612C2B6D4400C8F1E3 /* Listing.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		FF620DEC2C2ACD99006371DF /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -793,7 +785,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Whooliday/Preview Content\"";
-				DEVELOPMENT_TEAM = 93X967BV2Z;
+				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Whooliday/Info.plist;
@@ -824,7 +816,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Whooliday/Preview Content\"";
-				DEVELOPMENT_TEAM = 93X967BV2Z;
+				DEVELOPMENT_TEAM = 8AE4V5DNMZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Whooliday/Info.plist;
