@@ -9,263 +9,225 @@ import SwiftUI
 import CoreHaptics
 import Combine
 
-enum DestinationSearchOption{
+enum DestinationSearchOption {
     case location
     case dates
     case guests
 }
 
-
-
 struct DestinationSearchView: View {
-    
-   
     @State private var cancellable: AnyCancellable?
-    
-
     @Binding var searchParameters: SearchParameters
-    
-    //haptic
+    @Binding var show: Bool
+    @State private var numAdults = 2
+    @State private var numChildren = 0
+    @State private var childrenAges: [Int] = []
     
     let generator = UIImpactFeedbackGenerator(style: .soft)
     
-    // link between the two views, bind two state properties
-    @Binding var show: Bool
-    
     @State private var destination = ""
     @State private var selectedOption: DestinationSearchOption = .location
-    
-    // for date
-    @State private var startDate = Date()
-    @State private var endDate = Date()
-    
-    // for number of guests
-    @State private var numGuests = 2
-    
-    // for location
+    @State private var startDate: Date? = nil
+    @State private var endDate: Date? = nil
     @State private var placeID = ""
     @State private var predictionsDictionary: [String: String] = [:]
     @State private var destinationSuggestions: [String] = []
     
     var body: some View {
-        VStack{
-            
-            HStack {
-                Button(){
-                    // change Bool state
-                    withAnimation(.snappy){
-                        show.toggle()
-                    }
-                    
-                }label:{
-                    Image(systemName: "xmark.circle")
-                        .imageScale(.large)
-                        .foregroundColor(.black)
-                }
-                Spacer()
-                
-                if !destination.isEmpty {
-                    Button("Clear"){
-                        destination = ""
-                        destinationSuggestions = []
-                    }
-                    .foregroundStyle(.black)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                }
-            }
-            .padding()
-            
-            /*
-            VStack(alignment: .leading){
-                if selectedOption == .location {
-                    Text("Dove?")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                    HStack{
-                        Image(systemName: "magnifyingglass")
-                            .imageScale(.small)
-                        
-                        TextField("Cerca Destinazione", text: $destination)
-                            .font(.subheadline)
-                    }
-                    .frame(height: 44)
-                    .padding(.horizontal)
-                    .overlay{
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(lineWidth: /*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
-                            .foregroundStyle(Color(.systemGray4))
-                    }
-                    
-                }else{
-                    CollapsedPickerView(title: "Dove", description: "Destinatione")
-                }
-                
-            }
-             
-             */
-            
-            VStack(alignment: .leading) {
-                            if selectedOption == .location {
-                                Text("Dove?")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                
-                                HStack {
-                                    Image(systemName: "magnifyingglass")
-                                        .imageScale(.small)
-                                    
-                                    TextField("Cerca Destinazione", text: $destination)
-                                        .font(.subheadline)
-                                        .onChange(of: destination) { oldValue, newValue in
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                if newValue == destination {
-                                                    fetchDestinationSuggestions(for: newValue)
-                                                }
-                                            }
-                                        }
-                                        
-                                }
-                                .frame(height: 44)
-                                .padding(.horizontal)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(lineWidth: 1.0)
-                                        .foregroundStyle(Color(.systemGray4))
-                                }
-                                
-                                // Lista dei suggerimenti
-                                List(destinationSuggestions, id: \.self) { suggestion in
-                                    Text(suggestion)
-                                        .onTapGesture {
-                                            destination = suggestion
-                                            placeID = predictionsDictionary[suggestion] ?? ""
-                                            destinationSuggestions = []
-                                        }
-                                }
-                                .frame(height: min(CGFloat(destinationSuggestions.count) * 44, 200))
-                            } else {
-                                CollapsedPickerView(title: "Dove", description: "Destinazione")
-                            }
-                        }
-            .modifier(CollapsibleDestinationViewModifier())
-            .frame(height: selectedOption == .location ? 120 : 64)
-            
-            .onTapGesture {
-                withAnimation(.snappy){
-                    selectedOption = .location
-                }
-               
-            }
-            
-            // when
-            VStack(alignment: .leading){
-                if selectedOption == .dates {
-                   Text("Quando vuoi partire?")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                    VStack{
-                        DatePicker("Da", selection: $startDate, displayedComponents: .date)
-                            .onTapGesture {
-                                generator.impactOccurred()
-                            }
-                           
-                        
-                        Divider()
-                        
-                        DatePicker("A", selection: $endDate, displayedComponents: .date)
-                            .onTapGesture {
-                                generator.impactOccurred()
-                            }
-                         
-                    }
-                    .foregroundStyle(.gray)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                }else {
-                    CollapsedPickerView(title: "Quando", description: "Aggiungi date")
-                }
-            }
-                .modifier(CollapsibleDestinationViewModifier())
-                .frame(height: selectedOption == .dates ? 180 : 64)
-                
-                .onTapGesture{
-                    withAnimation(.snappy){
-                        selectedOption = .dates
-                        generator.impactOccurred()
-                    }
-                }
-            
-            
-            // who
-            
-            VStack(alignment: .leading){
-                if selectedOption == .guests {
-                   Text("Quanti")
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .fontWeight(.semibold)
-                    
-                    Stepper{
-                        Text("\(numGuests) Adulti")
-                    } onIncrement: {
-                        numGuests += 1
-                    } onDecrement: {
-                        guard numGuests > 1 else {return}
-                        numGuests -= 1
-                    }
-                    .onChange(of: numGuests){
-                        generator.impactOccurred()
-                    }
-                    
-                
-                        
-                }else {
-                    CollapsedPickerView(title: "Chi", description: "Aggiungi ospiti")
-                }
-            }
-                .modifier(CollapsibleDestinationViewModifier())
-                .frame(height: selectedOption == .guests ? 120 : 64)
-                .onTapGesture{
-                    withAnimation(.snappy){
-                        selectedOption = .guests
-                        generator.impactOccurred()
-                    }
-                }
-            
-            Spacer()
-            VStack(alignment: .center) {
-                            Button(action: {
-                                searchParameters = SearchParameters(
-                                                        destination: destination,
-                                                        placeID: placeID,
-                                                        startDate: startDate,
-                                                        endDate: endDate,
-                                                        guests: numGuests
-                                                    )
-                                                    show = false
-                            }) {
-                                Text("Cerca")
-                                    .font(.title3)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white) // Text color
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity) // Make the text take the full space
-                                    .background(Color.pink) // Background color
-                                    .cornerRadius(10) // Rounded corners
-                            }
-                            .frame(width: 150, height: 50) // Frame of the button
-                //.modifier(CollapsibleDestinationViewModifier())
-                        }
-                        .padding() // Add padding around the VStack
-           
-            // other ...
-            
+          ZStack {
+              ScrollView {
+                  VStack(spacing: 8) { // Ridotto lo spacing qui
+                      HStack {
+                          Button {
+                              withAnimation(.snappy) {
+                                  show.toggle()
+                              }
+                          } label: {
+                              Image(systemName: "xmark.circle")
+                                  .imageScale(.large)
+                                  .foregroundColor(.black)
+                          }
+                          Spacer()
+                          
+                          if !destination.isEmpty {
+                              Button("Clear") {
+                                  destination = ""
+                                  destinationSuggestions = []
+                              }
+                              .foregroundStyle(.black)
+                              .font(.subheadline)
+                              .fontWeight(.semibold)
+                          }
+                      }
+                      .padding(.horizontal)
+                      .padding(.top)
+                      
+                      // Sezione Dove
+                      VStack(alignment: .leading, spacing: 8) { // Aggiunto spacing qui
+                          if selectedOption == .location {
+                              Text("Dove?")
+                                  .font(.title2)
+                                  .fontWeight(.semibold)
+                              
+                              HStack {
+                                  Image(systemName: "magnifyingglass")
+                                      .imageScale(.small)
+                                  
+                                  TextField("Cerca Destinazione", text: $destination)
+                                      .font(.subheadline)
+                                      .onChange(of: destination) { oldValue, newValue in
+                                          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                              if newValue == destination {
+                                                  fetchDestinationSuggestions(for: newValue)
+                                              }
+                                          }
+                                      }
+                              }
+                              .frame(height: 44)
+                              .padding(.horizontal)
+                              .overlay {
+                                  RoundedRectangle(cornerRadius: 15)
+                                      .stroke(lineWidth: 1.0)
+                                      .foregroundStyle(Color(.systemGray4))
+                              }
+                              
+                              if !destinationSuggestions.isEmpty {
+                                  List(destinationSuggestions, id: \.self) { suggestion in
+                                      Text(suggestion)
+                                          .onTapGesture {
+                                              destination = suggestion
+                                              placeID = predictionsDictionary[suggestion] ?? ""
+                                              destinationSuggestions = []
+                                          }
+                                  }
+                                  .listStyle(PlainListStyle())
+                                  .frame(height: min(CGFloat(destinationSuggestions.count) * 44, 200))
+                                  .background(Color.white)
+                                  .cornerRadius(10)
+                                  .shadow(radius: 5)
+                              }
+                          } else {
+                              CollapsedPickerView(title: "Dove", description: destination.isEmpty ? "Destinazione" : destination)
+                          }
+                      }
+                      .modifier(CollapsibleDestinationViewModifier())
+                      .onTapGesture {
+                          withAnimation(.snappy) {
+                              selectedOption = .location
+                          }
+                      }
+                      
+                      // Sezione Quando
+                      VStack(alignment: .leading, spacing: 8) { // Aggiunto spacing qui
+                          if selectedOption == .dates {
+                              Text("Quando vuoi partire?")
+                                  .font(.title2)
+                                  .fontWeight(.semibold)
+                              
+                              CalendarView(startDate: $startDate, endDate: $endDate)
+                                  .frame(height: 300)
+                          } else {
+                              CollapsedPickerView(title: "Quando", description: getDateDescription())
+                          }
+                      }
+                      .modifier(CollapsibleDestinationViewModifier())
+                      .onTapGesture {
+                          withAnimation(.snappy) {
+                              selectedOption = .dates
+                              generator.impactOccurred()
+                          }
+                      }
+                      
+                      // Sezione Quanti
+                      VStack(alignment: .leading, spacing: 8) { // Aggiunto spacing qui
+                          if selectedOption == .guests {
+                              Text("Quanti")
+                                  .font(.title2)
+                                  .fontWeight(.semibold)
+                              
+                              GuestCounterView(title: "Adulti", count: $numAdults, minimum: 1)
+                              
+                              GuestCounterView(title: "Bambini", count: $numChildren, minimum: 0)
+                              
+                              if numChildren > 0 {
+                                  Text("Età dei bambini")
+                                      .font(.title3)
+                                      .fontWeight(.medium)
+                                      .padding(.top, 4) // Ridotto il padding qui
+                                  
+                                  ForEach(0..<numChildren, id: \.self) { index in
+                                      Picker("Età bambino \(index + 1)", selection: Binding(
+                                          get: { self.childrenAges.count > index ? self.childrenAges[index] : 0 },
+                                          set: {
+                                              if self.childrenAges.count > index {
+                                                  self.childrenAges[index] = $0
+                                              } else {
+                                                  self.childrenAges.append($0)
+                                              }
+                                          }
+                                      )) {
+                                          ForEach(0...17, id: \.self) { age in
+                                              Text("\(age)")
+                                          }
+                                      }
+                                      .pickerStyle(MenuPickerStyle())
+                                  }
+                              }
+                          } else {
+                              CollapsedPickerView(title: "Chi", description: getGuestsDescription())
+                          }
+                      }
+                      .modifier(CollapsibleDestinationViewModifier())
+                      .onTapGesture {
+                          withAnimation(.snappy) {
+                              selectedOption = .guests
+                              generator.impactOccurred()
+                          }
+                      }
+                      
+                      Spacer(minLength: 80)
+                  }
+              }
+              
+              // Pulsante "Cerca" (come nel codice originale)
+              VStack {
+                  Spacer()
+                  Button(action: {
+                      if let start = startDate, let end = endDate, start != end {
+                          searchParameters = SearchParameters(
+                              destination: destination,
+                              placeID: placeID,
+                              startDate: start,
+                              endDate: end,
+                              numAdults: numAdults,
+                              numChildren: numChildren,
+                              childrenAges: childrenAges
+                          )
+                          show = false
+                      }
+                  }) {
+                      Text("Cerca")
+                          .font(.title3)
+                          .fontWeight(.bold)
+                          .foregroundColor(.white)
+                          .frame(width: 150, height: 50)
+                          .background(startDate != nil && endDate != nil && startDate != endDate ? Color.orange : Color.gray)
+                          .cornerRadius(15)
+                  }
+                  .disabled(startDate == nil || endDate == nil || startDate == endDate)
+                  .padding(.bottom)
+              }
+          }
+          .background(Color.white)
+          .cornerRadius(15)
+          .padding()
+      }
+    private func getGuestsDescription() -> String {
+        var description = "\(numAdults) adult\(numAdults > 1 ? "i" : "o")"
+        if numChildren > 0 {
+            description += ", \(numChildren) bambin\(numChildren > 1 ? "i" : "o")"
         }
-        Spacer()
-        
-        
-        
+        return description
     }
     
     func fetchDestinationSuggestions(for query: String) {
@@ -296,14 +258,27 @@ struct DestinationSearchView: View {
                 }
        }
     
+    private func getDateDescription() -> String {
+        if let start = startDate, let end = endDate {
+            return "\(formatDate(start)) - \(formatDate(end))"
+        } else {
+            return "Seleziona le date"
+        }
+    }
     
-  
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMM"
+        return formatter.string(from: date)
+    }
 }
+
+// Le altre strutture e definizioni rimangono invariate
 
 #Preview {
     DestinationSearchView(
        
-        searchParameters: .constant(SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), guests: 2)),  show: .constant(false)
+        searchParameters: .constant(SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])),  show: .constant(false)
     )
 }
 struct GooglePlacesResponse: Codable {
@@ -327,7 +302,7 @@ struct CollapsibleDestinationViewModifier: ViewModifier {
         content
             .padding()
             .background(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding()
             .shadow(radius: 10)
     }
@@ -353,12 +328,59 @@ struct CollapsedPickerView: View {
     }
 }
 
-
 struct SearchParameters {
     var destination: String
     var placeID: String
-    var startDate: Date
-    var endDate: Date
-    var guests: Int
+    var startDate: Date?
+    var endDate: Date?
+    var numAdults: Int
+    var numChildren: Int
+    var childrenAges: [Int]
 }
 
+struct GuestCounterView: View {
+    let title: String
+    @Binding var count: Int
+    let minimum: Int
+    let generator = UIImpactFeedbackGenerator(style: .soft)
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.title3)
+                .fontWeight(.medium)
+            
+            Spacer()
+            
+            HStack(spacing: 20) {
+                Button(action: {
+                    if count > minimum {
+                        count -= 1
+                        generator.impactOccurred()
+                    }
+                }) {
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(count > minimum ? .orange : .gray)
+                        .font(.title2)
+                }
+                
+                Text("\(count)")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .frame(minWidth: 30)
+                
+                Button(action: {
+                    count += 1
+                    generator.impactOccurred()
+                }) {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.orange)
+                        .font(.title2)
+                }
+            }
+        }
+        .padding()
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(10)
+    }
+}

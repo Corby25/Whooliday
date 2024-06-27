@@ -61,18 +61,26 @@ class ExploreService: ExploreServiceProtocol{
                 throw URLError(.badURL)
             }
             
+            let childrenAgesString = parameters.childrenAges.map { String($0) }.joined(separator: ",")
+
             urlComponents.queryItems = [
                 URLQueryItem(name: "checkin_date", value: formatDate(parameters.startDate)),
                 URLQueryItem(name: "room_number", value: "1"),
                 URLQueryItem(name: "checkout_date", value: formatDate(parameters.endDate)),
                 URLQueryItem(name: "latitude", value: String(lat)),
-                URLQueryItem(name: "adults_number", value: String(parameters.guests)),
+                URLQueryItem(name: "adults_number", value: String(parameters.numAdults)),
                 URLQueryItem(name: "units", value: "metric"),
                 URLQueryItem(name: "filter_by_currency", value: "EUR"),
+                
+                parameters.numChildren != 0 ? URLQueryItem(name: "children_number", value: String(parameters.numChildren)) : nil,
+             
+
                 URLQueryItem(name: "order_by", value: "distance"),
                 URLQueryItem(name: "locale", value: "it"),
-                URLQueryItem(name: "longitude", value: String(lng))
-            ]
+                URLQueryItem(name: "longitude", value: String(lng)),
+                parameters.numChildren != 0 ? URLQueryItem(name: "children_ages", value: childrenAgesString) : nil
+            ].compactMap { $0 }
+       
             
             guard let url = urlComponents.url else {
                 throw URLError(.badURL)
@@ -95,11 +103,12 @@ class ExploreService: ExploreServiceProtocol{
         }
     
        // Funzione helper per formattare le date
-       private func formatDate(_ date: Date) -> String {
-           let formatter = DateFormatter()
-           formatter.dateFormat = "yyyy-MM-dd"
-           return formatter.string(from: date)
-       }
+    private func formatDate(_ date: Date?) -> String {
+        guard let date = date else { return "" }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: date)
+    }
     
 
     

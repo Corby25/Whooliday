@@ -10,7 +10,7 @@ import SwiftUI
 struct ExploreView: View {
     @StateObject var viewModel = ExploreViewModel(service: ExploreService())
     @State private var showDestinationSearchView = false
-    @State private var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), guests: 2)
+    @State private var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
     @State private var hasPerformedSearch = false
     @State private var showCompactView = false
     
@@ -80,6 +80,6 @@ struct ExploreView: View {
 
 #Preview("With Listings") {
     let viewModel = ExploreViewModel(service: MockExploreService())
-    viewModel.fetchListings(with: SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), guests: 2))
+    viewModel.fetchListings(with: SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges:[]))
     return ExploreView(viewModel: viewModel)
 }

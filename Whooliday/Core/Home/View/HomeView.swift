@@ -12,6 +12,9 @@ struct HomeView: View {
     init(viewModel: HomeViewModel = HomeViewModel()) {
             _viewModel = StateObject(wrappedValue: viewModel)
         }
+    @State private var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
+    
+    @State private var showDestinationSearch = false
     
     let continent = ["Mondo", "Europa", "Asia", "Africa", "America", "Oceania", "Antartide"]
     let continentSymbol = [
@@ -52,7 +55,12 @@ struct HomeView: View {
             }
             
             SearchAndFilterBar()
-            
+                .onTapGesture {
+                    withAnimation(.spring()) {
+                        showDestinationSearch = true
+                    }
+                }
+                
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
@@ -109,6 +117,25 @@ struct HomeView: View {
             }
         }
         .padding()
+        .overlay(
+            ZStack {
+                if showDestinationSearch {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation(.spring()) {
+                                showDestinationSearch = false
+                            }
+                        }
+                    
+                    DestinationSearchView(searchParameters: $searchParameters, show: $showDestinationSearch)
+                        .transition(.move(edge: .bottom))
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .padding()
+                }
+            }
+        )
        
         
         
