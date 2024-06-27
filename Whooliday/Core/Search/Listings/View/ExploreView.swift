@@ -34,6 +34,10 @@ struct ExploreView: View {
                                         showDestinationSearchView.toggle()
                                     }
                                 }
+                               
+                            
+                            FilterView()
+                                
                             
                             LazyVStack(spacing: 32) {
                                 ForEach(viewModel.listings) { listing in
@@ -42,7 +46,7 @@ struct ExploreView: View {
                                             CompactListingView(listing: listing)
                                         } else {
                                             ListingItemView(listing: listing)
-                                                .frame(height: 400)
+                                                .frame(height: 300)
                                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                         }
                                     }

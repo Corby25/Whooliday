@@ -11,39 +11,42 @@ struct CompactListingView: View {
     let listing: Listing
     
     var body: some View {
-        
-        HStack {
+        HStack(spacing: 16) {
             // Image
             ListingImageCarouseView(listing: listing)
-                .frame(width: 100, height: 150)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-            Spacer()
+                .frame(width: 120, height: 140)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
+            
             // Details
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(listing.name)
+                    .font(.headline)
                     .fontWeight(.semibold)
-                    .lineLimit(1)
+                    .lineLimit(2)
                 
                 HStack {
                     Image(systemName: "star.fill")
+                        .foregroundColor(.yellow)
                     Text(String(format: "%.1f", listing.review_score))
+                        .fontWeight(.medium)
                 }
-                .foregroundColor(.black)
-                .font(.footnote)
+                .font(.subheadline)
+                
+                Spacer()
                 
                 Text("\(Int(listing.price))€")
-                    .fontWeight(.semibold)
-                    
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(.blue)
             }
-            .foregroundColor(.black)
-            
-            Spacer()
+            .foregroundColor(.primary)
         }
-        .frame(height: 150)
-        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
         .padding()
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .gray.opacity(0.1), radius: 5, x: 0, y: 2)
+        .padding(.horizontal)
     }
 }
 

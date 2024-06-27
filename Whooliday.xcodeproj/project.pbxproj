@@ -43,6 +43,9 @@
 		B482FAB22C2C0A4900D6A0E2 /* CardViewSmall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */; };
 		B482FAB62C2C14AC00D6A0E2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */; };
 		B4F722942C2D72E700D40AAB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F722932C2D72E700D40AAB /* CalendarView.swift */; };
+		B4F722962C2D91FA00D40AAB /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = B4F722952C2D91FA00D40AAB /* loading.json */; };
+		B4F722982C2D924B00D40AAB /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F722972C2D924B00D40AAB /* FilterView.swift */; };
+		B4F7229E2C2DA67100D40AAB /* AddFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F7229D2C2DA67100D40AAB /* AddFilterView.swift */; };
 		FF082CFD2C206D1D00055F9A /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = FF082CFC2C206D1D00055F9A /* RiveRuntime */; };
 		FF620DFF2C2ACF7B006371DF /* ShimmeringViewDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF620DFE2C2ACF7B006371DF /* ShimmeringViewDetail.swift */; };
 		FF620E032C2ACF86006371DF /* ExploreDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF620E022C2ACF86006371DF /* ExploreDetailService.swift */; };
@@ -110,6 +113,9 @@
 		B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewSmall.swift; sourceTree = "<group>"; };
 		B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B4F722932C2D72E700D40AAB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		B4F722952C2D91FA00D40AAB /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loading.json; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/Desktop/Whooliday/Whooliday/Images/loading.json"; sourceTree = "<group>"; };
+		B4F722972C2D924B00D40AAB /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		B4F7229D2C2DA67100D40AAB /* AddFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilterView.swift; sourceTree = "<group>"; };
 		FF620DFE2C2ACF7B006371DF /* ShimmeringViewDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShimmeringViewDetail.swift; sourceTree = "<group>"; };
 		FF620E022C2ACF86006371DF /* ExploreDetailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDetailService.swift; sourceTree = "<group>"; };
 		FF620E042C2ACF90006371DF /* ListingItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingItemView.swift; sourceTree = "<group>"; };
@@ -376,6 +382,8 @@
 				B41A9F732C2B6EBE00C8F1E3 /* ExploreView.swift */,
 				FF620DFE2C2ACF7B006371DF /* ShimmeringViewDetail.swift */,
 				B4F722932C2D72E700D40AAB /* CalendarView.swift */,
+				B4F722972C2D924B00D40AAB /* FilterView.swift */,
+				B4F7229D2C2DA67100D40AAB /* AddFilterView.swift */,
 			);
 			name = View;
 			path = Listings/View;
@@ -425,6 +433,7 @@
 		FF7AAFBA2C2186570080E20F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B4F722952C2D91FA00D40AAB /* loading.json */,
 				6CC6B4CD2C23B4A900B34008 /* beach.json */,
 				FF7AAFCC2C21D4260080E20F /* beach.lottie */,
 				FF7AAFC12C218CD60080E20F /* pag1.riv */,
@@ -589,6 +598,7 @@
 				FF7AAFA92C21699A0080E20F /* Inter-SemiBold.ttf in Resources */,
 				6CC6B4C92C2372CC00B34008 /* GoogleService-Info.plist in Resources */,
 				FFDCD3682C2023A100E2142A /* Launch Screen.storyboard in Resources */,
+				B4F722962C2D91FA00D40AAB /* loading.json in Resources */,
 				FF7AAFAA2C21699A0080E20F /* Poppins-Bold.ttf in Resources */,
 				6CC6B4CE2C23B4A900B34008 /* beach.json in Resources */,
 				FF7AAFC22C218CD60080E20F /* pag1.riv in Resources */,
@@ -617,12 +627,14 @@
 				6C39E15D2C227C9300B83BBD /* SignupView.swift in Sources */,
 				FF92C1BE2C27335400D2CA45 /* CustomNavBar.swift in Sources */,
 				B4F722942C2D72E700D40AAB /* CalendarView.swift in Sources */,
+				B4F722982C2D924B00D40AAB /* FilterView.swift in Sources */,
 				6C39E1542C226D4800B83BBD /* SigninView.swift in Sources */,
 				6CAB274D2C2A504E00122C3E /* ProfileView.swift in Sources */,
 				FF7AAFC42C21C9580080E20F /* WelcomeView2.swift in Sources */,
 				6CC6B4CC2C237BD400B34008 /* Utilities.swift in Sources */,
 				FF92C1C52C27335400D2CA45 /* TabBarComponent.swift in Sources */,
 				B41A9F642C2B6D7D00C8F1E3 /* ListingDetailView.swift in Sources */,
+				B4F7229E2C2DA67100D40AAB /* AddFilterView.swift in Sources */,
 				B41A9F742C2B6EBE00C8F1E3 /* ExploreView.swift in Sources */,
 				B482FAAE2C2B823E00D6A0E2 /* HomeView.swift in Sources */,
 				FF8ABCE92C22C3D100E57A80 /* SplashScreenView.swift in Sources */,

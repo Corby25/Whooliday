@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SearchAndFilterBar: View {
+    @State private var showFilterView = false
     var body: some View {
         HStack{
             Image(systemName: "magnifyingglass")
@@ -22,10 +23,14 @@ struct SearchAndFilterBar: View {
             }
         Spacer()
             
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                Image(systemName: "line.3.horizontal.decrease.circle")
+            Button(action: {
+                showFilterView.toggle()
+            }, label: {
+                Image(systemName: "line.3.horizontal.decrease")
                     .foregroundStyle(.black)
+                    .fontWeight(.bold)
             })
+            .frame(width: 50, height: 30)
             
         }
         .padding(.horizontal)
@@ -39,6 +44,9 @@ struct SearchAndFilterBar: View {
         }
        
         .padding()
+        .sheet(isPresented: $showFilterView) {
+                    AddFilterView(show: $showFilterView)
+                }
     }
 }
 
