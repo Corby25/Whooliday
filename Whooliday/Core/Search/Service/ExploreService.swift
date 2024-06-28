@@ -55,14 +55,16 @@ class ExploreService: ExploreServiceProtocol{
                 throw NSError(domain: "ExploreService", code: 0, userInfo: [NSLocalizedDescriptionKey: "Latitude and longitude not set"])
             }
             
-            let baseURLString = "http://localhost:3000/api/search"
+            let baseURLString = "http://34.16.172.170:3000/api/search"
             
             guard var urlComponents = URLComponents(string: baseURLString) else {
                 throw URLError(.badURL)
             }
             
             let childrenAgesString = parameters.childrenAges.map { String($0) }.joined(separator: ",")
-
+        
+           
+        
             urlComponents.queryItems = [
                 URLQueryItem(name: "checkin_date", value: formatDate(parameters.startDate)),
                 URLQueryItem(name: "room_number", value: "1"),

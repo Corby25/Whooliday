@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct HomeView: View {
+    
     @StateObject private var viewModel = HomeViewModel()
+    @State private var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
+    @State private var showDestinationSearch = false
+    @State private var navigateToExplore = false
+    
     init(viewModel: HomeViewModel = HomeViewModel()) {
             _viewModel = StateObject(wrappedValue: viewModel)
         }
-    @State private var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
-    
-    @State private var showDestinationSearch = false
     
     let continent = ["Mondo", "Europa", "Asia", "Africa", "America", "Oceania", "Antartide"]
     let continentSymbol = [
@@ -25,129 +27,121 @@ struct HomeView: View {
         "America": "snowflake",
         "Oceania": "wave.3.forward",
         "Antartide": "snow",
-        
     ]
     
     var body: some View {
-        
-        VStack(alignment: .leading){
-            HStack{
-                VStack(alignment: .leading){
-                    Text("Cerca il tuo Hotel")
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    
-                    
-                    Text("Partendo da qui")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                }
-                
-                Spacer()
-                
-                Image("logo2")
-                    .resizable()
-                    .frame(width: 80, height: 80)
-                
-                
-                
-            }
-            
-            SearchAndFilterBar()
-                .onTapGesture {
-                    withAnimation(.spring()) {
-                        showDestinationSearch = true
-                    }
-                }
-                
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
-                    ForEach(Array(continent.enumerated()), id: \.element) { index, continent in
-                        Button(action: {
-                            viewModel.selectedContinent = continent
-                            viewModel.fetchPlaces()
-                        }) {
-                            HStack {
-                                Image(systemName: String(continentSymbol[continent] ?? ""))
-                                Text(continent)
-                            }
+        NavigationStack {
+            VStack(alignment: .leading){
+                HStack{
+                    VStack(alignment: .leading){
+                        Text("Cerca il tuo Hotel")
+                            .font(.title)
+                            .fontWeight(.bold)
+                        
+                        Text("Partendo da qui")
+                            .font(.title2)
                             .fontWeight(.semibold)
-                            .frame(width: 120, height: 45)
-                            .background(continent == viewModel.selectedContinent ? Color.orange : Color.blue)
-                            .foregroundColor(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    }
+                    
+                    Spacer()
+                    
+                    Image("logo2")
+                        .resizable()
+                        .frame(width: 80, height: 80)
+                }
+                
+                SearchAndFilterBar()
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            showDestinationSearch = true
                         }
                     }
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        ForEach(Array(continent.enumerated()), id: \.element) { index, continent in
+                            Button(action: {
+                                viewModel.selectedContinent = continent
+                                viewModel.fetchPlaces()
+                            }) {
+                                HStack {
+                                    Image(systemName: String(continentSymbol[continent] ?? ""))
+                                    Text(continent)
+                                }
+                                .fontWeight(.semibold)
+                                .frame(width: 120, height: 45)
+                                .background(continent == viewModel.selectedContinent ? Color.orange : Color.blue)
+                                .foregroundColor(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                            }
+                        }
+                    }
+                    .padding()
                 }
-                .padding()
-            }
-            .mask(
-                HStack(spacing: 0) {
-                    LinearGradient(gradient: Gradient(colors: [.clear, .black, .black]), startPoint: .leading, endPoint: .trailing)
-                        .frame(width: 30)
-                    
-                    Rectangle().fill(Color.black)
-                    
-                    LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .leading, endPoint: .trailing)
-                        .frame(width: 30)
-                })
-            
-            ScrollView {
-                VStack(spacing: 20) {
-                    if !viewModel.places.isEmpty {
-                        CardViewBig(place: viewModel.places[0])
+                .mask(
+                    HStack(spacing: 0) {
+                        LinearGradient(gradient: Gradient(colors: [.clear, .black, .black]), startPoint: .leading, endPoint: .trailing)
+                            .frame(width: 30)
                         
-                        ForEach(0..<(viewModel.places.count - 1) / 2, id: \.self) { rowIndex in
-                            HStack(spacing: 15) {
-                                ForEach(0..<2) { columnIndex in
-                                    let index = rowIndex * 2 + columnIndex + 1
-                                    if index < viewModel.places.count {
-                                        CardViewSmall(place: viewModel.places[index])
-                                    } else {
-                                        Spacer()
+                        Rectangle().fill(Color.black)
+                        
+                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .leading, endPoint: .trailing)
+                            .frame(width: 30)
+                    })
+                
+                ScrollView {
+                    VStack(spacing: 20) {
+                        if !viewModel.places.isEmpty {
+                            CardViewBig(place: viewModel.places[0])
+                            
+                            ForEach(0..<(viewModel.places.count - 1) / 2, id: \.self) { rowIndex in
+                                HStack(spacing: 15) {
+                                    ForEach(0..<2) { columnIndex in
+                                        let index = rowIndex * 2 + columnIndex + 1
+                                        if index < viewModel.places.count {
+                                            CardViewSmall(place: viewModel.places[index])
+                                        } else {
+                                            Spacer()
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-                
+                .scrollIndicators(.hidden)
             }
-        }
-        .padding()
-        .overlay(
-            ZStack {
-                if showDestinationSearch {
-                    Color.black.opacity(0.3)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            withAnimation(.spring()) {
-                                showDestinationSearch = false
+            .padding()
+            .overlay(
+                ZStack {
+                    if showDestinationSearch {
+                        Color.black.opacity(0.3)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                withAnimation(.spring()) {
+                                    showDestinationSearch = false
+                                }
                             }
-                        }
-                    
-                    DestinationSearchView(searchParameters: $searchParameters, show: $showDestinationSearch)
-                        .transition(.move(edge: .bottom))
-                        .background(Color.white)
-                        .cornerRadius(16)
-                        .padding()
+                        
+                        DestinationSearchView(searchParameters: $searchParameters, show: $showDestinationSearch, navigateToExplore: $navigateToExplore)
+                            .transition(.move(edge: .bottom))
+                            .background(Color.white)
+                            .cornerRadius(16)
+                            .padding()
+                    }
                 }
+            )
+            .navigationDestination(isPresented: $navigateToExplore) {
+                ExploreView(searchParameters: searchParameters)
             }
-        )
-       
-        
-        
-        .onAppear {
-            viewModel.fetchPlaces()
+            .onAppear {
+                viewModel.fetchPlaces()
+            }
         }
-         
-        
-        
-        
     }
 }
+
+// ... (rest of the code remains the same)
 
 extension Array {
     func chunked(into size: Int) -> [[Element]] {
@@ -177,8 +171,6 @@ extension HomeViewModel {
     }
 }
 
-
-#Preview("mock") {
+#Preview {
     HomeView(viewModel: HomeViewModel.mock())
 }
-

@@ -42,11 +42,8 @@ struct ContentView: View {
                     Image(systemName: "house")
                     Text("Home")
                 }
-            ExploreView()
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Explore")
-                }
+            
+            
             
             FavoritesView()
                 .tabItem {

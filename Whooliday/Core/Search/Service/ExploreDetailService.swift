@@ -11,7 +11,7 @@ import Foundation
 class HotelDetailsService {
     func fetchHotelDetails(for listing: Listing) async throws -> HotelDetails {
         
-            let baseURLString = "http://localhost:3000/api/fetchFullHotelByIDSummary"
+            let baseURLString = "http://34.16.172.170:3000/api/fetchFullHotelByIDSummary"
             
             guard var urlComponents = URLComponents(string: baseURLString) else {
                 throw URLError(.badURL)
@@ -59,7 +59,7 @@ class HotelDetailsService {
        }
     
     func fetchListings() async throws -> [Listing] {
-        let urlString = "http://localhost:3000/api/search"
+        let urlString = "http://34.16.172.170:3000/api/search"
         guard let url = URL(string: urlString) else {
             throw URLError(.badURL)
         }

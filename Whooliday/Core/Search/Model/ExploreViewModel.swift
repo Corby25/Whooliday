@@ -31,7 +31,7 @@ class ExploreViewModel: ObservableObject {
                     self.isLoading = false
                 }
             } catch {
-                print("Error fetching listings: \(error)")
+                print("Error fetching listings list of hotels: \(error)")
                 DispatchQueue.main.async {
                     self.isLoading = false
                 }
@@ -57,18 +57,19 @@ class ExploreViewModel: ObservableObject {
     @Published var priceCalendar: [String: PriceData] = [:]
        
        func fetchPriceCalendar(for listing: Listing) {
-           let baseURLString = "http://localhost:3000/api/fetchCalendarPrices"
+           let baseURLString = "http://34.16.172.170:3000/api/fetchCalendarPrices"
            
            guard var urlComponents = URLComponents(string: baseURLString) else {
                print("Invalid URL")
                return
            }
            
+           
            urlComponents.queryItems = [
-               URLQueryItem(name: "children_number", value: String(listing.nChildren)),
+               //URLQueryItem(name: "children_number", value: String(listing.nChildren)),
                URLQueryItem(name: "checkout_date", value: listing.checkout),
                URLQueryItem(name: "locale", value: "it"),
-               URLQueryItem(name: "children_ages", value: listing.childrenAge.map { String($0) }.joined(separator: ",")),
+               //URLQueryItem(name: "children_ages", value:  listing.childrenAge),
                URLQueryItem(name: "hotel_id", value: String(listing.id)),
                URLQueryItem(name: "adults_number", value: String(listing.nAdults)),
                URLQueryItem(name: "currency_code", value: listing.currency),
@@ -80,6 +81,9 @@ class ExploreViewModel: ObservableObject {
                return
            }
            
+           if let encodedURLString = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+               print("URL codificato: \(encodedURLString)")
+           }
            URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
                   guard let data = data, error == nil else {
                       print("Error fetching price calendar: \(error?.localizedDescription ?? "Unknown error")")

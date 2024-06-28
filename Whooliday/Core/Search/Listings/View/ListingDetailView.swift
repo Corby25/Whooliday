@@ -8,6 +8,8 @@
 import SwiftUI
 import MapKit
 
+
+
 struct ListingDetailView: View {
     @Environment(\.dismiss) var dismiss
     @State private var scrollOffset: CGFloat = 0
@@ -15,6 +17,7 @@ struct ListingDetailView: View {
     @StateObject var viewModel: ExploreViewModel
 
     var body: some View {
+       
         GeometryReader { geometry in
             ZStack(alignment: .top) {
                 ListingImageCarouseView(listing: listing)
@@ -61,75 +64,88 @@ struct ListingDetailView: View {
                             
                             Divider()
                             
-                            // Hotel info
-                            HStack {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    
-                                       
-                                    Text(String(viewModel.selectedHotelDetails?.accomodationType ?? "Unknown"))
-                                    Text(String(viewModel.selectedHotelDetails?.numberOfBeds ?? "Unknown"))
-                                    .font(.caption)
-                                }
-                                .frame(width: 250, alignment: .leading)
-                                
-                                Spacer()
-                                let sym = viewModel.selectedHotelDetails?.accomodationID ?? 0
-                                Image(systemName: String(getHotelTypeSymbol(for: Int(sym))))
-                                    .font(.system(size: 30))
-                                    .imageScale(.large)
-                                    .padding(.horizontal)
-
-
-                               
-                            }
-                            .padding()
-                            
-                            Divider()
-                            
-                            
-                            
                             // Rooms
                             VStack(alignment: .leading) {
-                                Text("Ecco dove dormirai")
+                                Text("Ospiti")
                                     .font(.headline)
+                                Spacer()
                                 
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 16) {
-                                        ForEach(1..<5) { bedroom in
-                                            VStack {
-                                                Image(systemName: "bed.double")
-                                                Text("Bedroom \(bedroom)")
+                              
+                                HStack(alignment: .center) {
+                                    
+                                        VStack {
+                                            HStack(spacing: 8) {
+                                                ForEach(0..<(listing.nAdults), id: \.self) { _ in
+                                                    Image(systemName: "figure")
+                                                        .font(.system(size: 30))
+                                                        .fontWeight(.bold)
+                                                }
                                             }
-                                            .frame(width: 132, height: 100)
-                                            .overlay {
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .stroke(lineWidth: 1)
-                                                    .foregroundStyle(.gray)
-                                            }
+                                            Text("Adulti: \(listing.nAdults)")
+                                                .font(.headline)
+                                                .fontWeight(.semibold)
                                         }
+                                       
+                                        Spacer()
+                                        
+                                        
+                                        VStack {
+                                            HStack(spacing: 8) {
+                                                ForEach(0..<(listing.nChildren), id: \.self) { _ in
+                                                    Image(systemName: "figure.child")
+                                                        .font(.system(size: 30))
+                                                        .fontWeight(.bold)
+                                                }
+                                            }
+                                            Text("Bambini: \(listing.nChildren)")
+                                                .font(.headline)
+                                                .fontWeight(.semibold)
+                                        }
+                                        
+                                        
+                                       
                                     }
-                                }
-                                .scrollTargetBehavior(.paging)
+                                .padding()
+                                
+                               
+                              
                             }
                             .padding()
                             
                             Divider()
                             
+                            
+            
+                            
+                            // Listing amenities
+                            // Listing amenities
+                            // Listing amenities
                             // Listing amenities
                             VStack(alignment: .leading, spacing: 16) {
                                 Text("Cosa offre")
                                     .font(.headline)
                                 
-                                ForEach(0..<5) { feature in
-                                    HStack {
-                                        Image(systemName: "wifi")
-                                            .frame(width: 32)
-                                        
-                                        Text("Wifi")
-                                            .font(.footnote)
-                                        
-                                        Spacer()
+                                if let facilities = viewModel.selectedHotelDetails?.facilities {
+                                    ForEach(facilities.components(separatedBy: ","), id: \.self) { facilityId in
+                                        if let id = Int(facilityId.trimmingCharacters(in: .whitespaces)) {
+                                            let (symbol, name) = getHotelFacilitySymbolAndName(for: id)
+                                            if name != "none"{
+                                                HStack {
+                                                    Image(systemName: symbol)
+                                                        .frame(width: 32)
+                                                    
+                                                    Text(name)
+                                                        .font(.footnote)
+                                                    
+                                                    Spacer()
+                                                }
+                                            }
+                                        }
                                     }
+                                } else {
+                                    Text("Nessuna facility disponibile")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
                                 }
                             }
                             .padding()
@@ -138,6 +154,9 @@ struct ListingDetailView: View {
                             // Listing features
                             VStack(alignment: .leading, spacing: 16) {
                                 PriceChartView(viewModel: viewModel)
+                                    .onAppear {
+                                        viewModel.fetchPriceCalendar(for: listing)
+                                    }
                                                
                                 /*
                                 ForEach(0..<2) { feature in
@@ -232,6 +251,7 @@ struct ListingDetailView: View {
             .frame(width: geometry.size.width, height: geometry.size.height)
             
         }
+        .navigationBarHidden(true)
         .ignoresSafeArea(edges: .top)
         .overlay(alignment: .bottom) {
             VStack {
@@ -278,6 +298,7 @@ struct ListingDetailView: View {
                    await viewModel.fetchHotelDetails(for: listing)
                }
     }
+        
 }
 
 struct ScrollOffsetPreferenceKey: PreferenceKey {
@@ -286,45 +307,8 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
         value += nextValue()
     }
 }
-func getHotelTypeSymbol(for hotelTypeId: Int) -> String {
-    switch hotelTypeId {
-    case 201: return "building.2" // Apartments
-    case 202: return "house" // Guest accommodation
-    case 203: return "bed.double" // Hostels
-    case 204: return "building" // Hotels
-    case 205: return "house.lodge" // Motels
-    case 206: return "sun.horizon" // Resorts
-    case 207: return "house.fill" // Residences
-    case 208: return "cup.and.saucer" // Bed and breakfasts
-    case 209: return "house.lodge" // Ryokans
-    case 210: return "leaf" // Farm stays
-    case 212: return "tent" // Holiday parks
-    case 213: return "house" // Villas
-    case 214: return "figure.hiking" // Campsites
-    case 215: return "sailboat" // Boats
-    case 216: return "house" // Guest houses
-    case 217: return "questionmark.circle" // Uncertain
-    case 218: return "mug" // Inns
-    case 219: return "building.columns" // Aparthotels
-    case 220: return "house" // Holiday homes
-    case 221: return "tree" // Lodges
-    case 222: return "house.fill" // Homestays
-    case 223: return "house" // Country houses
-    case 224: return "tent" // Luxury tents
-    case 225: return "square.grid.3x3.fill" // Capsule hotels
-    case 226: return "heart" // Love hotels
-    case 227: return "building.columns.fill" // Riads
-    case 228: return "snow" // Chalets
-    case 229: return "building.2.fill" // Condos
-    case 230: return "house" // Cottages
-    case 231: return "dollarsign.circle" // Economy hotels
-    case 232: return "house" // Gites
-    case 233: return "heart.circle" // Health resorts
-    case 234: return "ferry" // Cruises
-    case 235: return "graduationcap" // Student accommodation
-    default: return "building" // Default symbol
-    }
-}
+
+
 
 
 
@@ -343,10 +327,10 @@ func getHotelTypeSymbol(for hotelTypeId: Int) -> String {
                                                           checkoutTo: "11:00",
                                                           info: "Prezzo per 3 notti, 4 adulti e 2 bambini ",
                                                           accomodationID: 220,
-                                                          facilities: "3,4")
+                                                          facilities: "2,96,108,14,4,28,46,163,160,107,47,16")
     return ListingDetailView(
         listing: Listing(
-            id: 1,
+            id: 9481490,
             latitude: 0.0,
             longitude: 0.0,
             city: "Milano",
@@ -355,11 +339,11 @@ func getHotelTypeSymbol(for hotelTypeId: Int) -> String {
             strikethrough_price: 199.99,
             review_count: 111,
             review_score: 8.8,
-            checkin: "17-09-2024",
-            checkout: "20-09-2024",
+            checkin: "2024-09-15",
+            checkout: "2024-09-16",
             nAdults: 4,
             nChildren: 2,
-            childrenAge: "[2,3]",
+            childrenAge: "2,3",
             currency: "EUR",
             images: ["https://cf.bstatic.com/xdata/images/hotel/max1280x900/56347948.jpg"]
         ),
