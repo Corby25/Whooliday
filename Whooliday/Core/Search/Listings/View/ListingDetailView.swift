@@ -15,6 +15,8 @@ struct ListingDetailView: View {
     @State private var scrollOffset: CGFloat = 0
     let listing: Listing
     @StateObject var viewModel: ExploreViewModel
+    @State private var showAllFacilities = false
+    @Namespace private var animation
 
     var body: some View {
        
@@ -48,12 +50,18 @@ struct ListingDetailView: View {
                                     }
                                     .font(.caption)
                                     .foregroundColor(.black)
+                                    
                                     if let city = viewModel.selectedHotelDetails?.city,
-                                               let state = viewModel.selectedHotelDetails?.state {
+                                               let state = viewModel.selectedHotelDetails?.state{
                                                 Text("\(city), \(state)")
                                                     .padding(.top, 2)
                                             } else {
-                                                ShimmeringViewDetail()
+                                                ZStack(alignment: .leading){
+                                                    ShimmeringViewDetail()
+                                                    
+                                                }
+                                                .frame(width: 50)
+                                                .clipShape(RoundedRectangle(cornerRadius: 15))
                                             }
                                     
                                 }
@@ -73,22 +81,24 @@ struct ListingDetailView: View {
                               
                                 HStack(alignment: .center) {
                                     
-                                        VStack {
-                                            HStack(spacing: 8) {
-                                                ForEach(0..<(listing.nAdults), id: \.self) { _ in
-                                                    Image(systemName: "figure")
-                                                        .font(.system(size: 30))
-                                                        .fontWeight(.bold)
-                                                }
+                                    VStack {
+                                        HStack(spacing: 8) {
+                                            ForEach(0..<(listing.nAdults), id: \.self) { _ in
+                                                Image(systemName: "figure")
+                                                    .font(.system(size: 30))
+                                                    .fontWeight(.bold)
                                             }
-                                            Text("Adulti: \(listing.nAdults)")
-                                                .font(.headline)
-                                                .fontWeight(.semibold)
                                         }
-                                       
                                         Spacer()
-                                        
-                                        
+                                        Text("Adulti: \(listing.nAdults)")
+                                            .font(.headline)
+                                            .fontWeight(.semibold)
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    
+                                    if(listing.nChildren > 0){
                                         VStack {
                                             HStack(spacing: 8) {
                                                 ForEach(0..<(listing.nChildren), id: \.self) { _ in
@@ -96,15 +106,18 @@ struct ListingDetailView: View {
                                                         .font(.system(size: 30))
                                                         .fontWeight(.bold)
                                                 }
+                                                
                                             }
+                                            Spacer()
                                             Text("Bambini: \(listing.nChildren)")
                                                 .font(.headline)
                                                 .fontWeight(.semibold)
                                         }
                                         
                                         
-                                       
+                                        
                                     }
+                                }
                                 .padding()
                                 
                                
@@ -121,34 +134,84 @@ struct ListingDetailView: View {
                             // Listing amenities
                             // Listing amenities
                             // Listing amenities
+                            
                             VStack(alignment: .leading, spacing: 16) {
                                 Text("Cosa offre")
                                     .font(.headline)
                                 
-                                if let facilities = viewModel.selectedHotelDetails?.facilities {
-                                    ForEach(facilities.components(separatedBy: ","), id: \.self) { facilityId in
-                                        if let id = Int(facilityId.trimmingCharacters(in: .whitespaces)) {
-                                            let (symbol, name) = getHotelFacilitySymbolAndName(for: id)
-                                            if name != "none"{
-                                                HStack {
-                                                    Image(systemName: symbol)
-                                                        .frame(width: 32)
-                                                    
-                                                    Text(name)
-                                                        .font(.footnote)
-                                                    
-                                                    Spacer()
+                                if viewModel.isLoadingFacilities {
+                                    if viewModel.isLoadingFacilities {
+                                        // Indicatore di caricamento con tre punti che si muovono
+                                        HStack(alignment: .center, spacing: 10) {
+                                            ForEach(0..<3) { index in
+                                                Circle()
+                                                    .fill(Color.gray)
+                                                    .frame(width: 8, height: 8)
+                                                    .offset(y: viewModel.isLoadingFacilities ? -5 : 0)
+                                                    .animation(
+                                                        Animation.easeInOut(duration: 0.5)
+                                                            .repeatForever(autoreverses: true)
+                                                            .delay(Double(index) * 0.2),
+                                                        value: viewModel.isLoadingFacilities
+                                                    )
+                                            }
+                                        }
+                                        .padding()
+                                    }} else if let facilities = viewModel.selectedHotelDetails?.facilities {
+                                        let facilitiesArray = facilities.components(separatedBy: ",")
+                                        
+                                        ForEach(facilitiesArray.indices, id: \.self) { index in
+                                            if index < 5 || showAllFacilities {
+                                                if let id = Int(facilitiesArray[index].trimmingCharacters(in: .whitespaces)) {
+                                                    let (symbol, name) = getHotelFacilitySymbolAndName(for: id)
+                                                    if name != "none" {
+                                                        HStack {
+                                                            Image(systemName: symbol)
+                                                                .frame(width: 32)
+                                                            
+                                                            Text(name)
+                                                                .font(.footnote)
+                                                            
+                                                            Spacer()
+                                                        }
+                                                        .matchedGeometryEffect(id: "facility\(id)", in: animation)
+                                                        .transition(.asymmetric(insertion: .scale.combined(with: .opacity),
+                                                                                removal: .scale.combined(with: .opacity)))
+                                                    }
                                                 }
                                             }
                                         }
+                                        
+                                        if facilitiesArray.count > 5 {
+                                            Button(action: {
+                                                withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                                                    showAllFacilities.toggle()
+                                                }
+                                            }) {
+                                                HStack {
+                                                    Text(showAllFacilities ? "Mostra meno" : "Vedi altre")
+                                                        .font(.footnote)
+                                                        .foregroundColor(.orange)
+                                                        .fontWeight(.bold)
+                                                    Image(systemName: showAllFacilities ? "chevron.up" : "chevron.down")
+                                                        .foregroundColor(.orange)
+                                                        .fontWeight(.bold)
+                                                        .rotationEffect(.degrees(showAllFacilities ? 180 : 0))
+                                                        .animation(.easeInOut, value: showAllFacilities)
+                                                }
+                                            }
+                                            .padding(.top, 8)
+                                        }
+                                    } else {
+                                        Text("Nessuna facility disponibile")
+                                            .font(.footnote)
+                                            .foregroundColor(.secondary)
                                     }
-                                } else {
-                                    Text("Nessuna facility disponibile")
-                                        .font(.footnote)
-                                        .foregroundColor(.secondary)
                                 }
-                            }
-                            .padding()
+                                .padding()
+                                .animation(.spring(response: 0.5, dampingFraction: 0.7), value: showAllFacilities)
+                                              
+                              
                             
                             Divider()
                             // Listing features

@@ -13,7 +13,7 @@ class ExploreViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var selectedHotelDetails: HotelDetails?
     private let hotelDetailsService: HotelDetailsService
-    
+    @Published var isLoadingFacilities = false
     init(service: ExploreServiceProtocol,  hotelDetailsService: HotelDetailsService = HotelDetailsService()) {
         self.service = service
         self.hotelDetailsService = hotelDetailsService
@@ -41,13 +41,13 @@ class ExploreViewModel: ObservableObject {
     
     @MainActor
     func fetchHotelDetails(for listing: Listing) async{
-         
+        isLoadingFacilities = true
         do {
               self.selectedHotelDetails = try await hotelDetailsService.fetchHotelDetails(for: listing)
           } catch {
               print("Error fetching hotel details: \(error)")
           }
-            
+        self.isLoadingFacilities = false
         }
     
     @Published var dailyPrices: [(String, Double)] = []
