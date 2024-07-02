@@ -12,26 +12,31 @@ import Foundation
 import Foundation
 
 struct Listing: Identifiable, Decodable, Hashable {
+
     let id: Int
     let latitude: Double
     let longitude: Double
     let city: String
     let state: String
     let name: String
-    let strikethrough_price: Double
+    var strikethrough_price: Double
     let review_count: Int
     let review_score: Double
     let checkin: String
     let checkout: String
     let nAdults: Int
-    let nChildren: Int
-    let childrenAge: String
+    let nChildren: Int?
+    let childrenAge: String?
     let currency: String
     let images: [String]
     
-    var price: Double {
-        strikethrough_price ?? 0
-       }
+    var price: String {
+          if strikethrough_price == -1 {
+              return "Sold out"
+          } else {
+              return String(format: "%.2f", strikethrough_price)
+          }
+      }
 }
 
 

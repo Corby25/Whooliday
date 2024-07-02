@@ -14,14 +14,14 @@ struct ListingItemView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            ZStack(alignment: .topTrailing) {
-                ListingImageCarouseView(listing: listing)
-                    .frame(height: 230)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                
-                HeartButton(isFavorite: $isFavorite)
-                    .padding(8)
-            }
+                    ZStack(alignment: .topTrailing) {
+                        ListingImageCarouseView(listing: listing)
+                            .frame(height: 230)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        
+                        HeartButton(isFavorite: $isFavorite, listing: listing)
+                            .padding(8)
+                    }
             
             // listing details
             HStack(alignment: .top) {
@@ -56,16 +56,19 @@ struct ListingItemView: View {
 
 struct HeartButton: View {
     @Binding var isFavorite: Bool
+    let listing: Listing
     @State private var animationAmount: CGFloat = 1
+    @State private var showLoginAlert = false
     let generator = UIImpactFeedbackGenerator(style: .soft)
+    
+    @ObservedObject private var firebaseManager = FirebaseManager.shared
     
     var body: some View {
         Button(action: {
-            isFavorite.toggle()
-            animationAmount = 0
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.3)) {
-                animationAmount = 1
-                generator.impactOccurred()
+            if firebaseManager.isUserLoggedIn {
+                toggleFavorite()
+            } else {
+                showLoginAlert = true
             }
         }) {
             Image(systemName: isFavorite ? "heart.fill" : "heart")
@@ -86,8 +89,36 @@ struct HeartButton: View {
                         )
                 )
         }
-    }
+               .alert(isPresented: $showLoginAlert) {
+                         Alert(
+                             title: Text("Accesso richiesto"),
+                             message: Text("Per aggiungere questo hotel ai preferiti, devi effettuare l'accesso."),
+                             primaryButton: .default(Text("Accedi"), action: {
+                                SigninView()
+                             }),
+                             secondaryButton: .cancel(Text("Annulla"))
+                         )
+                     }
+                 }
+                 
+    
+    
+private func toggleFavorite() {
+       isFavorite.toggle()
+       animationAmount = 0
+       withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.3)) {
+           animationAmount = 1
+           generator.impactOccurred()
+       }
+       
+       if isFavorite {
+           firebaseManager.addFavorite(listing: listing)
+       } else {
+           firebaseManager.removeFavorite(listingId: listing.id)
+       }
+   }
 }
+
 
 struct ParticlesView: View {
     @State private var time: Double = 0

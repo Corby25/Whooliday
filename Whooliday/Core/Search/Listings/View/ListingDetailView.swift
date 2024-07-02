@@ -98,23 +98,21 @@ struct ListingDetailView: View {
                                     Spacer()
                                     
                                     
-                                    if(listing.nChildren > 0){
+                                    if ((listing.nChildren ?? 0) > 0) {
                                         VStack {
                                             HStack(spacing: 8) {
-                                                ForEach(0..<(listing.nChildren), id: \.self) { _ in
+                                                ForEach(0..<(listing.nChildren ?? 0), id: \.self) { _ in
                                                     Image(systemName: "figure.child")
                                                         .font(.system(size: 30))
                                                         .fontWeight(.bold)
+                                                    
                                                 }
-                                                
+                                                Spacer()
+                                                Text("Bambini: \(listing.nChildren ?? 0)")
+                                                    .font(.headline)
+                                                    .fontWeight(.semibold)
                                             }
-                                            Spacer()
-                                            Text("Bambini: \(listing.nChildren)")
-                                                .font(.headline)
-                                                .fontWeight(.semibold)
                                         }
-                                        
-                                        
                                         
                                     }
                                 }

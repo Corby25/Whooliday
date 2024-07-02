@@ -77,5 +77,5 @@ struct CardViewSmall: View {
 }
 
 #Preview {
-    CardViewSmall( place: Place(id: "eijewpoe3", name: "Roma", country: "Italia", region: "Lazio", rating: 4.5, imageUrl: "https://img.freepik.com/premium-photo/background-paris_219717-5461.jpg"))
+    CardViewSmall( place: Place(id: "eijewpoe3", name: "Roma", country: "Italia", region: "Lazio", rating: 4.5, imageUrl: "https://img.freepik.com/premium-photo/background-paris_219717-5461.jpg", latitude: 0.0, longitude: 0.0))
 }

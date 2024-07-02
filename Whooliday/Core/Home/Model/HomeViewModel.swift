@@ -50,7 +50,9 @@ class HomeViewModel: ObservableObject {
                     country: data["country"] as? String ?? "",
                     region: data["region"] as? String ?? "",
                     rating: data["rating"] as? Double ?? 0.0,
-                    imageUrl: data["imageUrl"] as? String ?? ""
+                    imageUrl: data["imageUrl"] as? String ?? "",
+                    latitude: data["latitute"] as? Double ?? 0.0,
+                    longitude: data["longitude"] as? Double ?? 0.0
                 )
             }
         }
@@ -64,4 +66,6 @@ struct Place: Identifiable, Decodable, Hashable, Equatable {
     let region: String
     let rating: Double
     let imageUrl: String
+    let latitude: Double
+    let longitude: Double
 }

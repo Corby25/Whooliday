@@ -27,7 +27,7 @@ struct ContainerView: View {
                 if model.userSession != nil {
                     ContentView() // Show the navigation bar with tab views
                 } else {
-                    SigninView()
+                    ContentViewNoLogged();
                 }
             }
         }
@@ -44,8 +44,7 @@ struct ContentView: View {
                 }
             
             
-            
-            FavoritesView()
+            FavoriteView1()
                 .tabItem {
                     Image(systemName: "star.fill")
                     Text("Favorites")
@@ -59,4 +58,29 @@ struct ContentView: View {
         }
     }
 }
+
+
+struct ContentViewNoLogged: View {
+    var body: some View {
+        TabView {
+            HomeView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Home")
+                    
+                }
+            
+            
+            SigninView()
+                .tabItem {
+                    Image(systemName: "person.fill")
+                    Text("Login")
+                }
+            
+           
+        }
+    }
+}
+
+
 

@@ -158,7 +158,7 @@ struct HotelRowView: View {
         )
     }
 
-    private func deleteHotel(_ hotel: Hotel) {
+    @MainActor private func deleteHotel(_ hotel: Hotel) {
         favoritesModel.deleteHotel(hotel)
     }
 }

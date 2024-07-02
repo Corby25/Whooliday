@@ -13,144 +13,14 @@ struct AddFilterView: View {
     @Binding var show: Bool
     @State private var selectedFilters: Set<FilterOption> = []
     @State private var expandedCategories: Set<FilterCategory> = []
-    
-    enum FilterCategory: String, CaseIterable {
-        case general = "General"
-        case amenities = "Amenities"
-        case food = "Food & Drink"
-        case activities = "Activities & Entertainment"
-        case accessibility = "Accessibility"
-        case transportation = "Transportation"
-        case business = "Business Facilities"
-        case family = "Family Services"
-        case wellness = "Wellness"
-        case cleaning = "Cleaning & Safety"
-    }
-    
-    enum FilterOption: String, CaseIterable, Identifiable {
-        // General
-        case parking = "Parking"
-        case freeParking = "Free parking"
-        case wiFi = "WiFi"
-        case freeWiFi = "Free WiFi"
-        case petsAllowed = "Pets allowed"
-        case nonSmokingRooms = "Non-smoking rooms"
-        case airConditioning = "Air conditioning"
-        case familyRooms = "Family rooms"
-        case privateBeach = "Private beach area"
-        case adultOnly = "Adult only"
-        
-        // Amenities
-        case restaurant = "Restaurant"
-        case bar = "Bar"
-        case roomService = "Room service"
-        case twentyFourHourFrontDesk = "24-hour front desk"
-        case sauna = "Sauna"
-        case fitnessCenter = "Fitness centre"
-        case garden = "Garden"
-        case terrace = "Terrace"
-        case nonSmokingThroughout = "Non-smoking throughout"
-        case bbqFacilities = "BBQ facilities"
-        case heating = "Heating"
-        case luggageStorage = "Luggage storage"
-        
-        // Food & Drink
-        case breakfastAvailable = "Breakfast available"
-        case restaurant_a_la_carte = "Restaurant (à la carte)"
-        case restaurant_buffet = "Restaurant (buffet)"
-        case snackBar = "Snack bar"
-        case specialDietMenus = "Special diet menus (on request)"
-        case kidsMenu = "Kid meals"
-        
-        // Activities & Entertainment
-        case golf = "Golf course (within 3 km)"
-        case tennis = "Tennis court"
-        case fishing = "Fishing"
-        case skiing = "Skiing"
-        case gameRoom = "Games room"
-        case casino = "Casino"
-        case spa = "Spa and wellness centre"
-        case massage = "Massage"
-        case cyclingFacilities = "Cycling"
-        case hikingFacilities = "Hiking"
-        case nightclub = "Nightclub/DJ"
-        case waterPark = "Water park"
-        case eveningEntertainment = "Evening entertainment"
-        
-        // Accessibility
-        case facilitiesForDisabled = "Facilities for disabled guests"
-        case wheelchairAccessible = "Wheelchair accessible"
-        case toiletWithGrabRails = "Toilet with grab rails"
-        case higherLevelToilet = "Higher level toilet"
-        case lowerBathroomSink = "Lower bathroom sink"
-        case emergencyCordInBathroom = "Emergency cord in bathroom"
-        case visualAidsBraille = "Visual aids: Braille"
-        case visualAidsTactileSigns = "Visual aids: Tactile signs"
-        case auditoryGuidance = "Auditory guidance"
-        
-        // Transportation
-        case airportShuttle = "Airport shuttle"
-        case carHire = "Car hire"
-        case bikeHire = "Bicycle rental"
-        case publicTransportTickets = "Public transport tickets"
-        
-        // Business Facilities
-        case businessCenter = "Business centre"
-        case meetingBanquetFacilities = "Meeting/banquet facilities"
-        case faxPhotocopying = "Fax/photocopying"
-        
-        // Family Services
-        case babysitting = "Babysitting/child services"
-        case kidsClub = "Kids' club"
-        case childrenPlayground = "Children's playground"
-        
-        // Wellness
-        case indoorPool = "Indoor pool"
-        case outdoorPool = "Outdoor pool"
-        case hotTubJacuzzi = "Hot tub/Jacuzzi"
-        case hammam = "Hammam"
-        case turkishBath = "Turkish bath"
-        
-        // Cleaning & Safety
-        case dailyHousekeeping = "Daily housekeeping"
-        case securityAlarm = "Security alarm"
-        case smokeAlarms = "Smoke alarms"
-        case cctvCommonAreas = "CCTV in common areas"
-        case cctvOutsideProperty = "CCTV outside property"
-        case fireExtinguishers = "Fire extinguishers"
-        
-        var id: Self { self }
-        
-        var category: FilterCategory {
-            switch self {
-            case .parking, .freeParking, .wiFi, .freeWiFi, .petsAllowed, .nonSmokingRooms, .airConditioning, .familyRooms, .privateBeach, .adultOnly:
-                return .general
-            case .restaurant, .bar, .roomService, .twentyFourHourFrontDesk, .sauna, .fitnessCenter, .garden, .terrace, .nonSmokingThroughout, .bbqFacilities, .heating, .luggageStorage:
-                return .amenities
-            case .breakfastAvailable, .restaurant_a_la_carte, .restaurant_buffet, .snackBar, .specialDietMenus, .kidsMenu:
-                return .food
-            case .golf, .tennis, .fishing, .skiing, .gameRoom, .casino, .spa, .massage, .cyclingFacilities, .hikingFacilities, .nightclub, .waterPark, .eveningEntertainment:
-                return .activities
-            case .facilitiesForDisabled, .wheelchairAccessible, .toiletWithGrabRails, .higherLevelToilet, .lowerBathroomSink, .emergencyCordInBathroom, .visualAidsBraille, .visualAidsTactileSigns, .auditoryGuidance:
-                return .accessibility
-            case .airportShuttle, .carHire, .bikeHire, .publicTransportTickets:
-                return .transportation
-            case .businessCenter, .meetingBanquetFacilities, .faxPhotocopying:
-                return .business
-            case .babysitting, .kidsClub, .childrenPlayground:
-                return .family
-            case .indoorPool, .outdoorPool, .hotTubJacuzzi, .hammam, .turkishBath:
-                return .wellness
-            case .dailyHousekeeping, .securityAlarm, .smokeAlarms, .cctvCommonAreas, .cctvOutsideProperty, .fireExtinguishers:
-                return .cleaning
-            }
-        }
-    }
-    
+    @State private var filterString: String = ""
+    @State private var priceRange: PriceRange = PriceRange(min: 0, max: 1000)
+    @Binding var appliedFilters: String
     var body: some View {
         ZStack {
             ScrollView {
                 VStack(spacing: 30) {
+                    // Header
                     HStack {
                         Button {
                             withAnimation(.snappy) {
@@ -174,6 +44,7 @@ struct AddFilterView: View {
                         
                         Button("Clear") {
                             selectedFilters.removeAll()
+                            priceRange = PriceRange(min: 0, max: 1000)
                         }
                         .foregroundStyle(.black)
                         .font(.subheadline)
@@ -182,6 +53,7 @@ struct AddFilterView: View {
                     .padding(.horizontal)
                     .padding(.top)
                     
+                    // Filter Categories
                     ForEach(FilterCategory.allCases, id: \.self) { category in
                         VStack(alignment: .leading) {
                             Button(action: {
@@ -199,6 +71,11 @@ struct AddFilterView: View {
                             .padding(.horizontal)
                             
                             if expandedCategories.contains(category) {
+                                if category == .general {
+                                    PriceRangeView(priceRange: $priceRange)
+                                        .padding(.horizontal)
+                                }
+                                
                                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                                     ForEach(FilterOption.allCases.filter { $0.category == category }) { filter in
                                         FilterButton2(filter: filter, isSelected: selectedFilters.contains(filter)) {
@@ -215,11 +92,11 @@ struct AddFilterView: View {
                 }
             }
             
+            // Apply Filters Button
             VStack {
                 Spacer()
                 Button(action: {
-                    // Apply filters and close view
-                    show = false
+                    applyFilters()
                 }) {
                     Text("Apply Filters")
                         .font(.title3)
@@ -232,7 +109,6 @@ struct AddFilterView: View {
                 .padding(.bottom)
             }
         }
-        
         .cornerRadius(15)
         .padding()
     }
@@ -244,7 +120,7 @@ struct AddFilterView: View {
             selectedFilters.insert(filter)
         }
     }
-    
+      
     private func toggleCategory(_ category: FilterCategory) {
         if expandedCategories.contains(category) {
             expandedCategories.remove(category)
@@ -252,21 +128,73 @@ struct AddFilterView: View {
             expandedCategories.insert(category)
         }
     }
+    
+    private func applyFilters() {
+           filterString = generateFilterString()
+           appliedFilters = filterString
+           print("Applied filters: \(filterString)")
+           show = false
+       }
+    
+    private func generateFilterString() -> String {
+        var filterStrings: [String] = []
+        
+        // Aggiungi il range di prezzo
+        filterStrings.append("price::EUR-\(Int(priceRange.min))-\(Int(priceRange.max))")
+        
+        // Aggiungi gli altri filtri
+        for filter in selectedFilters {
+            if let category = FilterCategory.allCases.first(where: { $0.rawValue == filter.category.rawValue }),
+               let jsonCategory = findJsonCategory(for: category),
+               let jsonFilter = findJsonFilter(in: jsonCategory, for: filter) {
+                filterStrings.append(jsonFilter.id)
+            } else {
+                filterStrings.append("custom_filter:\(filter.rawValue)")
+            }
+        }
+        
+        return filterStrings.joined(separator: ",")
+    }
+}
+
+struct PriceRangeView: View {
+    @Binding var priceRange: PriceRange
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Price Range")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+            
+            HStack {
+                TextField("Min", value: $priceRange.min, formatter: NumberFormatter())
+                    .keyboardType(.numberPad)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                Text("-")
+                
+                TextField("Max", value: $priceRange.max, formatter: NumberFormatter())
+                    .keyboardType(.numberPad)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
+        }
+        .padding()
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(10)
+    }
 }
 
 struct FilterButton2: View {
-    let filter: AddFilterView.FilterOption
+    let filter: FilterOption
     let isSelected: Bool
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
             HStack {
-               
                 Text(filter.rawValue)
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    
             }
             .foregroundColor(isSelected ? .white : .black)
             .padding()
@@ -279,23 +207,6 @@ struct FilterButton2: View {
 
 struct AddFilterView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFilterView(show: .constant(true))
+        AddFilterView(show: .constant(true), appliedFilters: .constant(""))
     }
-}
-
-enum FilterOption: String, CaseIterable {
-    case freeBreakfast = "Free Breakfast"
-    case freeWifi = "Free WiFi"
-    case pool = "Pool"
-    case parking = "Parking"
-    case petFriendly = "Pet Friendly"
-    case airConditioning = "Air Conditioning"
-    case spa = "Spa"
-    case gym = "Gym"
-    case familyRooms = "Family Rooms"
-    case nonsmoking = "Non-smoking Rooms"
-}
-
-extension FilterOption: Identifiable {
-    var id: Self { self }
 }

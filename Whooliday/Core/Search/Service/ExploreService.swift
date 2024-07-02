@@ -80,7 +80,8 @@ class ExploreService: ExploreServiceProtocol{
                 URLQueryItem(name: "order_by", value: "distance"),
                 URLQueryItem(name: "locale", value: "it"),
                 URLQueryItem(name: "longitude", value: String(lng)),
-                parameters.numChildren != 0 ? URLQueryItem(name: "children_ages", value: childrenAgesString) : nil
+                parameters.numChildren != 0 ? URLQueryItem(name: "children_ages", value: childrenAgesString) : nil,
+                parameters.filters != "" ? URLQueryItem(name: "filters", value: parameters.filters) : nil
             ].compactMap { $0 }
        
             
@@ -88,6 +89,7 @@ class ExploreService: ExploreServiceProtocol{
                 throw URLError(.badURL)
             }
             
+        print(url)
         do {
               let (data, response) = try await URLSession.shared.data(from: url)
               

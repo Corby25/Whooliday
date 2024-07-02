@@ -12,7 +12,9 @@ struct ExploreView: View {
     @State private var showDestinationSearchView = false
     @State private var hasPerformedSearch = false
     @State private var showCompactView = false
-    
+    @State private var appliedFilters: String = ""
+    @State private var showAddFilterView = false
+
     init(searchParameters: SearchParameters) {
         self._viewModel = StateObject(wrappedValue: ExploreViewModel(service: ExploreService()))
         self._searchParameters = State(initialValue: searchParameters)
@@ -31,6 +33,10 @@ struct ExploreView: View {
                             }
                         
                         FilterView()
+                            .onTapGesture {
+                                showAddFilterView = true
+                            }
+                        
                         
                         LazyVStack(spacing: 32) {
                             ForEach(viewModel.listings) { listing in
@@ -39,8 +45,8 @@ struct ExploreView: View {
                                         CompactListingView(listing: listing)
                                     } else {
                                         ListingItemView(listing: listing)
-                                                .frame(height: 300)
-                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                            .frame(height: 300)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
                                     }
                                 }
                                 .foregroundColor(.black)
@@ -64,11 +70,7 @@ struct ExploreView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
             }
-            /*
-            .navigationDestination(for: Listing.self) { listing in
-                ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))
-                    .navigationBarBackButtonHidden()
-            }*/
+          
             .overlay(
                 ZStack {
                     if showDestinationSearchView {
@@ -86,15 +88,34 @@ struct ExploreView: View {
                             .cornerRadius(16)
                             .padding()
                     }
+                    
+                    if showAddFilterView {
+                        AddFilterView(show: $showAddFilterView, appliedFilters: $appliedFilters)
+                            .transition(.move(edge: .bottom))
+                            .background(Color.white)
+                            .cornerRadius(16)
+                            .padding()
+                    }
                 }
             )
         }
         .onAppear {
-            if !hasPerformedSearch {
-                viewModel.fetchListings(with: searchParameters)
-                hasPerformedSearch = true
-            }
+            performSearch()
         }
+        .onChange(of: appliedFilters) { oldValue, newValue in
+            print("Applied filters changed from: \(oldValue) to: \(newValue)")
+            performSearch()
+        }
+        .onChange(of: searchParameters) { _ in
+            performSearch()
+        }
+    }
+
+    private func performSearch() {
+        var updatedParameters = searchParameters
+        updatedParameters.filters = appliedFilters
+        viewModel.fetchListings(with: updatedParameters)
+        hasPerformedSearch = true
     }
 }
 
@@ -102,7 +123,6 @@ struct ExploreView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = ExploreViewModel(service: MockExploreService())
         let searchParameters = SearchParameters(destination: "Rome", placeID: "C", startDate: Date(), endDate: Date().addingTimeInterval(86400 * 7), numAdults: 2, numChildren: 0, childrenAges:[])
-        viewModel.fetchListings(with: searchParameters)
         return ExploreView(searchParameters: searchParameters)
     }
 }

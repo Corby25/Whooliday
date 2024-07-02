@@ -45,7 +45,7 @@ struct SearchAndFilterBar: View {
        
         .padding()
         .sheet(isPresented: $showFilterView) {
-                    AddFilterView(show: $showFilterView)
+            AddFilterView(show: $showFilterView, appliedFilters: .constant(""))
                 }
     }
 }

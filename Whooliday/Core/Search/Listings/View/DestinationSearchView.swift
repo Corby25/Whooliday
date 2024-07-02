@@ -281,7 +281,7 @@ struct DestinationSearchView: View {
 #Preview {
     DestinationSearchView(
        
-        searchParameters: .constant(SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])),  show: .constant(false), navigateToExplore: .constant(false)
+        searchParameters: .constant(SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [], filters: "")),  show: .constant(false), navigateToExplore: .constant(false)
     )
 }
 struct GooglePlacesResponse: Codable {
@@ -331,7 +331,7 @@ struct CollapsedPickerView: View {
     }
 }
 
-struct SearchParameters {
+struct SearchParameters: Equatable{
     var destination: String
     var placeID: String
     var startDate: Date?
@@ -339,6 +339,7 @@ struct SearchParameters {
     var numAdults: Int
     var numChildren: Int
     var childrenAges: [Int]
+    var filters: String = ""
 }
 
 struct GuestCounterView: View {

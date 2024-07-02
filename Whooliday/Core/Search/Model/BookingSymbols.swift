@@ -115,7 +115,6 @@ func getHotelFacilitySymbolAndName(for facilityTypeId: Int) -> (symbol: String, 
     case 87: return ("square", "Squash")
     case 90: return ("goggles", "Snorkeling")
     case 91: return ("bag", "Deposito bagagli")
-    case 96: return ("wifi", "WiFi")
     case 97: return ("flag", "Minigolf")
     case 99: return ("snow", "Deposito sci")
     case 100: return ("snowflake", "Scuola di sci")
