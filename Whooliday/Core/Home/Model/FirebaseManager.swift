@@ -34,8 +34,8 @@ class FirebaseManager: ObservableObject {
             "childrenAge": listing.childrenAge ?? "",
             "isDeleted": Bool(false),
             "isNew": Bool(false),
-            "newPrice": Int(listing.price) ?? 0,
-            "oldPrice": Int(listing.price) ?? 0
+            "newPrice": Int(listing.strikethrough_price),
+            "oldPrice": Int(listing.strikethrough_price)
         ]
         
         db.collection("users").document(userId).collection("favorites").document("hotels").collection("all").document(String(listing.id)).setData(favoriteData) { error in
@@ -77,4 +77,36 @@ class FirebaseManager: ObservableObject {
             }
             .eraseToAnyPublisher()
         }
+    
+    func addFavoriteFilter(listing: Listing, appliedFilters: String) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            
+            return
+        }
+        
+        let favoriteData: [String: Any] = [
+            "checkIn": listing.checkin,
+            "checkOut": listing.checkout,
+            "adultsNumber": listing.nAdults,
+            "childrenNumber": listing.nChildren ?? 0,
+            "childrenAge": listing.childrenAge ?? "",
+            "isDeleted": Bool(false),
+            "isNew": Bool(false),
+            "latitude": listing.latitude,
+            "longitude": listing.longitude,
+            "filters": appliedFilters,
+            "orderBy": "distance",
+            "roomNumber": 1,
+            "units": "metric",
+            
+        ]
+        
+        db.collection("users").document(userId).collection("favorites").document("filters").collection("all").document(String(listing.id)).setData(favoriteData) { error in
+            if let error = error {
+                print("Error adding favorite: \(error.localizedDescription)")
+            } else {
+                print("Favorite added successfully")
+            }
+        }
+    }
 }

@@ -29,11 +29,11 @@ struct SearchAndFilterBar: View {
             
             Spacer()
             if(showFilterAndFavorite){
-                Button(action: onFavoriteToggle) {
-                Image(systemName: isFavorite ? "heart.fill" : "heart")
-                    .foregroundColor(isFavorite ? .red : .gray)
-                    .fontWeight(.bold)
-            }
+                           Button(action: onFavoriteToggle) {
+                               Image(systemName: isFavorite ? "heart.fill" : "heart")
+                                   .foregroundColor(isFavorite ? .red : .gray)
+                                   .fontWeight(.bold)
+                           }
             
             Button(action: {
                 showFilterView.toggle()

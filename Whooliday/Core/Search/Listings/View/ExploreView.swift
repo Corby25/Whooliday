@@ -8,13 +8,16 @@ import SwiftUI
 
 struct ExploreView: View {
     @StateObject var viewModel: ExploreViewModel
-    @State private var searchParameters: SearchParameters
-    @State private var showDestinationSearchView = false
-    @State private var hasPerformedSearch = false
-    @State private var showCompactView = false
-    @State private var appliedFilters: String = ""
-    @State private var showAddFilterView = false
-    @State private var isFavorite: Bool = false
+       @State private var searchParameters: SearchParameters
+       @State private var showDestinationSearchView = false
+       @State private var hasPerformedSearch = false
+       @State private var showCompactView = false
+       @State private var appliedFilters: String = ""
+       @State private var showAddFilterView = false
+       @State private var isFavorite: Bool = false
+       
+       // Add a reference to FirebaseManager
+       private let firebaseManager = FirebaseManager.shared
 
     init(searchParameters: SearchParameters) {
         self._viewModel = StateObject(wrappedValue: ExploreViewModel(service: ExploreService()))
@@ -127,14 +130,21 @@ struct ExploreView: View {
     }
 
     private func saveSearch() {
-        // Implementa la logica per salvare la ricerca
-        print("Ricerca salvata")
-    }
-
-    private func removeSearch() {
-        // Implementa la logica per rimuovere la ricerca dai preferiti
-        print("Ricerca rimossa dai preferiti")
-    }
+           
+           
+           if let firstListing = viewModel.listings.first {
+               firebaseManager.addFavoriteFilter(listing: firstListing, appliedFilters: appliedFilters)
+               print("Ricerca salvata")
+           } else {
+               print("No listings available to save as favorite filter")
+           }
+       }
+       
+       private func removeSearch() {
+           // Implementa la logica per rimuovere la ricerca dai preferiti
+           print("Ricerca rimossa dai preferiti")
+           // You might want to implement a method to remove the favorite filter from Firebase
+       }
 }
 
 struct ExploreView_Previews: PreviewProvider {
