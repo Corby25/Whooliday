@@ -127,7 +127,7 @@
 		B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewSmall.swift; sourceTree = "<group>"; };
 		B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B4F722932C2D72E700D40AAB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		B4F722952C2D91FA00D40AAB /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loading.json; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/Desktop/Whooliday/Whooliday/Images/loading.json"; sourceTree = "<group>"; };
+		B4F722952C2D91FA00D40AAB /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		B4F722972C2D924B00D40AAB /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		B4F7229D2C2DA67100D40AAB /* AddFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilterView.swift; sourceTree = "<group>"; };
 		FF620DFE2C2ACF7B006371DF /* ShimmeringViewDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShimmeringViewDetail.swift; sourceTree = "<group>"; };

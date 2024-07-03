@@ -39,7 +39,7 @@ struct HotelsListView: View {
     var body: some View {
         List {
             if favoritesModel.isLoadingHotels {
-                ForEach(dummyHotels, id: \.index) { hotel in
+                ForEach(dummyHotels) { hotel in
                     HotelRowView(hotel: hotel, isMain: isMain, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
                         .shimmering()
                 }
@@ -158,7 +158,7 @@ struct HotelRowView: View {
         )
     }
 
-    @MainActor private func deleteHotel(_ hotel: Hotel) {
+    private func deleteHotel(_ hotel: Hotel) {
         favoritesModel.deleteHotel(hotel)
     }
 }
@@ -225,7 +225,7 @@ struct FilterHotelsListView: View {
             Group {
                 if isLoading {
                     List {
-                        ForEach(dummyHotels, id: \.index) { hotel in
+                        ForEach(dummyHotels) { hotel in
                             HotelRowView(hotel: hotel, isMain: false, favoritesModel: favoritesModel, selectedHotel: .constant(nil))
                                 .shimmering()
                         }
@@ -248,4 +248,3 @@ struct FilterHotelsListView: View {
             }
         }
 }
-
