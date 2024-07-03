@@ -26,19 +26,16 @@ class FirebaseManager: ObservableObject {
         }
         
         let favoriteData: [String: Any] = [
-            "id": listing.id,
-            "city": listing.city,
-            "state": listing.state,
-            "name": listing.name,
-            "price": listing.price,
-            "review_score": listing.review_score,
-            "checkin": listing.checkin,
-            "checkout": listing.checkout,
-            "nAdults": listing.nAdults,
-            "nChildren": listing.nChildren,
-            "childrenAge": listing.childrenAge,
-            "currency": listing.currency,
-            "images": listing.images
+            "hotelID": listing.id,
+            "checkIn": listing.checkin,
+            "checkOut": listing.checkout,
+            "adultsNumber": listing.nAdults,
+            "childrenNumber": listing.nChildren ?? 0,
+            "childrenAge": listing.childrenAge ?? "",
+            "isDeleted": Bool(false),
+            "isNew": Bool(false),
+            "newPrice": Int(listing.price) ?? 0,
+            "oldPrice": Int(listing.price) ?? 0
         ]
         
         db.collection("users").document(userId).collection("favorites").document("hotels").collection("all").document(String(listing.id)).setData(favoriteData) { error in

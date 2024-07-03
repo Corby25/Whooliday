@@ -4,9 +4,10 @@
 //
 //  Created by Fabio Tagliani on 26/06/24.
 //
-
-import Foundation
+import SwiftUI
+import MapKit
 import FirebaseFirestore
+
 class HomeViewModel: ObservableObject {
     @Published var places: [Place] = []
     @Published var selectedContinent: String = "Mondo"
@@ -23,8 +24,12 @@ class HomeViewModel: ObservableObject {
         "Oceania": "oceania"
     ]
     
+    private var userFavorites: Set<String> = []
+    private var userRatings: [String: Double] = [:]
+    
     init() {
         fetchPlaces()
+        loadUserPreferences()
     }
     
     func fetchPlaces() {
@@ -52,8 +57,106 @@ class HomeViewModel: ObservableObject {
                     rating: data["rating"] as? Double ?? 0.0,
                     imageUrl: data["imageUrl"] as? String ?? "",
                     latitude: data["latitute"] as? Double ?? 0.0,
-                    longitude: data["longitude"] as? Double ?? 0.0
+                    longitude: data["longitude"] as? Double ?? 0.0,
+                    nLikes: data["nLikes"] as? Int ?? 0,
+                    description: data["description"] as? String ?? ""
                 )
+            }
+        }
+    }
+    
+    func updateLikeAndRating(for place: Place, newRating: Double) {
+        guard let index = places.firstIndex(where: { $0.id == place.id }) else { return }
+        
+        let oldRating = userRatings[place.id] ?? 0
+        let wasLiked = userFavorites.contains(place.id)
+        
+        // Aggiorna il modello locale
+        if !wasLiked {
+            places[index].nLikes += 1
+            userFavorites.insert(place.id)
+        }
+        
+        if oldRating == 0 {
+            places[index].rating = (places[index].rating * Double(places[index].nLikes - 1) + newRating) / Double(places[index].nLikes)
+        } else {
+            places[index].rating = (places[index].rating * Double(places[index].nLikes) - oldRating + newRating) / Double(places[index].nLikes)
+        }
+        
+        userRatings[place.id] = newRating
+        
+        // Aggiorna il database
+        let continentCode = continentMapping[selectedContinent] ?? "world"
+        let docRef = db.collection("home").document("continents").collection(continentCode).document(place.id)
+        
+        docRef.updateData([
+            "nLikes": places[index].nLikes,
+            "rating": places[index].rating
+        ]) { error in
+            if let error = error {
+                print("Errore nell'aggiornamento del documento: \(error)")
+            }
+        }
+        
+        saveUserPreferences()
+    }
+    
+    func isPlaceFavorite(_ place: Place) -> Bool {
+        return userFavorites.contains(place.id)
+    }
+    
+    func getUserRating(for place: Place) -> Double {
+        return userRatings[place.id] ?? 0
+    }
+    
+    func toggleFavorite(for place: Place) {
+        if userFavorites.contains(place.id) {
+            userFavorites.remove(place.id)
+            if let index = places.firstIndex(where: { $0.id == place.id }) {
+                places[index].nLikes -= 1
+            }
+        } else {
+            userFavorites.insert(place.id)
+            if let index = places.firstIndex(where: { $0.id == place.id }) {
+                places[index].nLikes += 1
+            }
+        }
+        
+        saveUserPreferences()
+        updatePlaceInDatabase(place)
+    }
+    
+    func getUpdatedRating(for place: Place) -> Double {
+        return places.first(where: { $0.id == place.id })?.rating ?? place.rating
+    }
+    
+    func getUpdatedLikes(for place: Place) -> Int {
+        return places.first(where: { $0.id == place.id })?.nLikes ?? place.nLikes
+    }
+    
+    private func loadUserPreferences() {
+        if let favorites = UserDefaults.standard.array(forKey: "userFavorites") as? [String] {
+            userFavorites = Set(favorites)
+        }
+        if let ratings = UserDefaults.standard.dictionary(forKey: "userRatings") as? [String: Double] {
+            userRatings = ratings
+        }
+    }
+    
+    private func saveUserPreferences() {
+        UserDefaults.standard.set(Array(userFavorites), forKey: "userFavorites")
+        UserDefaults.standard.set(userRatings, forKey: "userRatings")
+    }
+    
+    private func updatePlaceInDatabase(_ place: Place) {
+        let continentCode = continentMapping[selectedContinent] ?? "world"
+        let docRef = db.collection("home").document("continents").collection(continentCode).document(place.id)
+        
+        docRef.updateData([
+            "nLikes": getUpdatedLikes(for: place)
+        ]) { error in
+            if let error = error {
+                print("Errore nell'aggiornamento del documento: \(error)")
             }
         }
     }
@@ -64,8 +167,10 @@ struct Place: Identifiable, Decodable, Hashable, Equatable {
     let name: String
     let country: String
     let region: String
-    let rating: Double
+    var rating: Double
     let imageUrl: String
     let latitude: Double
     let longitude: Double
+    var nLikes: Int
+    let description: String
 }

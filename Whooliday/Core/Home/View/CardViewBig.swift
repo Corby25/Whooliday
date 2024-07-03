@@ -86,5 +86,5 @@ struct CardViewBig: View {
 }
 
 #Preview {
-    CardViewBig( place: Place(id: "kwi9", name: "Le 5 Terre", country: "Italia", region: "Liguria", rating: 4.5, imageUrl: "https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg", latitude: 0.0, longitude: 0.0))
+    CardViewBig( place: Place(id: "kwi9", name: "Le 5 Terre", country: "Italia", region: "Liguria", rating: 4.5, imageUrl: "https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg", latitude: 0.0, longitude: 0.0, nLikes: 43, description: "Test description"))
 }
