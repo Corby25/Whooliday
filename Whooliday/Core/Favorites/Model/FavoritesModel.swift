@@ -23,7 +23,7 @@ class FavoritesModel: ObservableObject {
     
     func fetchFavorites() async {
         await fetchHotels()
-        //await fetchFilters()
+        await fetchFilters()
     }
     
     
@@ -84,7 +84,7 @@ class FavoritesModel: ObservableObject {
     }
 
 
-    private func fetchHotelDetails(with hotel: Hotel?) async -> Listing? {
+    private func fetchHotelDetails(with hotel: Hotel?) async -> APIHotelResponse? {
         let userDocRef = db.collection("users").document(userID)
         
         do {
@@ -116,25 +116,7 @@ class FavoritesModel: ObservableObject {
                 let (data, _) = try await URLSession.shared.data(from: url)
                 let decodedResponse = try JSONDecoder().decode(APIHotelResponse.self, from: data)
                 print("Fetched hotel details from API")
-                
-                return Listing(
-                    id: decodedResponse.id,
-                    latitude: decodedResponse.latitude,
-                    longitude: decodedResponse.longitude,
-                    city: "",
-                    state: "",
-                    name: decodedResponse.name,
-                    strikethrough_price: hotel?.newPrice ?? 0,
-                    review_count: decodedResponse.review_count ?? 0,
-                    review_score: decodedResponse.review_score ?? 0.0,
-                    checkin: "",
-                    checkout: "",
-                    nAdults: 0,
-                    nChildren: 0,
-                    childrenAge: "",
-                    currency: "",
-                    images: decodedResponse.images ?? []
-                )
+                return decodedResponse
             } else {
                 print("Missing currency or locale information for user \(userID)")
                 return nil
@@ -144,37 +126,27 @@ class FavoritesModel: ObservableObject {
             return nil
         }
     }
-
     
-    
-    private func dateToString(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: date)
-    }
     
     private func fetchFilters() async {
-        let filtersCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters")
+        let filtersCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters").collection("all")
         
-        // Start with index 1
-        var indexWhile = 1
-        var fetchNext = true
-        
-        while fetchNext {
-            let filterDocRef = filtersCollectionRef.collection("filter\(indexWhile)").document("filter\(indexWhile)")
+        do {
+            let querySnapshot = try await filtersCollectionRef.getDocuments()
             
-            do {
-                // Attempt to get the document snapshot asynchronously
-                let snapshot = try await filterDocRef.getDocument()
-                
-                // Check if the document exists
-                if snapshot.exists {
-                    
-                    // Attempt to decode basic filter data from the snapshot
-                    if let data = snapshot.data() {
+            let processedFilters = await withTaskGroup(of: Filter?.self) { group in
+                for document in querySnapshot.documents {
+                    group.addTask {
+                        let data = document.data()
+                        guard !data.isEmpty else {
+                            print("No data found in document.")
+                            return nil
+                        }
+                        
+                        let id = document.documentID
+                        
                         // Extract basic properties from the snapshot data
-                        guard let maxPrice = data["maxPrice"] as? Double,
-                              let numGuests = data["numGuests"] as? Int,
+                        guard
                               let latitude = data["latitude"] as? Double,
                               let longitude = data["longitude"] as? Double,
                               let adultsNumber = data["adultsNumber"] as? Int,
@@ -182,55 +154,63 @@ class FavoritesModel: ObservableObject {
                               let roomNumber = data["roomNumber"] as? Int,
                               let units = data["units"] as? String,
                               let isDeleted = data["isDeleted"] as? Bool,
-                              let index = data["index"] as? Int,
-                              let checkInTimestamp = data["checkIn"] as? Timestamp,
-                              let checkOutTimestamp = data["checkOut"] as? Timestamp else {
-                            print("Failed to parse filter \(indexWhile) data.")
-                            fetchNext = false
-                            continue
-                        }
-                        let checkIn = checkInTimestamp.dateValue() // Convert Timestamp to Date
-                        let checkOut = checkOutTimestamp.dateValue() // Convert Timestamp to Date
-                                            
-                        // Create a Filter object with basic properties
-                        let filterData = Filter(id: snapshot.documentID,
-                                                maxPrice: maxPrice,
-                                                numGuests: numGuests,
-                                                latitude: latitude,
-                                                longitude: longitude,
-                                                adultsNumber: adultsNumber,
-                                                orderBy: orderBy,
-                                                roomNumber: roomNumber,
-                                                units: units,
-                                                checkIn: checkIn,
-                                                checkOut: checkOut,
-                                                isDeleted: isDeleted,
-                                                index: index,
-                                                hotels: []) // Initialize empty hotels array
-                        
-                        // Update @Published property on the main thread
-                        DispatchQueue.main.async {
-                            // Capture filterData immutably to avoid concurrency issues
-                            self.filters.append(filterData)
+                              let checkIn = data["checkIn"] as? String,
+                              let checkOut = data["checkOut"] as? String,
+                              let childrenNumber = data["childrenNumber"] as? Int,
+                              let childrenAge = data["childrenAge"] as? String,
+                              let filters = data["filters"] as? String else {
+                            print("Failed to parse filter data.")
+                            return nil
                         }
                         
-                        // Increment index for the next document
-                        indexWhile += 1
-                    } else {
-                        print("Failed to decode filter \(indexWhile) data.")
-                        fetchNext = false
+                        let maxPrice = Self.extractMaxPrice(from: filters)
+                        
+                        return Filter(id: id,
+                                      maxPrice: maxPrice,
+                                      latitude: latitude,
+                                      longitude: longitude,
+                                      adultsNumber: adultsNumber,
+                                      orderBy: orderBy,
+                                      roomNumber: roomNumber,
+                                      units: units,
+                                      checkIn: checkIn,
+                                      checkOut: checkOut,
+                                      childrenNumber: childrenNumber,
+                                      childrenAge: childrenAge,
+                                      filters: filters,
+                                      isDeleted: isDeleted,
+                                      hotels: [])
                     }
-                    
-                } else {
-                    // No more documents found, stop fetching
-                    fetchNext = false
                 }
                 
-            } catch {
-                print("Error fetching filter \(indexWhile): \(error)")
-                fetchNext = false
+                var results: [Filter] = []
+                for await result in group {
+                    if let filter = result {
+                        results.append(filter)
+                    }
+                }
+                return results
             }
+            
+            await MainActor.run {
+                self.filters = processedFilters
+            }
+        } catch {
+            print("Error fetching filters: \(error)")
         }
+    }
+
+    private static func extractMaxPrice(from filters: String) -> Double {
+        let parts = filters.split(separator: ",")
+        guard let firstPart = parts.first else { return 0 }
+        
+        let priceParts = firstPart.split(separator: "::")
+        guard priceParts.count > 1 else { return 0 }
+        
+        let priceRange = priceParts[1].split(separator: "-")
+        guard let maxPriceString = priceRange.last else { return 0 }
+        
+        return Double(maxPriceString) ?? 0
     }
 
     func fetchHotelsForFilter(_ filter: Filter) async {
@@ -328,26 +308,25 @@ class FavoritesModel: ObservableObject {
     }
 
     
-    func deleteFilter(at index: Int) {
-        let indexInDb = index + 1
+    func deleteFilter(withId id: String) {
         let filterDocumentRef = db.collection("users").document(userID)
-                                  .collection("favorites").document("filters").collection("filter\(String(indexInDb))").document("filter\(String(indexInDb))")
-
-        filterDocumentRef.updateData(["isDeleted": true]) { error in
+            .collection("favorites").document("filters").collection("all").document(id)
+        
+        filterDocumentRef.updateData(["isDeleted": true]) { [weak self] error in
             if let error = error {
                 print("Error updating filter document: \(error.localizedDescription)")
             } else {
                 print("Filter document successfully updated to mark as deleted")
                 DispatchQueue.main.async {
-                    // Update locally and notify UI
-                    self.filters.remove(at: index)
-                    //self.filters[index].isDeleted = true
-                    self.objectWillChange.send()
+                    if let index = self?.filters.firstIndex(where: { $0.id == id }) {
+                        self?.filters[index].isDeleted = true
+                        self?.objectWillChange.send()
+                    }
                 }
             }
         }
     }
-    
+
     func refreshHotels() async {
         DispatchQueue.main.async {
             self.hotels.removeAll()

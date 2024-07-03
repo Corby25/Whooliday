@@ -75,32 +75,22 @@ struct APIHotelResponse: Codable {
     }
 }
 
-struct Filter: Identifiable, Hashable {
-    let id: String?
+struct Filter: Identifiable, Codable {
+    @DocumentID var id: String? // Use DocumentID to automatically map Firestore document ID
     let maxPrice: Double
-    let numGuests: Int
     let latitude: Double
     let longitude: Double
     let adultsNumber: Int
     let orderBy: String
     let roomNumber: Int
     let units: String
-    let checkIn: Date
-    let checkOut: Date
+    let checkIn: String
+    let checkOut: String
+    let childrenNumber: Int
+    let childrenAge: String
+    let filters: String
     var isDeleted: Bool
-    let index: Int
     var hotels: [Hotel]
-
-    // Add this function to conform to Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(index)
-    }
-
-    // Add this function to conform to Equatable (required for Hashable)
-    static func == (lhs: Filter, rhs: Filter) -> Bool {
-        return lhs.id == rhs.id && lhs.index == rhs.index
-    }
     
     mutating func updateHotels(_ newHotels: [Hotel]) {
             self.hotels = newHotels

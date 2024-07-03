@@ -20,7 +20,7 @@ struct FavoritesView: View {
                     HotelsListView(hotels: favoritesModel.hotels, favoritesModel: favoritesModel, isMain: true)
                 } else {
                     // Display filters list
-                    FiltersListView(filters: favoritesModel.filters, favoritesModel: favoritesModel)
+                    FiltersListView(favoritesModel: favoritesModel)
                 }
             }
             .navigationTitle("Favorites")
@@ -164,55 +164,53 @@ struct HotelRowView: View {
 }
 
 struct FiltersListView: View {
-    var filters: [Filter]
     @ObservedObject var favoritesModel: FavoritesModel
     @State private var selectedFilter: Filter?
     
     var body: some View {
         List {
-            ForEach(filters.filter { !$0.isDeleted }) { filter in
+            ForEach(favoritesModel.filters.filter { !$0.isDeleted }) { filter in
                 NavigationLink(
                     destination: FilterHotelsListView(filter: filter, favoritesModel: favoritesModel),
-                    tag: filter,
-                    selection: $selectedFilter
+                    tag: filter.id ?? "",
+                    selection: Binding(
+                        get: { self.selectedFilter?.id },
+                        set: { newValue in
+                            self.selectedFilter = favoritesModel.filters.first(where: { $0.id == newValue })
+                        }
+                    )
                 ) {
                     VStack(alignment: .leading) {
                         Text("Max Price: \(filter.maxPrice)")
-                        Text("Num Guests: \(filter.numGuests)")
+                        Text("Adults Number: \(filter.adultsNumber)")
                         Text("Latitude: \(filter.latitude)")
                         Text("Longitude: \(filter.longitude)")
-                        Text("Adults Number: \(filter.adultsNumber)")
                         Text("Order By: \(filter.orderBy)")
                         Text("Room Number: \(filter.roomNumber)")
                         Text("Units: \(filter.units)")
-                        Text("Check In: \(formattedDate(date: filter.checkIn))")
-                        Text("Check Out: \(formattedDate(date: filter.checkOut))")
+                        Text("Check In: \(filter.checkIn)")
+                        Text("Check Out: \(filter.checkOut)")
+                        Text("Children Number: \(filter.childrenNumber)")
+                        Text("Children Age: \(filter.childrenAge)")
                     }
                 }
             }
             .onDelete(perform: deleteFilters)
-
-            /*.onDelete { indexSet in
-                deleteFilters(at: indexSet)
-            }*/
         }
         .refreshable {
             await favoritesModel.refreshFilters()
         }
     }
+    
     private func deleteFilters(at offsets: IndexSet) {
-        for index in offsets {
-            favoritesModel.deleteFilter(at: index)
+        let filtersToDelete = offsets.map { favoritesModel.filters[$0] }
+        
+        for filter in filtersToDelete {
+            if let id = filter.id {
+                favoritesModel.deleteFilter(withId: id)
+            }
         }
     }
-    
-    private func formattedDate(date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter.string(from: date)
-    }
-    
 }
 
 struct FilterHotelsListView: View {
