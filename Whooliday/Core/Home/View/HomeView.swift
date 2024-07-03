@@ -15,6 +15,7 @@ struct HomeView: View {
     @State private var showDestinationSearch = false
     @State private var navigateToExplore = false
     @State private var selectedPlace: Place? = nil
+    @State private var showAddFilterView = false
     
     init(viewModel: HomeViewModel = HomeViewModel()) {
             _viewModel = StateObject(wrappedValue: viewModel)
@@ -52,7 +53,7 @@ struct HomeView: View {
                         .frame(width: 70, height: 70)
                 }
                 
-                SearchAndFilterBar()
+                SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: .constant(false), onFavoriteToggle: {}, showFilterAndFavorite: false)
                     .onTapGesture {
                         withAnimation(.spring()) {
                             showDestinationSearch = true

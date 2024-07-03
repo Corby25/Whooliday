@@ -7,15 +7,16 @@
 
 import SwiftUI
 
-
-
 struct AddFilterView: View {
-    @Binding var show: Bool
     @State private var selectedFilters: Set<FilterOption> = []
     @State private var expandedCategories: Set<FilterCategory> = []
     @State private var filterString: String = ""
     @State private var priceRange: PriceRange = PriceRange(min: 0, max: 1000)
+    
+    @Binding var show: Bool
     @Binding var appliedFilters: String
+    var onApply: () -> Void
+    
     var body: some View {
         ZStack {
             ScrollView {
@@ -130,19 +131,20 @@ struct AddFilterView: View {
     }
     
     private func applyFilters() {
-           filterString = generateFilterString()
-           appliedFilters = filterString
-           print("Applied filters: \(filterString)")
-           show = false
-       }
+        filterString = generateFilterString()
+        appliedFilters = filterString
+        print("Applied filters: \(filterString)")
+        onApply()
+        show = false
+    }
     
     private func generateFilterString() -> String {
         var filterStrings: [String] = []
         
-        // Aggiungi il range di prezzo
+        // Add price range
         filterStrings.append("price::EUR-\(Int(priceRange.min))-\(Int(priceRange.max))")
         
-        // Aggiungi gli altri filtri
+        // Add other filters
         for filter in selectedFilters {
             if let category = FilterCategory.allCases.first(where: { $0.rawValue == filter.category.rawValue }),
                let jsonCategory = findJsonCategory(for: category),
@@ -154,6 +156,28 @@ struct AddFilterView: View {
         }
         
         return filterStrings.joined(separator: ",")
+    }
+}
+
+
+struct FilterButton2: View {
+    let filter: FilterOption
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text(filter.rawValue)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+            }
+            .foregroundColor(isSelected ? .white : .black)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(isSelected ? Color.orange : Color.gray.opacity(0.1))
+            .cornerRadius(10)
+        }
     }
 }
 
@@ -184,29 +208,10 @@ struct PriceRangeView: View {
     }
 }
 
-struct FilterButton2: View {
-    let filter: FilterOption
-    let isSelected: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                Text(filter.rawValue)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-            }
-            .foregroundColor(isSelected ? .white : .black)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(isSelected ? Color.orange : Color.gray.opacity(0.1))
-            .cornerRadius(10)
-        }
-    }
-}
-
 struct AddFilterView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFilterView(show: .constant(true), appliedFilters: .constant(""))
+        AddFilterView(show: .constant(true), appliedFilters: .constant("")) {
+            // Preview action
+        }
     }
 }

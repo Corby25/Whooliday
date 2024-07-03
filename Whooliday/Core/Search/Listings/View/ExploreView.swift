@@ -14,6 +14,7 @@ struct ExploreView: View {
     @State private var showCompactView = false
     @State private var appliedFilters: String = ""
     @State private var showAddFilterView = false
+    @State private var isFavorite: Bool = false
 
     init(searchParameters: SearchParameters) {
         self._viewModel = StateObject(wrappedValue: ExploreViewModel(service: ExploreService()))
@@ -25,18 +26,12 @@ struct ExploreView: View {
             ZStack {
                 VStack {
                     ScrollView {
-                        SearchAndFilterBar()
+                        SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: $isFavorite, onFavoriteToggle: toggleFavorite, showFilterAndFavorite: true)
                             .onTapGesture {
                                 withAnimation(.snappy) {
                                     showDestinationSearchView.toggle()
                                 }
                             }
-                        
-                        FilterView()
-                            .onTapGesture {
-                                showAddFilterView = true
-                            }
-                        
                         
                         LazyVStack(spacing: 32) {
                             ForEach(viewModel.listings) { listing in
@@ -90,23 +85,27 @@ struct ExploreView: View {
                     }
                     
                     if showAddFilterView {
-                        AddFilterView(show: $showAddFilterView, appliedFilters: $appliedFilters)
-                            .transition(.move(edge: .bottom))
-                            .background(Color.white)
-                            .cornerRadius(16)
-                            .padding()
+                        AddFilterView(show: $showAddFilterView, appliedFilters: $appliedFilters) {
+                            performSearch()
+                        }
+                        .transition(.move(edge: .bottom))
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .padding()
                     }
                 }
             )
         }
         .onAppear {
-            performSearch()
+            if(!hasPerformedSearch){
+                performSearch()
+            }
         }
         .onChange(of: appliedFilters) { oldValue, newValue in
             print("Applied filters changed from: \(oldValue) to: \(newValue)")
             performSearch()
         }
-        .onChange(of: searchParameters) { _ in
+        .onChange(of: searchParameters) { oldValue, newValue in
             performSearch()
         }
     }
@@ -116,6 +115,25 @@ struct ExploreView: View {
         updatedParameters.filters = appliedFilters
         viewModel.fetchListings(with: updatedParameters)
         hasPerformedSearch = true
+    }
+
+    private func toggleFavorite() {
+        isFavorite.toggle()
+        if isFavorite {
+            saveSearch()
+        } else {
+            removeSearch()
+        }
+    }
+
+    private func saveSearch() {
+        // Implementa la logica per salvare la ricerca
+        print("Ricerca salvata")
+    }
+
+    private func removeSearch() {
+        // Implementa la logica per rimuovere la ricerca dai preferiti
+        print("Ricerca rimossa dai preferiti")
     }
 }
 
