@@ -214,59 +214,72 @@ class FavoritesModel: ObservableObject {
     }
 
     func fetchHotelsForFilter(_ filter: Filter) async {
-        /*DispatchQueue.main.async {
+        await MainActor.run {
             self.isLoadingFilterHotels = true
         }
-            guard let filterID = filter.id else {
-                print("Filter ID is nil, cannot fetch hotels.")
-                return
-            }
+        
+        guard let filterID = filter.id else {
+            print("Filter ID is nil, cannot fetch hotels.")
+            await MainActor.run { self.isLoadingFilterHotels = false }
+            return
+        }
 
-            let hotelsCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters").collection(filterID).document(filterID).collection("hotels")
+        let hotelsCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters").collection("all").document(filterID).collection("hotels")
+        
+        do {
+            let querySnapshot = try await hotelsCollectionRef.getDocuments()
             
-            var index = 1
-            var fetchNext = true
-            var fetchedHotels: [Hotel] = []
-
-            while fetchNext {
-                let hotelDocRef = hotelsCollectionRef.document("hotel\(index)")
-                do {
-                    let snapshot = try await hotelDocRef.getDocument()
-                    
-                    if snapshot.exists {
-                        var hotelData = try snapshot.data(as: Hotel.self)
-                        
-                        if let apiHotelData = await fetchHotelDetails(from: hotelData) {
-                            hotelData.name = apiHotelData.name
-                            hotelData.strikethroughPrice = apiHotelData.strikethrough_price
-                            hotelData.reviewCount = apiHotelData.review_count
-                            hotelData.reviewScore = apiHotelData.review_score
-                            hotelData.images = apiHotelData.images
+            let processedHotels = await withTaskGroup(of: Hotel?.self) { group in
+                for document in querySnapshot.documents {
+                    group.addTask {
+                        do {
+                            var hotelData = try document.data(as: Hotel.self)
+                            if let apiHotelData = await self.fetchHotelDetails(with: hotelData) {
+                                hotelData.name = apiHotelData.name
+                                hotelData.strikethroughPrice = apiHotelData.strikethrough_price
+                                hotelData.reviewCount = apiHotelData.review_count
+                                hotelData.reviewScore = apiHotelData.review_score
+                                hotelData.images = apiHotelData.images
+                            }
+                            return hotelData
+                        } catch {
+                            print("Unable to decode document into Hotel")
+                            print("Error: \(error)")
+                            print("Document data:")
+                            for (key, value) in document.data() {
+                                print("\(key): \(value) (type: \(type(of: value)))")
+                            }
+                            return nil
                         }
-                        
-                        fetchedHotels.append(hotelData)
-                        index += 1
-                    } else {
-                        fetchNext = false
                     }
-                } catch {
-                    print("Error fetching hotel for filter \(filterID): \(error)")
-                    fetchNext = false
                 }
+                
+                var hotels: [Hotel] = []
+                for await hotel in group {
+                    if let hotel = hotel {
+                        hotels.append(hotel)
+                    }
+                }
+                return hotels
             }
-
-            DispatchQueue.main.async {
+            
+            await MainActor.run {
                 if let filterIndex = self.filters.firstIndex(where: { $0.id == filterID }) {
-                    self.filters[filterIndex].hotels = fetchedHotels
-                    print("Updated filter at index \(filterIndex) with \(fetchedHotels.count) hotels")
+                    self.filters[filterIndex].hotels = processedHotels
+                    print("Updated filter at index \(filterIndex) with \(processedHotels.count) hotels")
                     self.objectWillChange.send()
-
-                    
-                }else {
-                    print("Failed to find filter with ID: \(filterID)")}
+                } else {
+                    print("Failed to find filter with ID: \(filterID)")
+                }
                 self.isLoadingFilterHotels = false
             }
-        */}
+        } catch {
+            await MainActor.run {
+                print("Error fetching hotels for filter: \(error.localizedDescription)")
+                self.isLoadingFilterHotels = false
+            }
+        }
+    }
     
     
 
