@@ -7,6 +7,8 @@
 
 import SwiftUI
 import MapKit
+import Charts
+
 struct CityDetailView: View {
     @ObservedObject var viewModel: HomeViewModel
     var place: Place
@@ -35,8 +37,10 @@ struct CityDetailView: View {
                     cityInfo
                     ratingView
                     descriptionView
-                    mapView
-                    weatherInfo
+                    MapView(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude))
+                        .padding(.vertical)
+                    weatherView
+
                 }
                 .padding()
             }
@@ -48,7 +52,16 @@ struct CityDetailView: View {
                 updateLikeAndRating()
             }
         }
+        .onAppear(){
+            
+            Task{
+                await viewModel.fetchWeatherData(latitude: place.latitude, longitude: place.longitude)
+            }
+        }
+       
+        
     }
+        
     
     private var heroImage: some View {
         AsyncImage(url: URL(string: place.imageUrl)) { image in
@@ -127,36 +140,66 @@ struct CityDetailView: View {
         }
     }
     
-    private var mapView: some View {
-        let coordinate = CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude)
-        let region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-        
-        return Map(coordinateRegion: .constant(region), annotationItems: [place]) { place in
-            MapAnnotation(coordinate: coordinate) {
-                Image(systemName: "mappin.circle.fill")
-                    .foregroundColor(.red)
-                    .font(.title)
-            }
-        }
-        .frame(height: 200)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
-        )
-    }
     
-    private var weatherInfo: some View {
-        HStack {
-            Image(systemName: "sun.max.fill")
-                .foregroundColor(.yellow)
-            Text("25°C")
-            Spacer()
-            Text("Soleggiato")
+    struct MapView: View {
+        var coordinate: CLLocationCoordinate2D
+        
+        @State private var region: MKCoordinateRegion
+        
+        init(coordinate: CLLocationCoordinate2D) {
+            self.coordinate = coordinate
+            _region = State(initialValue: MKCoordinateRegion(
+                center: coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+            ))
         }
-        .padding()
-        .background(Color.blue.opacity(0.1))
-        .cornerRadius(8)
+        
+        var body: some View {
+            Map(coordinateRegion: $region, annotationItems: [PlaceAnnotation(coordinate: coordinate)]) { place in
+                MapMarker(coordinate: place.coordinate, tint: .red)
+            }
+            .frame(height: 200)
+            .cornerRadius(10)
+        }
+    }
+
+    struct PlaceAnnotation: Identifiable {
+        let id = UUID()
+        let coordinate: CLLocationCoordinate2D
+    }
+
+   
+
+    struct TemperatureChartView: View {
+        let monthlyTemperatures: [MonthlyTemperature]
+        
+        var body: some View {
+            Chart {
+                ForEach(monthlyTemperatures) { monthData in
+                    LineMark(
+                        x: .value("Month", monthData.monthName),
+                        y: .value("Temperature", monthData.temperature)
+                    )
+                    .foregroundStyle(.blue)
+                    .symbol(Circle())
+                }
+            }
+            .chartXAxis {
+                AxisMarks(values: .automatic) { value in
+                    AxisValueLabel {
+                        if let month = value.as(String.self) {
+                            Text(String(month.prefix(3)))
+                                .font(.caption)
+                        }
+                    }
+                }
+            }
+            .chartYAxis {
+                AxisMarks(position: .leading)
+            }
+            .frame(height: 200)
+            .padding()
+        }
     }
     
     private func toggleFavorite() {
@@ -171,6 +214,42 @@ struct CityDetailView: View {
         localLikes = viewModel.getUpdatedLikes(for: place)
         isFavorite = viewModel.isPlaceFavorite(place)
     }
+    
+    private var weatherView: some View {
+           VStack(alignment: .leading, spacing: 10) {
+               Text("Previsioni meteo (media degli ultimi 5 anni)")
+                   .font(.headline)
+               
+               if let errorMessage = viewModel.errorMessage {
+                   Text(errorMessage)
+                       .foregroundColor(.red)
+               } else if viewModel.monthlyAverageTemperatures.isEmpty {
+                   Text("Caricamento dati meteo...")
+               } else {
+                   TemperatureChartView(monthlyTemperatures: viewModel.monthlyAverageTemperatures)
+                   
+                   ForEach(viewModel.monthlyAverageTemperatures) { monthTemp in
+                       HStack {
+                           Text(monthTemp.monthName)
+                           Spacer()
+                           Text(String(format: "%.1f°C", monthTemp.temperature))
+                       }
+                   }
+                   
+                   VStack(alignment: .leading) {
+                       Text("Media annuale: \(String(format: "%.1f°C", viewModel.monthlyAverageTemperatures.averageTemperature()))")
+                       if let hottest = viewModel.monthlyAverageTemperatures.hottestMonth() {
+                           Text("Mese più caldo: \(hottest.monthName) (\(String(format: "%.1f°C", hottest.temperature)))")
+                       }
+                       if let coldest = viewModel.monthlyAverageTemperatures.coldestMonth() {
+                           Text("Mese più freddo: \(coldest.monthName) (\(String(format: "%.1f°C", coldest.temperature)))")
+                       }
+                   }
+                   .padding(.top)
+               }
+           }
+           .padding()
+       }
 }
 
 struct RatingView: View {
@@ -222,10 +301,13 @@ struct RatingView: View {
         }
         .padding()
         .background(Color.white)
-        .cornerRadius(20)
+        .cornerRadius(30)
         .shadow(radius: 10)
     }
 }
+
+
+
 
 #Preview {
     let viewModel = HomeViewModel()

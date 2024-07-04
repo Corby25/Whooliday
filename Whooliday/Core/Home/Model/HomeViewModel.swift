@@ -160,9 +160,28 @@ class HomeViewModel: ObservableObject {
             }
         }
     }
-}
 
-struct Place: Identifiable, Decodable, Hashable, Equatable {
+
+    @Published var monthlyAverageTemperatures: [MonthlyTemperature] = []
+      @Published var errorMessage: String?
+      private let weatherService = WeatherService()
+
+      func fetchWeatherData(latitude: Double, longitude: Double) async {
+          do {
+              let response = try await weatherService.fetchWeatherData(latitude: latitude, longitude: longitude)
+              let averages = weatherService.calculateMonthlyAverages(from: response)
+              DispatchQueue.main.async {
+                  self.monthlyAverageTemperatures = averages
+                  self.errorMessage = nil
+              }
+          } catch {
+              DispatchQueue.main.async {
+                  self.errorMessage = error.localizedDescription
+              }
+          }
+      }
+}
+struct Place: Identifiable {
     let id: String
     let name: String
     let country: String
@@ -173,4 +192,19 @@ struct Place: Identifiable, Decodable, Hashable, Equatable {
     let longitude: Double
     var nLikes: Int
     let description: String
+    var monthlyTemperatures: [MonthlyTemperature]?
+
+    init(id: String, name: String, country: String, region: String, rating: Double, imageUrl: String, latitude: Double, longitude: Double, nLikes: Int, description: String) {
+        self.id = id
+        self.name = name
+        self.country = country
+        self.region = region
+        self.rating = rating
+        self.imageUrl = imageUrl
+        self.latitude = latitude
+        self.longitude = longitude
+        self.nLikes = nLikes
+        self.description = description
+        self.monthlyTemperatures = nil
+    }
 }

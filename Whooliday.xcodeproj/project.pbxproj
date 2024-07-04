@@ -38,6 +38,7 @@
 		B41A9F722C2B6EA700C8F1E3 /* DestinationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F712C2B6EA700C8F1E3 /* DestinationSearchView.swift */; };
 		B41A9F742C2B6EBE00C8F1E3 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F732C2B6EBE00C8F1E3 /* ExploreView.swift */; };
 		B41A9F782C2B6F2300C8F1E3 /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F772C2B6F2300C8F1E3 /* ExploreViewModel.swift */; };
+		B42A44DE2C36822A00433683 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A44DD2C36822A00433683 /* WeatherService.swift */; };
 		B43E786E2C2EA4F5009D5233 /* BookingSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E786D2C2EA4F5009D5233 /* BookingSymbols.swift */; };
 		B4572E942C3188E000324B4F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4572E932C3188E000324B4F /* FirebaseManager.swift */; };
 		B4572E962C318F8900324B4F /* FavoriteView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4572E952C318F8900324B4F /* FavoriteView1.swift */; };
@@ -115,6 +116,7 @@
 		B41A9F712C2B6EA700C8F1E3 /* DestinationSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationSearchView.swift; sourceTree = "<group>"; };
 		B41A9F732C2B6EBE00C8F1E3 /* ExploreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
 		B41A9F772C2B6F2300C8F1E3 /* ExploreViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
+		B42A44DD2C36822A00433683 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		B43E786D2C2EA4F5009D5233 /* BookingSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSymbols.swift; sourceTree = "<group>"; };
 		B4572E932C3188E000324B4F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		B4572E952C318F8900324B4F /* FavoriteView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteView1.swift; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 			children = (
 				B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */,
 				B4572E932C3188E000324B4F /* FirebaseManager.swift */,
+				B42A44DD2C36822A00433683 /* WeatherService.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -661,6 +664,7 @@
 				6C95A5282C24809D0098ECAC /* FavoritesView.swift in Sources */,
 				FF620DFF2C2ACF7B006371DF /* ShimmeringViewDetail.swift in Sources */,
 				B41A9F702C2B6E8B00C8F1E3 /* LoadingView.swift in Sources */,
+				B42A44DE2C36822A00433683 /* WeatherService.swift in Sources */,
 				B41A9F782C2B6F2300C8F1E3 /* ExploreViewModel.swift in Sources */,
 				FFDCD33C2C1F554300E2142A /* WhoolidayApp.swift in Sources */,
 				B43E786E2C2EA4F5009D5233 /* BookingSymbols.swift in Sources */,

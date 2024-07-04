@@ -4,7 +4,6 @@
 //
 //  Created by Fabio Tagliani on 26/06/24.
 //
-
 import SwiftUI
 
 struct HomeView: View {
@@ -82,16 +81,17 @@ struct HomeView: View {
                         selectedPlace = viewModel.places[0]
                     }
                 
-                ForEach(0..<(viewModel.places.count - 1) / 2, id: \.self) { rowIndex in
-                    createCardRow(startingAt: rowIndex * 2 + 1)
+                ForEach(0..<rowsCount(), id: \.self) { rowIndex in
+                    createCardRow(startingAt: rowIndex * columnsCount())
                 }
             }
         }
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
     }
     
     private func createCardRow(startingAt index: Int) -> some View {
         HStack(spacing: 15) {
-            ForEach(0..<2) { columnIndex in
+            ForEach(0..<columnsCount(), id: \.self) { columnIndex in
                 let placeIndex = index + columnIndex
                 if placeIndex < viewModel.places.count {
                     CardViewSmall(place: viewModel.places[placeIndex])
@@ -103,6 +103,15 @@ struct HomeView: View {
                 }
             }
         }
+    }
+    
+    private func columnsCount() -> Int {
+        UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
+    }
+    
+    private func rowsCount() -> Int {
+        let count = viewModel.places.count - 1
+        return count / columnsCount() + (count % columnsCount() == 0 ? 0 : 1)
     }
 }
 
@@ -193,7 +202,7 @@ extension HomeViewModel {
             Place(id: "eif9", name: "Roma", country: "Italia", region: "Lazio", rating: 4.9, imageUrl: "https://wallpapercave.com/wp/wp1826245.jpg", latitude: 0.0, longitude: 0.0, nLikes: 23, description: "Test description"),
             Place(id: "e3i0", name: "Parigi", country: "Francia", region: "Île-de-France", rating: 4.7, imageUrl: "https://img.freepik.com/premium-photo/background-paris_219717-5461.jpg", latitude: 0.0, longitude: 0.0, nLikes: 44, description: "Test description"),
             Place(id: "kd0jf", name: "Londra", country: "Regno Unito", region: "Inghilterra", rating: 4.6, imageUrl: "https://i.etsystatic.com/29318579/r/il/805ae0/3339810438/il_fullxfull.3339810438_4t71.jpg", latitude: 0.0, longitude: 0.0, nLikes: 564, description: "Test description"),
-            Place(id: "di03", name: "Londra", country: "Regno Unito", region: "Inghilterra", rating: 4.6, imageUrl: "https://i.etsystatic.com/29318579/r/il/805ae0/3339810438/il_fullxfull.3339810438_4t71.jpg", latitude: 0.0, longitude: 0.0, nLikes: 54, description: "Test description")
+            Place(id: "di03", name: "Londra", country: "Regno Unito", region: "Inghilterra", rating: 4.6, imageUrl: "https://i.etsystatic.com/29318579/r/il/805ae0/3339810438/il_fullxfull.3339810438_4t71.jpg", latitude: 0.0, longitude: 0.0, nLikes: 54, description: "String")
         ]
         viewModel.selectedContinent = "Mondo"
         return viewModel

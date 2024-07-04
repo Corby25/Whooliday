@@ -78,7 +78,7 @@ class FirebaseManager: ObservableObject {
             .eraseToAnyPublisher()
         }
     
-    func addFavoriteFilter(listing: Listing, appliedFilters: String) {
+    func addFavoriteFilter(listing: Listing, appliedFilters: String, listings: [Listing]) {
         guard let userId = Auth.auth().currentUser?.uid else {
             
             return
@@ -108,5 +108,33 @@ class FirebaseManager: ObservableObject {
                 print("Favorite added successfully")
             }
         }
+        
+        for lis in listings {
+            let favoriteDataSingle: [String: Any] = [
+                "hotelID": lis.id,
+                "checkIn": lis.checkin,
+                "checkOut": lis.checkout,
+                "adultsNumber": lis.nAdults,
+                "childrenNumber": lis.nChildren ?? 0,
+                "childrenAge": lis.childrenAge ?? "",
+                "isDeleted": Bool(false),
+                "isNew": Bool(false),
+                "newPrice": Int(lis.strikethrough_price),
+                "oldPrice": Int(lis.strikethrough_price)
+            ]
+            
+            
+            db.collection("users").document(userId).collection("favorites").document("filters").collection("all").document(String(listing.id)).collection("hotels").document(String(lis.id)).setData(favoriteDataSingle) { error in
+                if let error = error {
+                    print("Error adding favorite: \(error.localizedDescription)")
+                } else {
+                    print("Favorite added successfully")
+                }
+            }
+        }
+        
+              
+                    
+                    
     }
 }

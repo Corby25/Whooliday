@@ -133,7 +133,7 @@ struct ExploreView: View {
            
            
            if let firstListing = viewModel.listings.first {
-               firebaseManager.addFavoriteFilter(listing: firstListing, appliedFilters: appliedFilters)
+               firebaseManager.addFavoriteFilter(listing: firstListing, appliedFilters: appliedFilters, listings: viewModel.listings)
                print("Ricerca salvata")
            } else {
                print("No listings available to save as favorite filter")

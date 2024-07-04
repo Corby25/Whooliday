@@ -37,7 +37,7 @@ struct SigninView: View {
     }
     
     private var backgroundGradient: some View {
-        LinearGradient(gradient: Gradient(colors: [Color.orange.opacity(1), Color.red.opacity(1)]),
+        LinearGradient(gradient: Gradient(colors: [Color.orange.opacity(1), Color.orange.opacity(1)]),
                        startPoint: .topLeading,
                        endPoint: .bottomTrailing)
             .ignoresSafeArea()
