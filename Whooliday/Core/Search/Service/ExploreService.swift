@@ -106,6 +106,12 @@ class ExploreService: ExploreServiceProtocol{
           }
         }
     
+    
+        
+    
+    
+    
+    
        // Funzione helper per formattare le date
     private func formatDate(_ date: Date?) -> String {
         guard let date = date else { return "" }

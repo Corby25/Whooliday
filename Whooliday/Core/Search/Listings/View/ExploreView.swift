@@ -8,36 +8,43 @@ import SwiftUI
 
 struct ExploreView: View {
     @StateObject var viewModel: ExploreViewModel
-       @State private var searchParameters: SearchParameters
-       @State private var showDestinationSearchView = false
-       @State private var hasPerformedSearch = false
-       @State private var showCompactView = false
-       @State private var appliedFilters: String = ""
-       @State private var showAddFilterView = false
-       @State private var isFavorite: Bool = false
-       
-       // Add a reference to FirebaseManager
-       private let firebaseManager = FirebaseManager.shared
+    @State private var searchParameters: SearchParameters
+    @State private var showDestinationSearchView = false
+    @State private var hasPerformedSearch = false
+    @State private var showCompactView = false
+    @State private var appliedFilters: String = ""
+    @State private var showAddFilterView = false
+    @State private var isFavorite: Bool = false
+    @State private var selectedPropertyType: String = "Tutto"
+    @State private var selectedTypeID: Int = 0 // Default to 0 for "Tutto"
+    
+    
+    @State private var listingsByType: [Listing] = []
+    
+    private let firebaseManager = FirebaseManager.shared
 
     init(searchParameters: SearchParameters) {
         self._viewModel = StateObject(wrappedValue: ExploreViewModel(service: ExploreService()))
         self._searchParameters = State(initialValue: searchParameters)
+        
     }
     
     var body: some View {
         NavigationStack {
             ZStack {
-                VStack {
-                    ScrollView {
-                        SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: $isFavorite, onFavoriteToggle: toggleFavorite, showFilterAndFavorite: true)
-                            .onTapGesture {
-                                withAnimation(.snappy) {
-                                    showDestinationSearchView.toggle()
-                                }
+                VStack(spacing: 0) {
+                    SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: $isFavorite, onFavoriteToggle: toggleFavorite, showFilterAndFavorite: true)
+                        .onTapGesture {
+                            withAnimation(.snappy) {
+                                showDestinationSearchView.toggle()
                             }
-                        
+                        }
+                    
+                    FilterView(selectedPropertyType: $selectedPropertyType, selectedTypeID: $selectedTypeID)
+                    
+                    ScrollView {
                         LazyVStack(spacing: 32) {
-                            ForEach(viewModel.listings) { listing in
+                            ForEach(listingsByType.isEmpty ? viewModel.listings : listingsByType) { listing in
                                 NavigationLink(destination: ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))) {
                                     if showCompactView {
                                         CompactListingView(listing: listing)
@@ -68,7 +75,7 @@ struct ExploreView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
             }
-          
+            .navigationBarHidden(hasPerformedSearch)
             .overlay(
                 ZStack {
                     if showDestinationSearchView {
@@ -111,15 +118,51 @@ struct ExploreView: View {
         .onChange(of: searchParameters) { oldValue, newValue in
             performSearch()
         }
+        .onChange(of: selectedPropertyType) { oldValue, newValue in
+            Task {
+                await performSearchType()
+            }
+        }
     }
 
     private func performSearch() {
         var updatedParameters = searchParameters
         updatedParameters.filters = appliedFilters
+        updatedParameters.propertyType = selectedPropertyType
         viewModel.fetchListings(with: updatedParameters)
         hasPerformedSearch = true
     }
-
+    
+    private func performSearchType() async {
+        viewModel.isLoading = true
+        let filteredListings = await withTaskGroup(of: (Listing, Bool).self) { group in
+            for listing in viewModel.listings {
+                group.addTask {
+                    let isMatch = try? await self.viewModel.fetchHotelType(listing: listing, accomodationType: self.selectedTypeID)
+                    return (listing, isMatch ?? false)
+                }
+            }
+            
+            var result: [Listing] = []
+            for await (listing, isMatch) in group {
+                if isMatch {
+                    result.append(listing)
+                }
+            }
+            viewModel.isLoading = false
+            return result
+            
+        }
+        
+        DispatchQueue.main.async {
+            self.listingsByType = filteredListings
+        }
+        
+    }
+    
+    
+  
+    
     private func toggleFavorite() {
         isFavorite.toggle()
         if isFavorite {

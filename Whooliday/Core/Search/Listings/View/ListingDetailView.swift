@@ -17,7 +17,21 @@ struct ListingDetailView: View {
     @StateObject var viewModel: ExploreViewModel
     @State private var showAllFacilities = false
     @Namespace private var animation
+    @State private var region: MKCoordinateRegion
+    @State private var isFavorite: Bool = false
+    @ObservedObject private var firebaseManager = FirebaseManager.shared
+    
 
+    
+    init(listing: Listing, viewModel: ExploreViewModel) {
+           self.listing = listing
+           self._viewModel = StateObject(wrappedValue: viewModel)
+           self._region = State(initialValue: MKCoordinateRegion(
+               center: CLLocationCoordinate2D(latitude: listing.latitude, longitude: listing.longitude),
+               span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+           ))
+       }
+    
     var body: some View {
        
         GeometryReader { geometry in
@@ -29,6 +43,7 @@ struct ListingDetailView: View {
                     .ignoresSafeArea()
                 
                 ScrollView {
+                    
                     VStack(spacing: 0) {
                         Color.clear.frame(height: 320)
                         
@@ -78,9 +93,7 @@ struct ListingDetailView: View {
                                     .font(.headline)
                                 Spacer()
                                 
-                              
-                                HStack(alignment: .center) {
-                                    
+                                HStack(alignment: .top) {
                                     VStack {
                                         HStack(spacing: 8) {
                                             ForEach(0..<(listing.nAdults), id: \.self) { _ in
@@ -89,14 +102,12 @@ struct ListingDetailView: View {
                                                     .fontWeight(.bold)
                                             }
                                         }
-                                        Spacer()
                                         Text("Adulti: \(listing.nAdults)")
                                             .font(.headline)
                                             .fontWeight(.semibold)
                                     }
                                     
                                     Spacer()
-                                    
                                     
                                     if ((listing.nChildren ?? 0) > 0) {
                                         VStack {
@@ -105,21 +116,15 @@ struct ListingDetailView: View {
                                                     Image(systemName: "figure.child")
                                                         .font(.system(size: 30))
                                                         .fontWeight(.bold)
-                                                    
                                                 }
-                                                Spacer()
-                                                Text("Bambini: \(listing.nChildren ?? 0)")
-                                                    .font(.headline)
-                                                    .fontWeight(.semibold)
                                             }
+                                            Text("Bambini: \(listing.nChildren ?? 0)")
+                                                .font(.headline)
+                                                .fontWeight(.semibold)
                                         }
-                                        
                                     }
                                 }
                                 .padding()
-                                
-                               
-                              
                             }
                             .padding()
                             
@@ -246,13 +251,16 @@ struct ListingDetailView: View {
                             Divider()
                             
                             // Map view
+                            // Map view
                             VStack(alignment: .leading, spacing: 24) {
                                 Text("Dove alloggerai")
                                     .font(.headline)
                                 
-                                Map()
-                                    .frame(height: 200)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                Map(coordinateRegion: $region, annotationItems: [listing]) { item in
+                                    MapMarker(coordinate: CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude))
+                                }
+                                .frame(height: 200)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
                             .padding()
                         }
@@ -266,6 +274,7 @@ struct ListingDetailView: View {
                     })
                 }
                 .coordinateSpace(name: "scroll")
+                .padding(.bottom, 100)
 
                 VStack {
                     HStack {
@@ -292,14 +301,12 @@ struct ListingDetailView: View {
                                     .foregroundStyle(.black, .gray)
                             }
                             
-                            Button {
-                                // Azione del pulsante cuore
-                            } label: {
-                                Image(systemName: "heart")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .controlGroupStyle(.palette)
-                                    .foregroundStyle(.black, .gray)
-                            }
+                            HeartButton(isFavorite: isFavorite, listing: listing) {
+                                                        toggleFavorite()
+                                                    }
+                                
+
+
                         }
                         .padding(.horizontal, 10)
                     }
@@ -310,6 +317,10 @@ struct ListingDetailView: View {
                 }
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
+            
+        }
+        .onAppear {
+            checkFavoriteStatus()
             
         }
         .navigationBarHidden(true)
@@ -326,7 +337,7 @@ struct ListingDetailView: View {
                             .fontWeight(.semibold)
                         
                         Text("Totale")
-                        Text("Jun 15 - 20")
+                        Text("\(listing.checkin) - \(listing.checkout)")
                             .font(.footnote)
                             .fontWeight(.semibold)
                             .underline()
@@ -337,11 +348,11 @@ struct ListingDetailView: View {
                     Button {
                         // Azione del pulsante Reserve
                     } label: {
-                        Text("Reserve")
+                        Text("Cercalo su Google")
                             .foregroundStyle(.white)
                             .font(.subheadline)
                             .fontWeight(.semibold)
-                            .frame(width: 140, height: 40)
+                            .frame(width: 160, height: 40)
                             .background(.pink)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
@@ -359,6 +370,23 @@ struct ListingDetailView: View {
                    await viewModel.fetchHotelDetails(for: listing)
                }
     }
+    
+    private func checkFavoriteStatus() {
+           firebaseManager.isListingFavorite(listingId: listing.id) { result in
+               DispatchQueue.main.async {
+                   self.isFavorite = result
+               }
+           }
+       }
+       
+       private func toggleFavorite() {
+           if isFavorite {
+               firebaseManager.removeFavorite(listingId: listing.id)
+           } else {
+               firebaseManager.addFavorite(listing: listing)
+           }
+           isFavorite.toggle()
+       }
         
 }
 
@@ -392,8 +420,8 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
     return ListingDetailView(
         listing: Listing(
             id: 9481490,
-            latitude: 0.0,
-            longitude: 0.0,
+            latitude: 45.0,
+            longitude: 43.0,
             city: "Milano",
             state: "IT",
             name: "Example Hotel",
@@ -406,7 +434,9 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
             nChildren: 2,
             childrenAge: "2,3",
             currency: "EUR",
-            images: ["https://cf.bstatic.com/xdata/images/hotel/max1280x900/56347948.jpg"]
+            images: ["https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg", "https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg"
+                    ,"https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg",
+                     "https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg"]
         ),
         viewModel: exampleViewModel
     )

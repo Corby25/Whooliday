@@ -30,11 +30,11 @@ struct Listing: Identifiable, Decodable, Hashable {
     let currency: String
     let images: [String]
     
-    var price: String {
+    var price: Double {
           if strikethrough_price == -1 {
-              return "Sold out"
+              return 0.0
           } else {
-              return String(format: "%.2f", strikethrough_price)
+              return strikethrough_price
           }
       }
 }

@@ -20,10 +20,10 @@ class HotelDetailsService {
         urlComponents.queryItems = [
             listing.nChildren != 0 ? URLQueryItem(name: "children_number", value: String(listing.nChildren ?? 0)) : nil,
             URLQueryItem(name: "locale", value: "it"),
-            listing.childrenAge.flatMap { ages in
+            listing.nChildren != 0 ? listing.childrenAge.flatMap { ages in
                 let agesString = ages.map { String($0) }.joined(separator: ",")
                 return URLQueryItem(name: "children_ages", value: agesString)
-            },
+            } : nil ,
             URLQueryItem(name: "filter_by_currency", value: String(listing.currency)),
             URLQueryItem(name: "checkin_date", value: String(listing.checkin)),
             URLQueryItem(name: "hotel_id", value: String(listing.id)),
@@ -34,10 +34,12 @@ class HotelDetailsService {
         /*
          http://34.16.172.170:3000/api/fetchFullHotelByID?children_number=2&locale=it&children_ages=5%2C0&filter_by_currency=EUR&checkin_date=2024-09-17&hotel_id=9481490&adults_number=4&checkout_date=2024-09-20&units=metric
          */
-            
+         
             guard let url = urlComponents.url else {
                 throw URLError(.badURL)
             }
+        
+        print(url)
             
             do {
                 let (data, response) = try await URLSession.shared.data(from: url)

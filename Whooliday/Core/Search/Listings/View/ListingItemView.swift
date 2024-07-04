@@ -11,6 +11,12 @@ import CoreHaptics
 struct ListingItemView: View {
     let listing: Listing
     @State private var isFavorite = false
+    @ObservedObject private var firebaseManager = FirebaseManager.shared
+
+    init(listing: Listing) {
+            self.listing = listing
+        }
+        
     
     var body: some View {
         VStack(spacing: 8) {
@@ -19,8 +25,9 @@ struct ListingItemView: View {
                             .frame(height: 230)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                         
-                        HeartButton(isFavorite: $isFavorite, listing: listing)
-                            .padding(8)
+                        HeartButton(isFavorite: isFavorite, listing: listing) {
+                                                   toggleFavorite()
+                                               }
                     }
             
             // listing details
@@ -49,14 +56,38 @@ struct ListingItemView: View {
             }
             .font(.footnote)
         }
+        .onAppear {
+                    checkFavoriteStatus()
+                }
         .padding()
+       
+        
     }
+    
+    private func checkFavoriteStatus() {
+         firebaseManager.isListingFavorite(listingId: listing.id) { result in
+             DispatchQueue.main.async {
+                 self.isFavorite = result
+             }
+         }
+     }
+     
+     private func toggleFavorite() {
+         if isFavorite {
+             firebaseManager.removeFavorite(listingId: listing.id)
+         } else {
+             firebaseManager.addFavorite(listing: listing)
+         }
+         isFavorite.toggle()
+     }
+        
 }
 
 
 struct HeartButton: View {
-    @Binding var isFavorite: Bool
+    let isFavorite: Bool
     let listing: Listing
+    let onTap: () -> Void
     @State private var animationAmount: CGFloat = 1
     @State private var showLoginAlert = false
     let generator = UIImpactFeedbackGenerator(style: .soft)
@@ -66,13 +97,14 @@ struct HeartButton: View {
     var body: some View {
         Button(action: {
             if firebaseManager.isUserLoggedIn {
-                toggleFavorite()
+                onTap()
+                animateHeart()
             } else {
                 showLoginAlert = true
             }
         }) {
             Image(systemName: isFavorite ? "heart.fill" : "heart")
-                .foregroundColor(isFavorite ? .red : .white)
+                .foregroundColor(isFavorite ? .red : .black)
                 .font(.system(size: 22))
                 .padding(10)
                 .fontWeight(.bold)
@@ -89,36 +121,26 @@ struct HeartButton: View {
                         )
                 )
         }
-               .alert(isPresented: $showLoginAlert) {
-                         Alert(
-                             title: Text("Accesso richiesto"),
-                             message: Text("Per aggiungere questo hotel ai preferiti, devi effettuare l'accesso."),
-                             primaryButton: .default(Text("Accedi"), action: {
-                                SigninView()
-                             }),
-                             secondaryButton: .cancel(Text("Annulla"))
-                         )
-                     }
-                 }
-                 
+        .alert(isPresented: $showLoginAlert) {
+            Alert(
+                title: Text("Accesso richiesto"),
+                message: Text("Per aggiungere questo hotel ai preferiti, devi effettuare l'accesso."),
+                primaryButton: .default(Text("Accedi"), action: {
+                    // Implementa l'azione per mostrare la vista di login
+                }),
+                secondaryButton: .cancel(Text("Annulla"))
+            )
+        }
+    }
     
-    
-private func toggleFavorite() {
-       isFavorite.toggle()
-       animationAmount = 0
-       withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.3)) {
-           animationAmount = 1
-           generator.impactOccurred()
-       }
-       
-       if isFavorite {
-           firebaseManager.addFavorite(listing: listing)
-       } else {
-           firebaseManager.removeFavorite(listingId: listing.id)
-       }
-   }
+    private func animateHeart() {
+        animationAmount = 0
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.3)) {
+            animationAmount = 1
+            generator.impactOccurred()
+        }
+    }
 }
-
 
 struct ParticlesView: View {
     @State private var time: Double = 0

@@ -11,13 +11,14 @@ import FirebaseAuth
 import Combine
 
 class FirebaseManager: ObservableObject {
-
+    
     static let shared = FirebaseManager()
     private let db = Firestore.firestore()
-        
-        var isUserLoggedIn: Bool {
-            return Auth.auth().currentUser != nil
-        }
+    @Published var favorites: Set<Int> = []
+    
+    var isUserLoggedIn: Bool {
+        return Auth.auth().currentUser != nil
+    }
     
     func addFavorite(listing: Listing) {
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -26,7 +27,7 @@ class FirebaseManager: ObservableObject {
         }
         
         let favoriteData: [String: Any] = [
-            "hotelID": listing.id,
+            "hotelID": String(listing.id),
             "checkIn": listing.checkin,
             "checkOut": listing.checkout,
             "adultsNumber": listing.nAdults,
@@ -60,23 +61,23 @@ class FirebaseManager: ObservableObject {
     }
     
     func getFavoriteListingIds() -> AnyPublisher<[Int], Error> {
-            guard let userId = Auth.auth().currentUser?.uid else {
-                return Fail(error: NSError(domain: "FirebaseManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not logged in"]))
-                    .eraseToAnyPublisher()
-            }
-            
-            return Future { promise in
-                self.db.collection("users").document(userId).collection("favorites").document("hotels").collection("all").getDocuments { snapshot, error in
-                    if let error = error {
-                        promise(.failure(error))
-                    } else {
-                        let ids = snapshot?.documents.compactMap { Int($0.documentID) } ?? []
-                        promise(.success(ids))
-                    }
+        guard let userId = Auth.auth().currentUser?.uid else {
+            return Fail(error: NSError(domain: "FirebaseManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not logged in"]))
+                .eraseToAnyPublisher()
+        }
+        
+        return Future { promise in
+            self.db.collection("users").document(userId).collection("favorites").document("hotels").collection("all").getDocuments { snapshot, error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    let ids = snapshot?.documents.compactMap { Int($0.documentID) } ?? []
+                    promise(.success(ids))
                 }
             }
-            .eraseToAnyPublisher()
         }
+        .eraseToAnyPublisher()
+    }
     
     func addFavoriteFilter(listing: Listing, appliedFilters: String, listings: [Listing]) {
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -111,7 +112,7 @@ class FirebaseManager: ObservableObject {
         
         for lis in listings {
             let favoriteDataSingle: [String: Any] = [
-                "hotelID": lis.id,
+                "hotelID": String(lis.id),
                 "checkIn": lis.checkin,
                 "checkOut": lis.checkout,
                 "adultsNumber": lis.nAdults,
@@ -133,8 +134,25 @@ class FirebaseManager: ObservableObject {
             }
         }
         
-              
-                    
-                    
+        
+        
+        
     }
+
+    func isListingFavorite(listingId: Int, completion: @escaping (Bool) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+
+        db.collection("users").document(userId).collection("favorites")
+          .document("hotels").collection("all").document(String(listingId)).getDocument { (document, error) in
+            if let document = document, document.exists {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+    }
+
 }

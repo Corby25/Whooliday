@@ -340,6 +340,7 @@ struct SearchParameters: Equatable{
     var numChildren: Int
     var childrenAges: [Int]
     var filters: String = ""
+    var propertyType: String = "Tutto"
 }
 
 struct GuestCounterView: View {
