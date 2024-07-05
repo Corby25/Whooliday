@@ -159,6 +159,7 @@ class FavoritesModel: ObservableObject {
                               let checkOut = data["checkOut"] as? String,
                               let childrenNumber = data["childrenNumber"] as? Int,
                               let childrenAge = data["childrenAge"] as? String,
+                              let city = data["city"] as? String,
                               let filters = data["filters"] as? String else {
                             print("Failed to parse filter data.")
                             return nil
@@ -179,6 +180,7 @@ class FavoritesModel: ObservableObject {
                                       childrenNumber: childrenNumber,
                                       childrenAge: childrenAge,
                                       filters: filters,
+                                      city: city,
                                       isDeleted: isDeleted,
                                       hotels: [])
                     }

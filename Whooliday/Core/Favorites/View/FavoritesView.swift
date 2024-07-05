@@ -226,7 +226,7 @@ struct FiltersListView: View {
                                 Text("Where:")
                                     .font(.caption2)
                                     .foregroundColor(.gray)
-                                Text("Napoli")
+                                Text("\(filter.city)")
                                     .font(.subheadline)
                             }
                         }

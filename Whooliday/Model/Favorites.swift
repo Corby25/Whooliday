@@ -89,6 +89,7 @@ struct Filter: Identifiable, Codable {
     let childrenNumber: Int
     let childrenAge: String
     let filters: String
+    let city: String
     var isDeleted: Bool
     var hotels: [Hotel]
     
