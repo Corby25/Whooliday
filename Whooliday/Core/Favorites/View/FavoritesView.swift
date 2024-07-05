@@ -57,11 +57,11 @@ struct HotelsListView: View {
                 await favoritesModel.refreshHotels()
             }
         }
-        /*
+        
         .sheet(item: $selectedHotel) { listing in
-            ListingDetailView(listing: listing, viewModel: viewModel)
+            ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))
         }
-         */
+         
     }
 
     private func deleteHotel(at offsets: IndexSet) {
@@ -182,7 +182,7 @@ struct FiltersListView: View {
                         }
                     )
                 ) {
-                    HStack(spacing: 20) {
+                    HStack(spacing: 15) {
                         ZStack {
                             Circle()
                                 .fill(colors[index % colors.count])

@@ -96,7 +96,7 @@ class FavoritesModel: ObservableObject {
                let currency = userData["currency"] as? String,
                let locale = userData["locale"] as? String {
                 
-                var components = URLComponents(string: "http://34.16.172.170:3000/api/fetchHotelByID")
+                var components = URLComponents(string: "http://34.16.172.170:3000/api/fetchFullHotelByID")
                 components?.queryItems = [
                     hotel?.childrenNumber != 0 ? URLQueryItem(name: "children_number", value: hotel?.childrenNumber.map { String($0) }) : nil,
                     URLQueryItem(name: "locale", value: locale),
@@ -113,10 +113,11 @@ class FavoritesModel: ObservableObject {
                     print("Invalid URL")
                     return nil
                 }
-                
+
                 let (data, _) = try await URLSession.shared.data(from: url)
                 let decodedResponse = try JSONDecoder().decode(APIHotelResponse.self, from: data)
                 print("Fetched hotel details from API")
+
                 return decodedResponse
             } else {
                 print("Missing currency or locale information for user \(userID)")
