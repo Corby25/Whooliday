@@ -139,20 +139,20 @@ struct HotelRowView: View {
     private func hotelToListing(hotel: Hotel) -> Listing {
         return Listing(
             id: Int(hotel.hotelID) ?? 0,
-            latitude: 0.0,
-            longitude: 0.0,
-            city: "",
-            state: "",
+            latitude: hotel.latitude ?? 0.0,
+            longitude: hotel.longitude ?? 0.0,
+            city: hotel.city ?? "Unknown City",
+            state: hotel.state ?? "Unknown State",
             name: hotel.name ?? "Unknown Hotel",
             strikethrough_price: hotel.isNew ? hotel.oldPrice : 0.0,
             review_count: hotel.reviewCount ?? 0,
             review_score: hotel.reviewScore ?? 0.0,
-            checkin: "",
-            checkout: "",
-            nAdults: 0,
-            nChildren: 0,
-            childrenAge: "",
-            currency: "",
+            checkin: hotel.checkIn,
+            checkout: hotel.checkOut,
+            nAdults: hotel.adultsNumber,
+            nChildren: hotel.childrenNumber,
+            childrenAge: hotel.childrenAge,
+            currency: "EUR",
             images: hotel.images ?? []
             
         )

@@ -50,6 +50,10 @@ class FavoritesModel: ObservableObject {
                                 hotelData.reviewCount = apiHotelData.review_count
                                 hotelData.reviewScore = apiHotelData.review_score
                                 hotelData.images = apiHotelData.images
+                                hotelData.latitude = apiHotelData.latitude
+                                hotelData.longitude = apiHotelData.longitude
+                                hotelData.city = apiHotelData.city
+                                hotelData.state = apiHotelData.state
                             }
                             return hotelData
                         } catch {
@@ -117,7 +121,7 @@ class FavoritesModel: ObservableObject {
                 let (data, _) = try await URLSession.shared.data(from: url)
                 let decodedResponse = try JSONDecoder().decode(APIHotelResponse.self, from: data)
                 print("Fetched hotel details from API")
-
+                print(decodedResponse)
                 return decodedResponse
             } else {
                 print("Missing currency or locale information for user \(userID)")
