@@ -98,6 +98,7 @@ class FirebaseManager: ObservableObject {
             "filters": appliedFilters,
             "orderBy": "distance",
             "roomNumber": 1,
+            "city": listing.city,
             "units": "metric",
             
         ]
@@ -145,8 +146,7 @@ class FirebaseManager: ObservableObject {
             return
         }
 
-        db.collection("users").document(userId).collection("favorites")
-          .document("hotels").collection("all").document(String(listingId)).getDocument { (document, error) in
+        db.collection("users").document(userId).collection("favorites").document("hotels").collection("all").document(String(listingId)).getDocument { (document, error) in
             if let document = document, document.exists {
                 completion(true)
             } else {

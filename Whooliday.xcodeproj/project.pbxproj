@@ -39,6 +39,7 @@
 		B41A9F742C2B6EBE00C8F1E3 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F732C2B6EBE00C8F1E3 /* ExploreView.swift */; };
 		B41A9F782C2B6F2300C8F1E3 /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F772C2B6F2300C8F1E3 /* ExploreViewModel.swift */; };
 		B42A44DE2C36822A00433683 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A44DD2C36822A00433683 /* WeatherService.swift */; };
+		B42A44E62C37EE9D00433683 /* WhoolidayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A44E52C37EE9D00433683 /* WhoolidayTests.swift */; };
 		B43E786E2C2EA4F5009D5233 /* BookingSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E786D2C2EA4F5009D5233 /* BookingSymbols.swift */; };
 		B4572E942C3188E000324B4F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4572E932C3188E000324B4F /* FirebaseManager.swift */; };
 		B4572E9C2C33E23800324B4F /* ListingFavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4572E9B2C33E23800324B4F /* ListingFavoriteView.swift */; };
@@ -88,6 +89,16 @@
 		FFDCD3702C20261F00E2142A /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDCD36F2C20261F00E2142A /* ContainerView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B42A44E72C37EE9D00433683 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFDCD3302C1F554300E2142A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFDCD3372C1F554300E2142A;
+			remoteInfo = Whooliday;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		6C39E1532C226D4800B83BBD /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
 		6C39E1572C2273E500B83BBD /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
@@ -115,6 +126,8 @@
 		B41A9F732C2B6EBE00C8F1E3 /* ExploreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
 		B41A9F772C2B6F2300C8F1E3 /* ExploreViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
 		B42A44DD2C36822A00433683 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		B42A44E32C37EE9D00433683 /* WhoolidayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhoolidayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B42A44E52C37EE9D00433683 /* WhoolidayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayTests.swift; sourceTree = "<group>"; };
 		B43E786D2C2EA4F5009D5233 /* BookingSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSymbols.swift; sourceTree = "<group>"; };
 		B4572E932C3188E000324B4F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		B4572E9B2C33E23800324B4F /* ListingFavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingFavoriteView.swift; sourceTree = "<group>"; };
@@ -165,6 +178,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B42A44E02C37EE9D00433683 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FFDCD3352C1F554300E2142A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -330,6 +350,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		B42A44E42C37EE9D00433683 /* WhoolidayTests */ = {
+			isa = PBXGroup;
+			children = (
+				B42A44E52C37EE9D00433683 /* WhoolidayTests.swift */,
+			);
+			path = WhoolidayTests;
+			sourceTree = "<group>";
+		};
 		B482FAAB2C2B81FE00D6A0E2 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				FFDCD33A2C1F554300E2142A /* Whooliday */,
+				B42A44E42C37EE9D00433683 /* WhoolidayTests */,
 				FFDCD3392C1F554300E2142A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -488,6 +517,7 @@
 			isa = PBXGroup;
 			children = (
 				FFDCD3382C1F554300E2142A /* Whooliday.app */,
+				B42A44E32C37EE9D00433683 /* WhoolidayTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -523,6 +553,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B42A44E22C37EE9D00433683 /* WhoolidayTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B42A44EB2C37EE9D00433683 /* Build configuration list for PBXNativeTarget "WhoolidayTests" */;
+			buildPhases = (
+				B42A44DF2C37EE9D00433683 /* Sources */,
+				B42A44E02C37EE9D00433683 /* Frameworks */,
+				B42A44E12C37EE9D00433683 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B42A44E82C37EE9D00433683 /* PBXTargetDependency */,
+			);
+			name = WhoolidayTests;
+			productName = WhoolidayTests;
+			productReference = B42A44E32C37EE9D00433683 /* WhoolidayTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		FFDCD3372C1F554300E2142A /* Whooliday */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FFDCD35C2C1F554600E2142A /* Build configuration list for PBXNativeTarget "Whooliday" */;
@@ -561,6 +609,10 @@
 				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					B42A44E22C37EE9D00433683 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = FFDCD3372C1F554300E2142A;
+					};
 					FFDCD3372C1F554300E2142A = {
 						CreatedOnToolsVersion = 15.4;
 					};
@@ -587,11 +639,19 @@
 			projectRoot = "";
 			targets = (
 				FFDCD3372C1F554300E2142A /* Whooliday */,
+				B42A44E22C37EE9D00433683 /* WhoolidayTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B42A44E12C37EE9D00433683 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FFDCD3362C1F554300E2142A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -619,6 +679,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B42A44DF2C37EE9D00433683 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B42A44E62C37EE9D00433683 /* WhoolidayTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FFDCD3342C1F554300E2142A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -681,7 +749,49 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B42A44E82C37EE9D00433683 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFDCD3372C1F554300E2142A /* Whooliday */;
+			targetProxy = B42A44E72C37EE9D00433683 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		B42A44E92C37EE9D00433683 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WhoolidayTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Whooliday.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Whooliday";
+			};
+			name = Debug;
+		};
+		B42A44EA2C37EE9D00433683 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WhoolidayTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Whooliday.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Whooliday";
+			};
+			name = Release;
+		};
 		FFDCD35A2C1F554600E2142A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -866,6 +976,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B42A44EB2C37EE9D00433683 /* Build configuration list for PBXNativeTarget "WhoolidayTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B42A44E92C37EE9D00433683 /* Debug */,
+				B42A44EA2C37EE9D00433683 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FFDCD3332C1F554300E2142A /* Build configuration list for PBXProject "Whooliday" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
