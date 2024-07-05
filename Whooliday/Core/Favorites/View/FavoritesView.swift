@@ -167,9 +167,11 @@ struct FiltersListView: View {
     @ObservedObject var favoritesModel: FavoritesModel
     @State private var selectedFilter: Filter?
     
+    let colors: [Color] = [.blue, .green, .orange, .purple, .pink]
+    
     var body: some View {
         List {
-            ForEach(favoritesModel.filters.filter { !$0.isDeleted }) { filter in
+            ForEach(Array(favoritesModel.filters.filter { !$0.isDeleted }.enumerated()), id: \.element.id) { index, filter in
                 NavigationLink(
                     destination: FilterHotelsListView(filter: filter, favoritesModel: favoritesModel),
                     tag: filter.id ?? "",
@@ -180,18 +182,54 @@ struct FiltersListView: View {
                         }
                     )
                 ) {
-                    VStack(alignment: .leading) {
-                        Text("Max Price: \(filter.maxPrice)")
-                        Text("Adults Number: \(filter.adultsNumber)")
-                        Text("Latitude: \(filter.latitude)")
-                        Text("Longitude: \(filter.longitude)")
-                        Text("Order By: \(filter.orderBy)")
-                        Text("Room Number: \(filter.roomNumber)")
-                        Text("Units: \(filter.units)")
-                        Text("Check In: \(filter.checkIn)")
-                        Text("Check Out: \(filter.checkOut)")
-                        Text("Children Number: \(filter.childrenNumber)")
-                        Text("Children Age: \(filter.childrenAge)")
+                    HStack(spacing: 20) {
+                        ZStack {
+                            Circle()
+                                .fill(colors[index % colors.count])
+                                .frame(width: 30, height: 30)
+                            
+                            Text("\(index + 1)")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                        }
+                        .padding(.leading, -5)
+                        
+                        VStack(alignment: .leading, spacing: 5) {
+                            HStack {
+                                Text("From:")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                Text(filter.checkIn)
+                                    .font(.subheadline)
+                                Text("To:")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                    .padding(.leading, 8)
+                                Text(filter.checkOut)
+                                    .font(.subheadline)
+                            }
+                            HStack {
+                                Text("Max Price:")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                Text("\(filter.maxPrice, specifier: "%.2f") \(favoritesModel.userCurrency)")
+                                    .font(.subheadline)
+                            }
+                            HStack {
+                                Text("Number of guests:")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                Text("\(filter.adultsNumber + filter.childrenNumber)")
+                                    .font(.subheadline)
+                            }
+                            HStack {
+                                Text("Where:")
+                                    .font(.caption2)
+                                    .foregroundColor(.gray)
+                                Text("Napoli")
+                                    .font(.subheadline)
+                            }
+                        }
                     }
                 }
             }

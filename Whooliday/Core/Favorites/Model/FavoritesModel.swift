@@ -9,6 +9,7 @@ class FavoritesModel: ObservableObject {
     @Published var filters: [Filter] = []
     @Published var isLoadingHotels = false
     @Published var isLoadingFilterHotels = false
+    @Published var userCurrency: String = ""
     
     private var db = Firestore.firestore()
     private var userID: String
@@ -17,6 +18,7 @@ class FavoritesModel: ObservableObject {
     init() {
         self.userID = Auth.auth().currentUser?.uid ?? ""
         Task {
+            await fetchUserCurrency()
             await fetchFavorites()
         }
     }
@@ -111,7 +113,6 @@ class FavoritesModel: ObservableObject {
                     print("Invalid URL")
                     return nil
                 }
-                print(url)
                 
                 let (data, _) = try await URLSession.shared.data(from: url)
                 let decodedResponse = try JSONDecoder().decode(APIHotelResponse.self, from: data)
@@ -122,7 +123,7 @@ class FavoritesModel: ObservableObject {
                 return nil
             }
         } catch {
-            print("Error fetching user data for \(userID): \(error)")
+            print("Error fetching hotel details")
             return nil
         }
     }
@@ -352,5 +353,20 @@ class FavoritesModel: ObservableObject {
             self.filters.removeAll()
         }
         await fetchFilters()
+    }
+    
+    private func fetchUserCurrency() async {
+        let userDocRef = db.collection("users").document(userID)
+        do {
+            let userSnapshot = try await userDocRef.getDocument()
+            if let userData = userSnapshot.data(),
+               let currency = userData["currency"] as? String {
+                await MainActor.run {
+                    self.userCurrency = currency
+                }
+            }
+        } catch {
+            print("Error fetching user currency: \(error.localizedDescription)")
+        }
     }
 }
