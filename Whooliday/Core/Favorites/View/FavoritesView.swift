@@ -4,9 +4,32 @@ struct FavoritesView: View {
     @StateObject private var favoritesModel = FavoritesModel()
     @State private var selectedTab = 0 // 0: Hotels, 1: Filters
 
+    private var headerView: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("Cogli le occasioni")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                Text("Seleziona un hotel o un filtro")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+            }
+            
+            Spacer()
+            
+            Image("logo2")
+                .resizable()
+                .frame(width: 70, height: 70)
+        }
+        .padding()
+    }
+
     var body: some View {
         NavigationView {
             VStack {
+                headerView // Custom header view
+
                 Picker(selection: $selectedTab, label: Text("Select")) {
                     Text("Hotels").tag(0)
                     Text("Places").tag(1)
@@ -23,10 +46,11 @@ struct FavoritesView: View {
                     FiltersListView(favoritesModel: favoritesModel)
                 }
             }
-            .navigationTitle("Favorites")
+            .navigationBarHidden(true) // Hide the default navigation title
         }
     }
 }
+
 
 
 struct HotelsListView: View {
@@ -57,7 +81,6 @@ struct HotelsListView: View {
                 await favoritesModel.refreshHotels()
             }
         }
-        
         .sheet(item: $selectedHotel) { listing in
             ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))
         }
@@ -88,51 +111,92 @@ struct HotelRowView: View {
     var isMain: Bool
     var favoritesModel: FavoritesModel
     @Binding var selectedHotel: Listing?
-    
+
     var body: some View {
         Button(action: {
             selectedHotel = hotelToListing(hotel: hotel)
         }) {
-            HStack {
-                if let images = hotel.images, let firstImage = images.first, let url = URL(string: firstImage) {
-                    AsyncImage(url: url) { image in
-                        image.resizable()
-                            .frame(width: 50, height: 50)
-                            .cornerRadius(8)
-                    } placeholder: {
-                        ProgressView()
-                            .frame(width: 50, height: 50)
-                    }
-                } else {
-                    Image("listing-1")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(8)
-                }
-
-                VStack(alignment: .leading) {
-                    Text(hotel.name ?? "Unknown Hotel")
-                        .font(.headline)
-                        .foregroundColor(.black)
-
-                    if hotel.isNew {
-                        Text("€\(hotel.oldPrice, specifier: "%.2f")")
-                            .font(.subheadline)
-                            .strikethrough(true, color: .red)
-                        Text("€\(hotel.newPrice, specifier: "%.2f")")
-                            .font(.subheadline)
+            ZStack {
+                HStack {
+                    if let images = hotel.images, let firstImage = images.first, let url = URL(string: firstImage) {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                                .frame(width: 60, height: 50)
+                                .cornerRadius(8)
+                        } placeholder: {
+                            ProgressView()
+                                .frame(width: 60, height: 50)
+                        }
                     } else {
-                        Text("€\(hotel.newPrice, specifier: "%.2f")")
+                        Image("listing-1")
+                            .resizable()
+                            .frame(width: 60, height: 50)
+                            .cornerRadius(8)
+                    }
+                    Spacer()
+                    VStack(alignment: .leading) {
+                        Text(hotel.name ?? "Unknown Hotel")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                            .lineLimit(1) // Ensure the hotel name stays on a single line
+
+                        Text("\(hotel.city ?? "City")")
                             .font(.subheadline)
+                            .foregroundColor(.gray)
+
+                        Text("From: \(hotel.checkIn)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+
+                        Text("To: \(hotel.checkOut)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+
+                        if let childrenNumber = hotel.childrenNumber {
+                            Text("Number of guests: \(hotel.adultsNumber + childrenNumber)")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        } else {
+                            Text("Number of guests: \(hotel.adultsNumber)")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        if hotel.newPrice == 0 {
+                            Text("Esaurito")
+                                .font(.subheadline)
+                                .foregroundColor(.red)
+                        } else if hotel.newPrice != hotel.oldPrice {
+                            Text("€\(hotel.oldPrice, specifier: "%.2f")")
+                                .font(.subheadline)
+                                .strikethrough(true, color: .red)
+                            Text("€\(hotel.newPrice, specifier: "%.2f")")
+                                .font(.subheadline)
+                                .foregroundColor(.black)
+                        } else {
+                            Text("€\(hotel.newPrice, specifier: "%.2f")")
+                                .font(.subheadline)
+                                .foregroundColor(.black)
+                        }
+                    }
+                    if hotel.isNew {
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 10, height: 10)
                     }
                 }
-                Spacer()
-                if hotel.isNew {
-                    Circle()
-                        .fill(Color.blue)
-                        .frame(width: 10, height: 10)
+                if hotel.newPrice == 0 {
+                    Image("barred-line")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(maxWidth: 100, maxHeight: 100)
+                        .opacity(0.8)
                 }
             }
+            .background(Color.white)
+            .cornerRadius(10)
         }
     }
 
@@ -152,7 +216,7 @@ struct HotelRowView: View {
             nAdults: hotel.adultsNumber,
             nChildren: hotel.childrenNumber,
             childrenAge: hotel.childrenAge,
-            currency: "EUR",
+            currency: favoritesModel.userCurrency,
             images: hotel.images ?? []
             
         )

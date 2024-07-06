@@ -248,6 +248,10 @@ class FavoritesModel: ObservableObject {
                                 hotelData.reviewCount = apiHotelData.review_count
                                 hotelData.reviewScore = apiHotelData.review_score
                                 hotelData.images = apiHotelData.images
+                                hotelData.latitude = apiHotelData.latitude
+                                hotelData.longitude = apiHotelData.longitude
+                                hotelData.city = apiHotelData.city
+                                hotelData.state = apiHotelData.state
                             }
                             return hotelData
                         } catch {
