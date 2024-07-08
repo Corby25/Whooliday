@@ -188,11 +188,11 @@ struct HotelRowView: View {
                     }
                 }
                 if hotel.newPrice == 0 {
-                    Image("barred-line")
+                    Image("sold-out")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: 100, maxHeight: 100)
-                        .opacity(0.8)
+                        .frame(maxWidth: 160, maxHeight: 160)
+                        .opacity(0.5)
                 }
             }
             .background(Color.white)
@@ -276,8 +276,14 @@ struct FiltersListView: View {
                                 Text("Max Price:")
                                     .font(.caption)
                                     .foregroundColor(.gray)
-                                Text("\(filter.maxPrice, specifier: "%.2f") \(favoritesModel.userCurrency)")
-                                    .font(.subheadline)
+
+                                if filter.maxPrice == 0 {
+                                    Text("Not set")
+                                        .font(.subheadline)
+                                } else {
+                                    Text("\(filter.maxPrice, specifier: "%.2f") \(favoritesModel.userCurrency)")
+                                        .font(.subheadline)
+                                }
                             }
                             HStack {
                                 Text("Number of guests:")
