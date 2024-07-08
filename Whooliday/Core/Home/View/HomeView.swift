@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var selectedPlace: Place? = nil
     @State private var showAddFilterView = false
     
+    
     init(viewModel: HomeViewModel = HomeViewModel()) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -21,36 +22,44 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
+                
+                
                 headerView
                 
-                SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: .constant(false), onFavoriteToggle: {}, showFilterAndFavorite: false)
-                    .onTapGesture {
-                        withAnimation(.spring()) {
-                            showDestinationSearch = true
+                if let errorState = viewModel.errorState {
+                    ErrorView()
+                } else {
+                    
+                    SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: .constant(false), onFavoriteToggle: {}, showFilterAndFavorite: false)
+                        .onTapGesture {
+                            withAnimation(.spring()) {
+                                showDestinationSearch = true
+                            }
                         }
+                    
+                    ContinentButtons(selectedContinent: $viewModel.selectedContinent, viewModel: viewModel)
+                    
+                    ScrollView {
+                        createCards()
                     }
-                
-                ContinentButtons(selectedContinent: $viewModel.selectedContinent, viewModel: viewModel)
-                
-                ScrollView {
-                    createCards()
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
             }
-            .padding()
-            .overlay(DestinationSearchOverlay(showDestinationSearch: $showDestinationSearch,
-                                              searchParameters: $searchParameters,
-                                              navigateToExplore: $navigateToExplore))
-            .navigationDestination(isPresented: $navigateToExplore) {
-                ExploreView(searchParameters: searchParameters)
+                    .padding()
+                    .overlay(DestinationSearchOverlay(showDestinationSearch: $showDestinationSearch,
+                                                      searchParameters: $searchParameters,
+                                                      navigateToExplore: $navigateToExplore))
+                    .navigationDestination(isPresented: $navigateToExplore) {
+                        ExploreView(searchParameters: searchParameters)
+                    }
+                    .sheet(item: $selectedPlace) { place in
+                        CityDetailView(viewModel: viewModel, place: place)
+                    }
+                    .onAppear {
+                        viewModel.fetchPlaces()
+                    }
             }
-            .sheet(item: $selectedPlace) { place in
-                CityDetailView(viewModel: viewModel, place: place)
-            }
-            .onAppear {
-                viewModel.fetchPlaces()
-            }
-        }
+
     }
     
     private var headerView: some View {
@@ -212,3 +221,5 @@ extension HomeViewModel {
 #Preview {
     HomeView(viewModel: HomeViewModel.mock())
 }
+
+

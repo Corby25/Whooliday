@@ -40,6 +40,7 @@
 		B41A9F782C2B6F2300C8F1E3 /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A9F772C2B6F2300C8F1E3 /* ExploreViewModel.swift */; };
 		B42A44DE2C36822A00433683 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A44DD2C36822A00433683 /* WeatherService.swift */; };
 		B42A44E62C37EE9D00433683 /* WhoolidayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A44E52C37EE9D00433683 /* WhoolidayTests.swift */; };
+		B42A44F32C3C81F500433683 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A44F22C3C81F500433683 /* ErrorView.swift */; };
 		B43E786E2C2EA4F5009D5233 /* BookingSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E786D2C2EA4F5009D5233 /* BookingSymbols.swift */; };
 		B4572E942C3188E000324B4F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4572E932C3188E000324B4F /* FirebaseManager.swift */; };
 		B4572E9C2C33E23800324B4F /* ListingFavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4572E9B2C33E23800324B4F /* ListingFavoriteView.swift */; };
@@ -128,6 +129,7 @@
 		B42A44DD2C36822A00433683 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		B42A44E32C37EE9D00433683 /* WhoolidayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhoolidayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B42A44E52C37EE9D00433683 /* WhoolidayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoolidayTests.swift; sourceTree = "<group>"; };
+		B42A44F22C3C81F500433683 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B43E786D2C2EA4F5009D5233 /* BookingSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSymbols.swift; sourceTree = "<group>"; };
 		B4572E932C3188E000324B4F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		B4572E9B2C33E23800324B4F /* ListingFavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingFavoriteView.swift; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 				B482FAAF2C2B8B1400D6A0E2 /* CardViewBig.swift */,
 				B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */,
 				B4572E9D2C33F79000324B4F /* CityDetails.swift */,
+				B42A44F22C3C81F500433683 /* ErrorView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -698,6 +701,7 @@
 				FF92C1BE2C27335400D2CA45 /* CustomNavBar.swift in Sources */,
 				B4F722942C2D72E700D40AAB /* CalendarView.swift in Sources */,
 				B4F722982C2D924B00D40AAB /* FilterView.swift in Sources */,
+				B42A44F32C3C81F500433683 /* ErrorView.swift in Sources */,
 				6C39E1542C226D4800B83BBD /* SigninView.swift in Sources */,
 				6CAB274D2C2A504E00122C3E /* ProfileView.swift in Sources */,
 				FF7AAFC42C21C9580080E20F /* WelcomeView2.swift in Sources */,
