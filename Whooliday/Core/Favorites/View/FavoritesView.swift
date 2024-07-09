@@ -51,8 +51,6 @@ struct FavoritesView: View {
     }
 }
 
-
-
 struct HotelsListView: View {
     @State private var selectedHotel: Listing?
     var hotels: [Hotel]
@@ -70,9 +68,27 @@ struct HotelsListView: View {
             } else {
                 ForEach(hotels.filter { !$0.isDeleted }) { hotel in
                     HotelRowView(hotel: hotel, isMain: isMain, favoritesModel: favoritesModel, selectedHotel: $selectedHotel)
-                }
-                .if(isMain) {
-                    $0.onDelete(perform: deleteHotel)
+                        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                            if isMain {
+                                if hotel.isNew {
+                                    Button {
+                                        favoritesModel.makeHotelAsSeen(hotel)
+                                    } label: {
+                                        Label("Visualizza", systemImage: "eye")
+                                    }
+                                    .tint(.blue)
+                                }
+                            }
+                        }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            if isMain {
+                                Button(role: .destructive) {
+                                    favoritesModel.deleteHotel(hotel)
+                                } label: {
+                                    Label("Rimuovi", systemImage: "trash")
+                                }
+                            }
+                        }
                 }
             }
         }
@@ -85,13 +101,6 @@ struct HotelsListView: View {
             ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))
         }
          
-    }
-
-    private func deleteHotel(at offsets: IndexSet) {
-        for index in offsets {
-            let hotel = hotels.filter { !$0.isDeleted }[index]
-            favoritesModel.deleteHotel(hotel)
-        }
     }
 }
 
@@ -144,20 +153,20 @@ struct HotelRowView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
 
-                        Text("From: \(hotel.checkIn)")
+                        Text("Da: \(hotel.checkIn)")
                             .font(.subheadline)
                             .foregroundColor(.gray)
 
-                        Text("To: \(hotel.checkOut)")
+                        Text("A: \(hotel.checkOut)")
                             .font(.subheadline)
                             .foregroundColor(.gray)
 
                         if let childrenNumber = hotel.childrenNumber {
-                            Text("Number of guests: \(hotel.adultsNumber + childrenNumber)")
+                            Text("Numero di ospiti: \(hotel.adultsNumber + childrenNumber)")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         } else {
-                            Text("Number of guests: \(hotel.adultsNumber)")
+                            Text("Numero di ospiti: \(hotel.adultsNumber)")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }
@@ -243,9 +252,9 @@ struct FiltersListView: View {
                         get: { self.selectedFilter?.id },
                         set: { newValue in
                             self.selectedFilter = favoritesModel.filters.first(where: { $0.id == newValue })
-                            if let id = filter.id {
+                            /*if let id = filter.id {
                                 favoritesModel.markFilterAsNotNew(withId: id)
-                            }
+                            }*/
                         }
                     )
                 ) {

@@ -301,33 +301,33 @@ class FavoritesModel: ObservableObject {
         let hotelCollectionRef = db.collection("users").document(userID)
                                    .collection("favorites").document("hotels").collection("all")
         
-        // Query to find the document with the matching hotelID
-        hotelCollectionRef.whereField("hotelID", isEqualTo: hotel.hotelID).getDocuments { (querySnapshot, error) in
+
+        hotelCollectionRef.document(hotel.hotelID).updateData(["isDeleted": true]) { error in
             if let error = error {
-                print("Error finding document: \(error.localizedDescription)")
-                return
+                print("Error updating document: \(error.localizedDescription)")
+            } else {
+                print("Document successfully updated to mark as deleted")
+                DispatchQueue.main.async {
+                    if let index = self.hotels.firstIndex(where: { $0.hotelID == hotel.hotelID }) {
+                        self.hotels[index].isDeleted = true
+                    }
+                }
             }
-            
-            guard let documents = querySnapshot?.documents, !documents.isEmpty else {
-                print("No document found with the specified hotelID")
-                return
-            }
-            
-            // Assuming there's only one document with the matching hotelID
-            let document = documents[0]
-            let documentID = document.documentID
-            
-            // Update the document's isDeleted field
-            hotelCollectionRef.document(documentID).updateData(["isDeleted": true]) { error in
-                if let error = error {
-                    print("Error updating document: \(error.localizedDescription)")
-                } else {
-                    print("Document successfully updated to mark as deleted")
-                    // Optionally remove the hotel from the local array
-                    DispatchQueue.main.async {
-                        if let index = self.hotels.firstIndex(where: { $0.hotelID == hotel.hotelID }) {
-                            self.hotels[index].isDeleted = true
-                        }
+        }
+    }
+    
+    func makeHotelAsSeen(_ hotel: Hotel) {
+        let hotelCollectionRef = db.collection("users").document(userID)
+                                   .collection("favorites").document("hotels").collection("all")
+        
+        hotelCollectionRef.document(hotel.hotelID).updateData(["isNew": false]) { error in
+            if let error = error {
+                print("Error updating document: \(error.localizedDescription)")
+            } else {
+                print("Document successfully updated to mark as not new")
+                DispatchQueue.main.async {
+                    if let index = self.hotels.firstIndex(where: { $0.hotelID == hotel.hotelID }) {
+                        self.hotels[index].isNew = false
                     }
                 }
             }
