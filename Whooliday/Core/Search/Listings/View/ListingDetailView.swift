@@ -7,8 +7,7 @@
 
 import SwiftUI
 import MapKit
-
-
+import SafariServices
 
 struct ListingDetailView: View {
     @Environment(\.dismiss) var dismiss
@@ -20,40 +19,34 @@ struct ListingDetailView: View {
     @State private var region: MKCoordinateRegion
     @State private var isFavorite: Bool = false
     @ObservedObject private var firebaseManager = FirebaseManager.shared
-    
-
-    
+    @Environment(\.colorScheme) var colorScheme
     init(listing: Listing, viewModel: ExploreViewModel) {
-           self.listing = listing
-           self._viewModel = StateObject(wrappedValue: viewModel)
-           self._region = State(initialValue: MKCoordinateRegion(
-               center: CLLocationCoordinate2D(latitude: listing.latitude, longitude: listing.longitude),
-               span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-           ))
-       }
-    
+        self.listing = listing
+        self._viewModel = StateObject(wrappedValue: viewModel)
+        self._region = State(initialValue: MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: listing.latitude, longitude: listing.longitude),
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        ))
+    }
+
     var body: some View {
-       
         GeometryReader { geometry in
             ZStack(alignment: .top) {
-                ListingImageCarouseView(listing: listing)
-                    .frame(height: 300)
-                    .offset(y: -scrollOffset / 4)
-                    .blur(radius: scrollOffset / 100)
-                    .ignoresSafeArea()
-                
-                ScrollView {
-                    
-                    VStack(spacing: 0) {
-                        Color.clear.frame(height: 320)
-                        
-                        VStack {
+                VStack {
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            ListingImageCarouseView(listing: listing)
+                                .frame(height: 300)
+                                .offset(y: -scrollOffset / 4)
+                                .blur(radius: scrollOffset / 100)
+                                .ignoresSafeArea()
+
                             // Contenuto principale
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(listing.name)
                                     .font(.title)
                                     .fontWeight(.semibold)
-                                
+
                                 VStack(alignment: .leading) {
                                     HStack(spacing: 2) {
                                         Image(systemName: "star.fill")
@@ -64,35 +57,34 @@ struct ListingDetailView: View {
                                             .fontWeight(.semibold)
                                     }
                                     .font(.caption)
-                                    .foregroundColor(.black)
-                                    
+                                    .foregroundColor(.primary)
+
                                     if let city = viewModel.selectedHotelDetails?.city,
-                                               let state = viewModel.selectedHotelDetails?.state{
-                                                Text("\(city), \(state)")
-                                                    .padding(.top, 2)
-                                            } else {
-                                                ZStack(alignment: .leading){
-                                                    ShimmeringViewDetail()
-                                                    
-                                                }
-                                                .frame(width: 50)
-                                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                                            }
-                                    
+                                       let state = viewModel.selectedHotelDetails?.state {
+                                        Text("\(city), \(state)")
+                                            .padding(.top, 2)
+                                    } else {
+                                        ZStack(alignment: .leading) {
+                                            ShimmeringViewDetail()
+                                        }
+                                        .frame(width: 50)
+                                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                                    }
                                 }
                                 .font(.caption)
                             }
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            
+                            .background(Color(.systemBackground))
+
                             Divider()
-                            
+
                             // Rooms
                             VStack(alignment: .leading) {
                                 Text("Ospiti")
                                     .font(.headline)
                                 Spacer()
-                                
+
                                 HStack(alignment: .top) {
                                     VStack {
                                         HStack(spacing: 8) {
@@ -106,9 +98,9 @@ struct ListingDetailView: View {
                                             .font(.headline)
                                             .fontWeight(.semibold)
                                     }
-                                    
+
                                     Spacer()
-                                    
+
                                     if ((listing.nChildren ?? 0) > 0) {
                                         VStack {
                                             HStack(spacing: 8) {
@@ -127,135 +119,104 @@ struct ListingDetailView: View {
                                 .padding()
                             }
                             .padding()
-                            
+                            .background(Color(.systemBackground))
+
                             Divider()
-                            
-                            
-            
-                            
+
                             // Listing amenities
-                            // Listing amenities
-                            // Listing amenities
-                            // Listing amenities
-                            
                             VStack(alignment: .leading, spacing: 16) {
                                 Text("Cosa offre")
                                     .font(.headline)
-                                
+
                                 if viewModel.isLoadingFacilities {
-                                    if viewModel.isLoadingFacilities {
-                                        // Indicatore di caricamento con tre punti che si muovono
-                                        HStack(alignment: .center, spacing: 10) {
-                                            ForEach(0..<3) { index in
-                                                Circle()
-                                                    .fill(Color.gray)
-                                                    .frame(width: 8, height: 8)
-                                                    .offset(y: viewModel.isLoadingFacilities ? -5 : 0)
-                                                    .animation(
-                                                        Animation.easeInOut(duration: 0.5)
-                                                            .repeatForever(autoreverses: true)
-                                                            .delay(Double(index) * 0.2),
-                                                        value: viewModel.isLoadingFacilities
-                                                    )
-                                            }
+                                    HStack(alignment: .center, spacing: 10) {
+                                        ForEach(0..<3) { index in
+                                            Circle()
+                                                .fill(Color.gray)
+                                                .frame(width: 8, height: 8)
+                                                .offset(y: viewModel.isLoadingFacilities ? -5 : 0)
+                                                .animation(
+                                                    Animation.easeInOut(duration: 0.5)
+                                                        .repeatForever(autoreverses: true)
+                                                        .delay(Double(index) * 0.2),
+                                                    value: viewModel.isLoadingFacilities
+                                                )
                                         }
-                                        .padding()
-                                    }} else if let facilities = viewModel.selectedHotelDetails?.facilities {
-                                        let facilitiesArray = facilities.components(separatedBy: ",")
-                                        
-                                        ForEach(facilitiesArray.indices, id: \.self) { index in
-                                            if index < 5 || showAllFacilities {
-                                                if let id = Int(facilitiesArray[index].trimmingCharacters(in: .whitespaces)) {
-                                                    let (symbol, name) = getHotelFacilitySymbolAndName(for: id)
-                                                    if name != "none" {
-                                                        HStack {
-                                                            Image(systemName: symbol)
-                                                                .frame(width: 32)
-                                                            
-                                                            Text(name)
-                                                                .font(.footnote)
-                                                            
-                                                            Spacer()
-                                                        }
-                                                        .matchedGeometryEffect(id: "facility\(id)", in: animation)
-                                                        .transition(.asymmetric(insertion: .scale.combined(with: .opacity),
-                                                                                removal: .scale.combined(with: .opacity)))
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        
-                                        if facilitiesArray.count > 5 {
-                                            Button(action: {
-                                                withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                                                    showAllFacilities.toggle()
-                                                }
-                                            }) {
-                                                HStack {
-                                                    Text(showAllFacilities ? "Mostra meno" : "Vedi altre")
-                                                        .font(.footnote)
-                                                        .foregroundColor(.orange)
-                                                        .fontWeight(.bold)
-                                                    Image(systemName: showAllFacilities ? "chevron.up" : "chevron.down")
-                                                        .foregroundColor(.orange)
-                                                        .fontWeight(.bold)
-                                                        .rotationEffect(.degrees(showAllFacilities ? 180 : 0))
-                                                        .animation(.easeInOut, value: showAllFacilities)
-                                                }
-                                            }
-                                            .padding(.top, 8)
-                                        }
-                                    } else {
-                                        Text("Nessuna facility disponibile")
-                                            .font(.footnote)
-                                            .foregroundColor(.secondary)
                                     }
+                                    .padding()
+                                } else if let facilities = viewModel.selectedHotelDetails?.facilities {
+                                    let facilitiesArray = facilities.components(separatedBy: ",")
+                                    ForEach(facilitiesArray.indices, id: \.self) { index in
+                                        if index < 5 || showAllFacilities {
+                                            if let id = Int(facilitiesArray[index].trimmingCharacters(in: .whitespaces)) {
+                                                let (symbol, name) = getHotelFacilitySymbolAndName(for: id)
+                                                if name != "none" {
+                                                    HStack {
+                                                        Image(systemName: symbol)
+                                                            .frame(width: 32)
+                                                        Text(name)
+                                                            .font(.footnote)
+                                                        Spacer()
+                                                    }
+                                                    .matchedGeometryEffect(id: "facility\(id)", in: animation)
+                                                    .transition(.asymmetric(insertion: .scale.combined(with: .opacity),
+                                                                            removal: .scale.combined(with: .opacity)))
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if facilitiesArray.count > 5 {
+                                        Button(action: {
+                                            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                                                showAllFacilities.toggle()
+                                            }
+                                        }) {
+                                            HStack {
+                                                Text(showAllFacilities ? "Mostra meno" : "Vedi altre")
+                                                    .font(.footnote)
+                                                    .foregroundColor(.orange)
+                                                    .fontWeight(.bold)
+                                                Image(systemName: showAllFacilities ? "chevron.up" : "chevron.down")
+                                                    .foregroundColor(.orange)
+                                                    .fontWeight(.bold)
+                                                    .rotationEffect(.degrees(showAllFacilities ? 180 : 0))
+                                                    .animation(.easeInOut, value: showAllFacilities)
+                                            }
+                                        }
+                                        .padding(.top, 8)
+                                    }
+                                } else {
+                                    Text("Nessuna facility disponibile")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
                                 }
-                                .padding()
-                                .animation(.spring(response: 0.5, dampingFraction: 0.7), value: showAllFacilities)
-                                              
-                              
-                            
+                            }
+                            .padding()
+                            .background(Color(.systemBackground))
+                            .animation(.spring(response: 0.5, dampingFraction: 0.7), value: showAllFacilities)
+
                             Divider()
+
                             // Listing features
                             VStack(alignment: .leading, spacing: 16) {
                                 PriceChartView(viewModel: viewModel)
                                     .onAppear {
                                         viewModel.fetchPriceCalendar(for: listing)
                                     }
-                                               
-                                /*
-                                ForEach(0..<2) { feature in
-                                    HStack(spacing: 12) {
-                                        Image(systemName: "medal")
-                                        
-                                        VStack(alignment: .leading) {
-                                            Text("Superhost")
-                                                .font(.footnote)
-                                                .fontWeight(.semibold)
-                                            
-                                            Text("Superhost è meglio")
-                                                .font(.caption)
-                                                .foregroundStyle(.gray)
-                                        }
-                                        
-                                        Spacer()
-                                    }
-                                }
-                                 */
                             }
                             .padding()
                             .padding(.top, 10)
                             .padding(.bottom, -10)
-                            
+                            .background(Color(.systemBackground))
+
                             Divider()
-                            
-                            // Map view
+
                             // Map view
                             VStack(alignment: .leading, spacing: 24) {
                                 Text("Dove alloggerai")
                                     .font(.headline)
-                                
+
                                 Map(coordinateRegion: $region, annotationItems: [listing]) { item in
                                     MapMarker(coordinate: CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude))
                                 }
@@ -263,10 +224,9 @@ struct ListingDetailView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
                             .padding()
+                            .background(Color(.systemBackground))
                         }
-                        .background(Color.white)
                         .cornerRadius(20)
-                        
                     }
                     .background(GeometryReader { geo in
                         Color.clear
@@ -285,118 +245,141 @@ struct ListingDetailView: View {
                                 .font(.system(size: 23, weight: .semibold))
                                 .padding(.horizontal, 10)
                                 .controlGroupStyle(.palette)
-                                .foregroundStyle(.black)
-                                
+                                .foregroundStyle(colorScheme == .dark ? .black : .white)
                         }
-                        
+
                         Spacer()
-                        
+
                         HStack(spacing: 30) {
                             Button {
-                                // Azione del pulsante condividi
+                                shareGoogleSearchURL()
                             } label: {
                                 Image(systemName: "square.and.arrow.up")
                                     .font(.system(size: 20, weight: .semibold))
                                     .controlGroupStyle(.palette)
-                                    .foregroundStyle(.black, .gray)
+                                    .foregroundStyle(colorScheme == .dark ? .black : .white)
                             }
-                            
+
                             HeartButton(isFavorite: isFavorite, listing: listing) {
-                                                        toggleFavorite()
-                                                    }
-                                
-
-
+                                toggleFavorite()
+                            }
                         }
                         .padding(.horizontal, 10)
                     }
                     .padding(.top, 50)
                     .padding(.horizontal)
-                    .background(scrollOffset > 300 ? Color.white : Color.clear)
+                    .background(scrollOffset > 300 ? Color(.systemBackground) : Color.clear)
                     .animation(.easeInOut, value: scrollOffset > 300)
                 }
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
-            
         }
         .onAppear {
             checkFavoriteStatus()
-            
         }
         .navigationBarHidden(true)
         .ignoresSafeArea(edges: .top)
-        .overlay(alignment: .bottom) {
-            VStack {
-                Divider()
-                    .padding(.bottom)
-                
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("\(Int(listing.price))€")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                        
-                        Text("Totale")
-                        Text("\(listing.checkin) - \(listing.checkout)")
-                            .font(.footnote)
-                            .fontWeight(.semibold)
-                            .underline()
+            .overlay(alignment: .bottom) {
+                VStack {
+                    Divider()
+                        .padding(.bottom)
+
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("\(Int(listing.price))€")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+
+                            Text("Totale")
+                            Text("\(listing.checkin) - \(listing.checkout)")
+                                .font(.footnote)
+                                .fontWeight(.semibold)
+                                .underline()
+                        }
+
+                        Spacer()
+
+                        Button {
+                            openGoogleSearch()
+                        } label: {
+                            Text("Cercalo su Google")
+                                .foregroundStyle(.white)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .frame(width: 160, height: 40)
+                                .background(Color.pink)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
                     }
-                    
-                    Spacer()
-                    
-                    Button {
-                        // Azione del pulsante Reserve
-                    } label: {
-                        Text("Cercalo su Google")
-                            .foregroundStyle(.white)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .frame(width: 160, height: 40)
-                            .background(.pink)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
+                    .padding(.horizontal, 32)
+                    .background(Color(.systemBackground))
                 }
-                .padding(.horizontal, 32)
+                .background(Color(.systemBackground))
             }
-            .background(.white)
+            .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+                scrollOffset = max(0, -value)
+            }
+            .ignoresSafeArea(edges: .top)
+            .task {
+                await viewModel.fetchHotelDetails(for: listing)
+            }
         }
-        
-        .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-            scrollOffset = max(0, -value)
+
+        private func checkFavoriteStatus() {
+            firebaseManager.isListingFavorite(listingId: listing.id) { result in
+                DispatchQueue.main.async {
+                    self.isFavorite = result
+                }
+            }
         }
-        .ignoresSafeArea(edges: .top)
-        .task {
-                   await viewModel.fetchHotelDetails(for: listing)
-               }
-    }
-    
-    private func checkFavoriteStatus() {
-           firebaseManager.isListingFavorite(listingId: listing.id) { result in
-               DispatchQueue.main.async {
-                   self.isFavorite = result
-               }
-           }
-       }
-       
-       private func toggleFavorite() {
-           if isFavorite {
-               firebaseManager.removeFavorite(listingId: listing.id)
-           } else {
-               firebaseManager.addFavorite(listing: listing)
-           }
-           isFavorite.toggle()
-       }
-        
-}
 
-struct ScrollOffsetPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value += nextValue()
-    }
-}
+        private func toggleFavorite() {
+            if isFavorite {
+                firebaseManager.removeFavorite(listingId: listing.id)
+            } else {
+                firebaseManager.addFavorite(listing: listing)
+            }
+            isFavorite.toggle()
+        }
 
+        private func openGoogleSearch() {
+            guard let url = generateGoogleSearchURL() else { return }
+
+            let safariViewController = SFSafariViewController(url: url)
+
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first,
+               let rootViewController = window.rootViewController {
+                rootViewController.present(safariViewController, animated: true)
+            }
+        }
+
+        private func generateGoogleSearchURL() -> URL? {
+            let searchQuery = "\(listing.name) \(listing.city)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            let urlString = "https://www.google.com/search?q=\(searchQuery)"
+            return URL(string: urlString)
+        }
+
+        private func shareGoogleSearchURL() {
+            guard let url = generateGoogleSearchURL() else { return }
+
+            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first,
+               let rootViewController = window.rootViewController {
+                activityViewController.popoverPresentationController?.sourceView = rootViewController.view
+                rootViewController.present(activityViewController, animated: true, completion: nil)
+            }
+        }
+    }
+
+    struct ScrollOffsetPreferenceKey: PreferenceKey {
+        static var defaultValue: CGFloat = 0
+        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+            value += nextValue()
+        }
+    }
 
 
 

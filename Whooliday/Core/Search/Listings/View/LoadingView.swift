@@ -30,7 +30,6 @@ struct LoadingView: View {
                 
                 Text(selectedPhrase)
                     .font(.headline)
-                    .foregroundColor(.black)
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     .padding(.top, 20)
                     .padding(.horizontal, 20)

@@ -13,6 +13,7 @@ struct SearchAndFilterBar: View {
     @Binding var isFavorite: Bool
     var onFavoriteToggle: () -> Void
     var showFilterAndFavorite: Bool
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         HStack {
@@ -39,7 +40,7 @@ struct SearchAndFilterBar: View {
                 showFilterView.toggle()
             }, label: {
                 Image(systemName: "line.3.horizontal.decrease")
-                    .foregroundStyle(.black)
+                    .foregroundStyle(colorScheme == .dark ? .white : .black)
                     .fontWeight(.bold)
             })
             .frame(width: 50, height: 30)

@@ -293,14 +293,13 @@ struct RatingView: View {
                     onSubmit()
                     isPresented = false
                 }
-                .foregroundColor(.white)
+                
                 .padding()
                 .background(Color.orange)
                 .cornerRadius(10)
             }
         }
         .padding()
-        .background(Color.white)
         .cornerRadius(30)
         .shadow(radius: 10)
     }

@@ -56,7 +56,7 @@ struct FilterButton: View {
     let isCustomIcon: Bool
     let isSelected: Bool
     let action: () -> Void
-    
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         Button(action: action) {
             VStack(spacing: 6) {
@@ -76,10 +76,19 @@ struct FilterButton: View {
                     .fontWeight(.semibold)
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
+                    .foregroundColor(
+                        isSelected
+                            ? (colorScheme == .dark ? .orange : .white)
+                            : .primary
+                    )
             }
             
             .frame(width: 78, height: 50)
-            .foregroundColor(isSelected ? .orange : .black)
+            .foregroundColor(
+                isSelected
+                    ? (colorScheme == .dark ? .orange : .white)
+                    : .primary
+            )
         }
     }
 }

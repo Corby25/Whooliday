@@ -16,6 +16,7 @@ enum DestinationSearchOption {
 }
 
 struct DestinationSearchView: View {
+    @Environment(\.colorScheme) var colorScheme
     @State private var cancellable: AnyCancellable?
     @Binding var searchParameters: SearchParameters
     @Binding var show: Bool
@@ -47,7 +48,7 @@ struct DestinationSearchView: View {
                         } label: {
                             Image(systemName: "xmark.circle")
                                 .imageScale(.large)
-                                .foregroundColor(.black)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
                         }
                         Spacer()
                         
@@ -56,7 +57,7 @@ struct DestinationSearchView: View {
                                 destination = ""
                                 destinationSuggestions = []
                             }
-                            .foregroundStyle(.black)
+                            .foregroundStyle(colorScheme == .dark ? .white : .black)
                             .font(.subheadline)
                             .fontWeight(.semibold)
                         }
@@ -70,13 +71,16 @@ struct DestinationSearchView: View {
                             Text("Dove?")
                                 .font(.title2)
                                 .fontWeight(.semibold)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
                             
                             HStack {
                                 Image(systemName: "magnifyingglass")
                                     .imageScale(.small)
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
                                 
                                 TextField("Cerca Destinazione", text: $destination)
                                     .font(.subheadline)
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
                                     .onChange(of: destination) { oldValue, newValue in
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                             if newValue == destination {
@@ -96,6 +100,7 @@ struct DestinationSearchView: View {
                             if !destinationSuggestions.isEmpty {
                                 List(destinationSuggestions, id: \.self) { suggestion in
                                     Text(suggestion)
+                                        .foregroundColor(colorScheme == .dark ? .white : .black)
                                         .onTapGesture {
                                             destination = suggestion
                                             placeID = predictionsDictionary[suggestion] ?? ""
@@ -104,7 +109,7 @@ struct DestinationSearchView: View {
                                 }
                                 .listStyle(PlainListStyle())
                                 .frame(height: min(CGFloat(destinationSuggestions.count) * 44, 200))
-                                .background(Color.white)
+                                .background(colorScheme == .dark ? Color.gray.opacity(0.3) : Color.white)
                                 .cornerRadius(10)
                                 .shadow(radius: 5)
                             }
@@ -125,6 +130,7 @@ struct DestinationSearchView: View {
                             Text("Quando vuoi partire?")
                                 .font(.title2)
                                 .fontWeight(.semibold)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
                             
                             CalendarView(startDate: $startDate, endDate: $endDate)
                                 .frame(height: 300)
@@ -146,6 +152,7 @@ struct DestinationSearchView: View {
                             Text("Quanti")
                                 .font(.title2)
                                 .fontWeight(.semibold)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
                             
                             GuestCounterView(title: "Adulti", count: $numAdults, minimum: 1)
                             
@@ -155,6 +162,7 @@ struct DestinationSearchView: View {
                                 Text("Età dei bambini")
                                     .font(.title3)
                                     .fontWeight(.medium)
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
                                     .padding(.top, 4)
                                 
                                 ForEach(0..<numChildren, id: \.self) { index in
@@ -173,6 +181,7 @@ struct DestinationSearchView: View {
                                         }
                                     }
                                     .pickerStyle(MenuPickerStyle())
+                                    .accentColor(colorScheme == .dark ? .white : .black)
                                 }
                             }
                         } else {
@@ -220,7 +229,7 @@ struct DestinationSearchView: View {
                 .padding(.bottom)
             }
         }
-        .background(Color.white)
+        .background(colorScheme == .dark ? Color.black : Color.white)
         .cornerRadius(15)
         .padding()
     }
@@ -239,10 +248,8 @@ struct DestinationSearchView: View {
                return
            }
 
-           // Annulla la richiesta precedente se esiste
            cancellable?.cancel()
 
-           // Sostituisci "YOUR_API_KEY" con la tua chiave API di Google Places
            let apiKey = "AIzaSyBOiUNEOqhpqUt_dyQTmcCKnscHfJE1VQY"
            let baseURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
            let urlString = "\(baseURL)?input=\(query)&types=(cities)&key=\(apiKey)"
@@ -276,14 +283,6 @@ struct DestinationSearchView: View {
     }
 }
 
-// Le altre strutture e definizioni rimangono invariate
-
-#Preview {
-    DestinationSearchView(
-       
-        searchParameters: .constant(SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [], filters: "")),  show: .constant(false), navigateToExplore: .constant(false)
-    )
-}
 struct GooglePlacesResponse: Codable {
     let predictions: [Prediction]
 }
@@ -298,13 +297,13 @@ struct Prediction: Codable {
         }
 }
 
-
-
 struct CollapsibleDestinationViewModifier: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+    
     func body(content: Content) -> some View {
         content
             .padding()
-            .background(.white)
+            .background(colorScheme == .dark ? Color.gray.opacity(0.3) : Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding()
             .shadow(radius: 10)
@@ -314,6 +313,8 @@ struct CollapsibleDestinationViewModifier: ViewModifier {
 struct CollapsedPickerView: View {
     let title: String
     let description: String
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         VStack{
             HStack{
@@ -323,11 +324,11 @@ struct CollapsedPickerView: View {
                 Spacer()
                 
                 Text(description)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
             }
             .fontWeight(.semibold)
             .font(.subheadline)
         }
-      
     }
 }
 
@@ -348,12 +349,14 @@ struct GuestCounterView: View {
     @Binding var count: Int
     let minimum: Int
     let generator = UIImpactFeedbackGenerator(style: .soft)
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         HStack {
             Text(title)
                 .font(.title3)
                 .fontWeight(.medium)
+                .foregroundColor(colorScheme == .dark ? .white : .black)
             
             Spacer()
             
@@ -373,6 +376,7 @@ struct GuestCounterView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                     .frame(minWidth: 30)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
                 
                 Button(action: {
                     count += 1
@@ -385,7 +389,13 @@ struct GuestCounterView: View {
             }
         }
         .padding()
-        .background(Color.gray.opacity(0.1))
+        .background(colorScheme == .dark ? Color.gray.opacity(0.3) : Color.gray.opacity(0.1))
         .cornerRadius(10)
     }
+}
+
+#Preview {
+    DestinationSearchView(
+        searchParameters: .constant(SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [], filters: "")),  show: .constant(false), navigateToExplore: .constant(false)
+    )
 }

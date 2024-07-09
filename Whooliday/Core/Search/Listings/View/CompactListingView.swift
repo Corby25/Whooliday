@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CompactListingView: View {
+    @Environment(\.colorScheme) var colorScheme
     let listing: Listing
     
     var body: some View {
@@ -15,38 +16,50 @@ struct CompactListingView: View {
             // Image
             ListingImageCarouseView(listing: listing)
                 .frame(width: 120, height: 140)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
             
             // Details
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 10) {
                 Text(listing.name)
                     .font(.headline)
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
                     .lineLimit(2)
                 
                 HStack {
                     Image(systemName: "star.fill")
                         .foregroundColor(.yellow)
                     Text(String(format: "%.1f", listing.review_score))
-                        .fontWeight(.medium)
+                        .fontWeight(.semibold)
                 }
                 .font(.subheadline)
                 
                 Spacer()
                 
                 Text("\(Int(listing.price))€")
-                    .font(.title3)
+                    .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.accentColor)
             }
-            .foregroundColor(.primary)
         }
         .padding()
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .gray.opacity(0.1), radius: 5, x: 0, y: 2)
+        .background(backgroundStyle)
+        .cornerRadius(20)
+        .shadow(color: shadowColor, radius: 10, x: 0, y: 5)
         .padding(.horizontal)
+    }
+    
+    private var backgroundStyle: some View {
+        Group {
+            if colorScheme == .dark {
+                Color(.systemGray6)
+            } else {
+                Color.white
+            }
+        }
+    }
+    
+    private var shadowColor: Color {
+        colorScheme == .dark ? Color.black.opacity(0.3) : Color.gray.opacity(0.2)
     }
 }
 

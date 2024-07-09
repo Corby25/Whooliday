@@ -30,7 +30,6 @@ struct AddFilterView: View {
                         } label: {
                             Image(systemName: "xmark.circle")
                                 .imageScale(.large)
-                                .foregroundColor(.black)
                                 .fontWeight(.semibold)
                         }
                         
@@ -47,7 +46,7 @@ struct AddFilterView: View {
                             selectedFilters.removeAll()
                             priceRange = PriceRange(min: 0, max: 1000)
                         }
-                        .foregroundStyle(.black)
+                        
                         .font(.subheadline)
                         .fontWeight(.semibold)
                     }
@@ -64,7 +63,7 @@ struct AddFilterView: View {
                                     Text(category.rawValue)
                                         .font(.headline)
                                         .fontWeight(.semibold)
-                                        .foregroundStyle(.black)
+            
                                     Spacer()
                                     Image(systemName: expandedCategories.contains(category) ? "chevron.up" : "chevron.down")
                                 }
@@ -164,6 +163,7 @@ struct FilterButton2: View {
     let filter: FilterOption
     let isSelected: Bool
     let action: () -> Void
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         Button(action: action) {
@@ -171,11 +171,20 @@ struct FilterButton2: View {
                 Text(filter.rawValue)
                     .font(.subheadline)
                     .fontWeight(.semibold)
+                    .foregroundColor(
+                        isSelected
+                            ? (colorScheme == .dark ? .black : .white)
+                            : .primary
+                    )
             }
-            .foregroundColor(isSelected ? .white : .black)
+            .foregroundColor(
+                isSelected
+                    ? (colorScheme == .dark ? .orange : .white)
+                    : .primary
+            )            
             .padding()
             .frame(maxWidth: .infinity)
-            .background(isSelected ? Color.orange : Color.gray.opacity(0.1))
+            .background(isSelected ? Color.orange : Color.gray.opacity(0.2))
             .cornerRadius(10)
         }
     }

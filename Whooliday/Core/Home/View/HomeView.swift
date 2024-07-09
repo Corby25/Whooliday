@@ -26,7 +26,7 @@ struct HomeView: View {
                 
                 headerView
                 
-                if let errorState = viewModel.errorState {
+                if viewModel.errorState != nil {
                     ErrorView()
                 } else {
                     
@@ -179,7 +179,7 @@ struct DestinationSearchOverlay: View {
     @Binding var showDestinationSearch: Bool
     @Binding var searchParameters: SearchParameters
     @Binding var navigateToExplore: Bool
-    
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         ZStack {
             if showDestinationSearch {
@@ -195,7 +195,7 @@ struct DestinationSearchOverlay: View {
                                       show: $showDestinationSearch,
                                       navigateToExplore: $navigateToExplore)
                     .transition(.move(edge: .bottom))
-                    .background(Color.white)
+                    .background(colorScheme == .dark ? Color.black: Color.white)
                     .cornerRadius(25)
                     .padding()
             }

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct CardViewBig: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+
     let place: Place
     
     var body: some View {
@@ -68,7 +71,7 @@ struct CardViewBig: View {
         }
         .frame(height: 249)
         .background(LinearGradient(
-            gradient: Gradient(colors: [Color.gray.opacity(0.2), Color.white.opacity(1)]),
+            gradient: Gradient(colors: [Color.gray.opacity(0.2), colorScheme == .dark ? Color.gray.opacity(0.5): Color.white.opacity(1)]),
             startPoint: .leading,
             endPoint: .trailing
         ))

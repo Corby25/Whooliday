@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CardViewSmall: View {
     let place: Place
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack(spacing: 0) {
             AsyncImage(url: URL(string: place.imageUrl)) { image in
@@ -67,7 +68,7 @@ struct CardViewSmall: View {
         .frame(width: 180, height: 249)
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [Color.gray.opacity(0.2), Color.white.opacity(1)]),
+                gradient: Gradient(colors: [Color.gray.opacity(0.2), colorScheme == .dark ? Color.gray.opacity(0.5): Color.white.opacity(1)]),
                 startPoint: .leading,
                 endPoint: .trailing
             )
