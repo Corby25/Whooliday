@@ -191,8 +191,8 @@ struct HotelRowView: View {
                     Image("sold-out")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: 160, maxHeight: 160)
-                        .opacity(0.5)
+                        .frame(maxWidth: 160, maxHeight: 200)
+                        .opacity(0.4)
                 }
             }
             .background(Color.white)
@@ -243,10 +243,13 @@ struct FiltersListView: View {
                         get: { self.selectedFilter?.id },
                         set: { newValue in
                             self.selectedFilter = favoritesModel.filters.first(where: { $0.id == newValue })
+                            if let id = filter.id {
+                                favoritesModel.markFilterAsNotNew(withId: id)
+                            }
                         }
                     )
                 ) {
-                    HStack(spacing: 15) {
+                    HStack(spacing: 10) {
                         ZStack {
                             Circle()
                                 .fill(colors[index % colors.count])
@@ -260,25 +263,25 @@ struct FiltersListView: View {
                         
                         VStack(alignment: .leading, spacing: 5) {
                             HStack {
-                                Text("From:")
+                                Text("Da:")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                                 Text(filter.checkIn)
                                     .font(.subheadline)
-                                Text("To:")
+                                Text("A:")
                                     .font(.caption)
                                     .foregroundColor(.gray)
-                                    .padding(.leading, 8)
+                                    .padding(.leading,1)
                                 Text(filter.checkOut)
                                     .font(.subheadline)
                             }
                             HStack {
-                                Text("Max Price:")
+                                Text("Prezzo massimo:")
                                     .font(.caption)
                                     .foregroundColor(.gray)
 
                                 if filter.maxPrice == 0 {
-                                    Text("Not set")
+                                    Text("Non selezionato")
                                         .font(.subheadline)
                                 } else {
                                     Text("\(filter.maxPrice, specifier: "%.2f") \(favoritesModel.userCurrency)")
@@ -286,24 +289,50 @@ struct FiltersListView: View {
                                 }
                             }
                             HStack {
-                                Text("Number of guests:")
+                                Text("Numero di ospiti:")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                                 Text("\(filter.adultsNumber + filter.childrenNumber)")
                                     .font(.subheadline)
                             }
                             HStack {
-                                Text("Where:")
+                                Text("Dove:")
                                     .font(.caption2)
                                     .foregroundColor(.gray)
                                 Text("\(filter.city)")
                                     .font(.subheadline)
                             }
                         }
+                        if filter.isNew {
+                            Circle()
+                                .fill(Color.blue)
+                                .frame(width: 10, height: 10)
+                                .padding(.trailing, 10)
+                        }
                     }
                 }
+                .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                       if filter.isNew {
+                           Button {
+                               if let id = filter.id {
+                                   favoritesModel.markFilterAsNotNew(withId: id)
+                               }
+                           } label: {
+                               Label("Visualizza", systemImage: "eye")
+                           }
+                           .tint(.blue)
+                       }
+                   }
+                   .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                       Button(role: .destructive) {
+                           if let id = filter.id {
+                               favoritesModel.deleteFilter(withId: id)
+                           }
+                       } label: {
+                           Label("Rimuovi", systemImage: "trash")
+                       }
+                   }
             }
-            .onDelete(perform: deleteFilters)
         }
         .refreshable {
             await favoritesModel.refreshFilters()

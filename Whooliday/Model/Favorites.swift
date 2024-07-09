@@ -99,6 +99,7 @@ struct Filter: Identifiable, Codable {
     let filters: String
     let city: String
     var isDeleted: Bool
+    var isNew: Bool
     var hotels: [Hotel]
     
     mutating func updateHotels(_ newHotels: [Hotel]) {

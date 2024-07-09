@@ -160,6 +160,7 @@ class FavoritesModel: ObservableObject {
                               let roomNumber = data["roomNumber"] as? Int,
                               let units = data["units"] as? String,
                               let isDeleted = data["isDeleted"] as? Bool,
+                              let isNew = data["isNew"] as? Bool,
                               let checkIn = data["checkIn"] as? String,
                               let checkOut = data["checkOut"] as? String,
                               let childrenNumber = data["childrenNumber"] as? Int,
@@ -187,6 +188,7 @@ class FavoritesModel: ObservableObject {
                                       filters: filters,
                                       city: city,
                                       isDeleted: isDeleted,
+                                      isNew: isNew,
                                       hotels: [])
                     }
                 }
@@ -345,6 +347,25 @@ class FavoritesModel: ObservableObject {
                 DispatchQueue.main.async {
                     if let index = self?.filters.firstIndex(where: { $0.id == id }) {
                         self?.filters[index].isDeleted = true
+                        self?.objectWillChange.send()
+                    }
+                }
+            }
+        }
+    }
+    
+    func markFilterAsNotNew(withId id: String) {
+        let filterDocumentRef = db.collection("users").document(userID)
+            .collection("favorites").document("filters").collection("all").document(id)
+        
+        filterDocumentRef.updateData(["isNew": false]) { [weak self] error in
+            if let error = error {
+                print("Error updating filter document: \(error.localizedDescription)")
+            } else {
+                print("Filter document successfully updated to mark as not new")
+                DispatchQueue.main.async {
+                    if let index = self?.filters.firstIndex(where: { $0.id == id }) {
+                        self?.filters[index].isNew = false
                         self?.objectWillChange.send()
                     }
                 }
