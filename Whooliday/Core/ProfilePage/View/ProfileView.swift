@@ -23,7 +23,7 @@ struct ProfileView: View {
                     VStack(spacing: 10) {
                         HStack {
                             VStack(alignment: .leading, spacing: 5) {
-                                Text("Welcome, \(user.name)!")
+                                Text(String(format: NSLocalizedString("welcome_message", comment: ""), user.name))
                                     .font(.title)
                                     .fontWeight(.bold)
                                 Text(user.email)
@@ -50,12 +50,12 @@ struct ProfileView: View {
                     
                     // Stats section
                     VStack(spacing: 15) {
-                        Text("Your Stats")
+                        Text(NSLocalizedString("your_stats", comment: ""))
                             .font(.headline)
-                            .foregroundColor(.white)
+                          
                         HStack {
-                            AnimatedStatView(title: "Number of notifications we sent you:", value: user.numNotifications)
-                            AnimatedStatView(title: "Number of favorites we kept track for you:", value: user.numFavorites)
+                            AnimatedStatView(title: NSLocalizedString("notifications_sent", comment: ""), value: user.numNotifications)
+                            AnimatedStatView(title: NSLocalizedString("favorites_tracked", comment: ""), value: user.numFavorites)
                         }
                     }
                     .padding(.vertical, 30)
@@ -68,51 +68,51 @@ struct ProfileView: View {
                     
                     // List of settings
                     VStack(spacing: 0) {
-                        ListItemButton(title: "Country", action: {
+                        ListItemButton(title: NSLocalizedString("country", comment: ""), action: {
                             showCountryPicker = true
                         })
                         .sheet(isPresented: $showCountryPicker) {
                             CountryPickerView(selectedCountry: $viewModel.selectedCountry)
                         }
                         
-                        ListItemButton(title: "Currency", action: {
+                        ListItemButton(title: NSLocalizedString("currency", comment: ""), action: {
                             showCurrencyPicker = true
                         })
                         .sheet(isPresented: $showCurrencyPicker) {
                             CurrencyPickerView(selectedCurrency: $viewModel.selectedCurrency)
                         }
                         
-                        ListItemButton(title: "Notifications", action: {
+                        ListItemButton(title: NSLocalizedString("notifications", comment: ""), action: {
                             showNotificationSettings = true
                         })
                         .sheet(isPresented: $showNotificationSettings) {
                             NotificationSettingsView(viewModel: viewModel)
                         }
                         
-                        ListItemButton(title: "Help", action: {
+                        ListItemButton(title: NSLocalizedString("help", comment: ""), action: {
                             showHelp = true
                         })
                         .sheet(isPresented: $showHelp) {
                             SafariView(url: URL(string: "https://example.com/help")!)
                         }
                         
-                        ListItemButton(title: "About", action: {
+                        ListItemButton(title: NSLocalizedString("about", comment: ""), action: {
                             showAbout = true
                         })
                         .sheet(isPresented: $showAbout) {
                             SafariView(url: URL(string: "https://example.com/about")!)
                         }
                         
-                        ListItemButton(title: "Logout", action: {
+                        ListItemButton(title: NSLocalizedString("logout", comment: ""), action: {
                             model.signOut()
                         })
                     }
-                    .background(Color.white)
+                    
                     .frame(height: geometry.size.height * 0.45)
                 }
             }
             .background(Color(UIColor.systemGroupedBackground))
-            .navigationBarTitle("Profile", displayMode: .inline)
+            .navigationBarTitle(NSLocalizedString("profile", comment: ""), displayMode: .inline)
             .sheet(isPresented: $showAvatarPicker) {
                 AvatarPickerView(selectedAvatar: $userAvatar, avatarUpdateTrigger: $avatarUpdateTrigger)
             }
@@ -125,7 +125,7 @@ struct ProfileView: View {
 
 struct HelloWorldView: View {
     var body: some View {
-        Text("Hello, World!")
+        Text(NSLocalizedString("hello_world", comment: ""))
             .font(.largeTitle)
             .padding()
     }
@@ -146,10 +146,9 @@ struct AnimatedStatView: View {
                 .font(.title2)
                 .fontWeight(.bold)
         }
-        .foregroundColor(.white)
+      
         .frame(maxWidth: .infinity)
         .onAppear {
-            // Reset animatedValue to 0 before starting animation
             animatedValue = 0
             animateToValue(value)
         }
@@ -172,14 +171,6 @@ struct AnimatedStatView: View {
     }
 }
 
-struct AnimatedStatView_Previews: PreviewProvider {
-    static var previews: some View {
-        AnimatedStatView(title: "Number of notifications we sent you:", value: 100)
-            .background(Color.blue)
-            .previewLayout(.sizeThatFits)
-    }
-}
-
 struct NotificationSettingsView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: ProfileViewModel
@@ -187,16 +178,16 @@ struct NotificationSettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Email Notifications")) {
-                    Toggle("Enable Email Notifications", isOn: $viewModel.sendEmail)
+                Section(header: Text(NSLocalizedString("email_notifications", comment: ""))) {
+                    Toggle(NSLocalizedString("enable_email_notifications", comment: ""), isOn: $viewModel.sendEmail)
                 }
                 
-                Section(header: Text("Local Notifications")) {
-                    Toggle("Enable Local Notifications", isOn: $viewModel.localNotifications)
+                Section(header: Text(NSLocalizedString("local_notifications", comment: ""))) {
+                    Toggle(NSLocalizedString("enable_local_notifications", comment: ""), isOn: $viewModel.localNotifications)
                 }
             }
-            .navigationBarTitle("Notification Settings", displayMode: .inline)
-            .navigationBarItems(trailing: Button("Done") {
+            .navigationBarTitle(NSLocalizedString("notification_settings", comment: ""), displayMode: .inline)
+            .navigationBarItems(trailing: Button(NSLocalizedString("done", comment: "")) {
                 presentationMode.wrappedValue.dismiss()
             })
         }
@@ -223,15 +214,15 @@ struct AvatarPickerView: View {
                             .overlay(Circle().stroke(selectedAvatar == avatar ? Color.blue : Color.clear, lineWidth: 4))
                             .onTapGesture {
                                 selectedAvatar = avatar
-                                avatarUpdateTrigger = UUID() // Add this line
+                                avatarUpdateTrigger = UUID()
                                 presentationMode.wrappedValue.dismiss()
                             }
                     }
                 }
                 .padding()
             }
-            .navigationBarTitle("Choose Avatar", displayMode: .inline)
-            .navigationBarItems(trailing: Button("Cancel") {
+            .navigationBarTitle(NSLocalizedString("choose_avatar", comment: ""), displayMode: .inline)
+            .navigationBarItems(trailing: Button(NSLocalizedString("cancel", comment: "")) {
                 presentationMode.wrappedValue.dismiss()
             })
         }
@@ -245,20 +236,20 @@ struct CountryPickerView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Picker("Country", selection: $selectedCountry) {
-                    Text("Select Country").tag("Select Country")
+                Picker(NSLocalizedString("country", comment: ""), selection: $selectedCountry) {
+                    Text(NSLocalizedString("select_country", comment: "")).tag("Select Country")
                     ForEach(Country.allCountries, id: \.self) { country in
                         Text(country.name).tag(country.alpha2Code)
                     }
                 }
                 .pickerStyle(WheelPickerStyle())
                 
-                Button("Done") {
+                Button(NSLocalizedString("done", comment: "")) {
                     presentationMode.wrappedValue.dismiss()
                 }
                 .padding()
             }
-            .navigationBarTitle("Select Country", displayMode: .inline)
+            .navigationBarTitle(NSLocalizedString("select_country", comment: ""), displayMode: .inline)
         }
     }
 }
@@ -270,20 +261,20 @@ struct CurrencyPickerView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Picker("Currency", selection: $selectedCurrency) {
-                    Text("Select Currency").tag("Select Currency")
+                Picker(NSLocalizedString("currency", comment: ""), selection: $selectedCurrency) {
+                    Text(NSLocalizedString("select_currency", comment: "")).tag("Select Currency")
                     ForEach(Currency.allCurrencies, id: \.self) { currency in
                         Text(currency.name).tag(currency.code)
                     }
                 }
                 .pickerStyle(WheelPickerStyle())
                 
-                Button("Done") {
+                Button(NSLocalizedString("done", comment: "")) {
                     presentationMode.wrappedValue.dismiss()
                 }
                 .padding()
             }
-            .navigationBarTitle("Select Currency", displayMode: .inline)
+            .navigationBarTitle(NSLocalizedString("select_currency", comment: ""), displayMode: .inline)
         }
     }
 }
@@ -291,7 +282,7 @@ struct CurrencyPickerView: View {
 struct ListItemButton: View {
     let title: String
     let action: () -> Void
-    
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         Button(action: action) {
             HStack {
@@ -304,7 +295,7 @@ struct ListItemButton: View {
             .padding()
         }
         .frame(maxWidth: .infinity)
-        .background(title == "Logout" ? Color.red.opacity(0.1) : Color.white)
+        .background(title == NSLocalizedString("logout", comment: "") ? Color.red.opacity(0.5) : (colorScheme == .dark ? .gray.opacity(0.3) : .white))
         .overlay(
             VStack {
                 Spacer()

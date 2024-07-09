@@ -11,82 +11,63 @@ struct SigninView: View {
     @State private var alertMessage = ""
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                backgroundGradient
-                
-                VStack(spacing: 25) {
-                    logoView
-                    welcomeText
-                    inputFields
-                    forgotPasswordButton
-                    signinButtons
-                    divider
-                    signupPrompt
-                }
-                .padding(.horizontal, 30)
-                .frame(minHeight: geometry.size.height)
+        NavigationView {
+            VStack(spacing: 30) {
+                logoView
+                welcomeText
+                inputFields
+                signinButtons
+                forgotPasswordButton
+                divider
+                signupPrompt
+            }
+            .padding(.horizontal, 30)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+            .navigationBarHidden(true)
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Error"),
+                      message: Text(alertMessage),
+                      dismissButton: .default(Text("OK")))
             }
         }
-        .navigationBarHidden(true)
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text(NSLocalizedString("Error", comment: "Error alert title")),
-                  message: Text(alertMessage),
-                  dismissButton: .default(Text(NSLocalizedString("OK", comment: "Alert dismiss button"))))
-        }
-    }
-    
-    private var backgroundGradient: some View {
-        LinearGradient(gradient: Gradient(colors: [Color.orange.opacity(1), Color.orange.opacity(1)]),
-                       startPoint: .topLeading,
-                       endPoint: .bottomTrailing)
-            .ignoresSafeArea()
     }
     
     private var logoView: some View {
         Image("logosmall")
             .resizable()
             .scaledToFit()
-            .frame(width: 100, height: 100)
-            .foregroundColor(.white)
+            .frame(width: 80, height: 80)
+            .padding(.top, 50)
     }
     
     private var welcomeText: some View {
-        Text(NSLocalizedString("Ready to travel?", comment: "Welcome message"))
+        Text("Welcome back")
             .font(.largeTitle)
             .fontWeight(.bold)
-            .foregroundColor(.white)
+            .foregroundColor(.primary)
     }
     
     private var inputFields: some View {
         VStack(spacing: 20) {
-            CustomTextField(text: $email, placeholder: NSLocalizedString("Email", comment: "Email field placeholder"), icon: "envelope")
-            CustomTextField(text: $password, placeholder: NSLocalizedString("Password", comment: "Password field placeholder"), icon: "lock", isSecure: true)
-        }
-    }
-    
-    private var forgotPasswordButton: some View {
-        Button(action: handleResetPassword) {
-            Text(NSLocalizedString("Forgot Password?", comment: "Forgot password button"))
-                .foregroundColor(.white)
-                .font(.subheadline)
-                .fontWeight(.semibold)
+            CustomTextField(text: $email, placeholder: "Email", icon: "envelope")
+            CustomTextField(text: $password, placeholder: "Password", icon: "lock", isSecure: true)
         }
     }
     
     private var signinButtons: some View {
         VStack(spacing: 15) {
             Button(action: signIn) {
-                Text(NSLocalizedString("Sign In", comment: "Sign in button"))
+                Text("Sign In")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.white)
-                    .foregroundColor(.red)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
                     .fontWeight(.bold)
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             
-            GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .standard, state: .normal)) {
+            GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .wide, state: .normal)) {
                 Task {
                     do {
                         try await authModel.signInGoogle()
@@ -95,29 +76,41 @@ struct SigninView: View {
                     }
                 }
             }
-            .frame(width: 100 ,height: 50)
+        
+            .frame(width: 200)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding()
+            
+        }
+    }
+    
+    private var forgotPasswordButton: some View {
+        Button(action: handleResetPassword) {
+            Text("Forgot Password?")
+                .foregroundColor(.blue)
+                .font(.subheadline)
         }
     }
     
     private var divider: some View {
         HStack {
-            VStack { Divider().background(Color.white) }
-            Text(NSLocalizedString("OR", comment: "Or divider text")).foregroundColor(.white).font(.caption)
-            VStack { Divider().background(Color.white) }
+            Divider().background(Color.white.opacity(0.0))
+           
+            Divider().background(Color.white.opacity(0.0))
         }
     }
     
     private var signupPrompt: some View {
-        Text(NSLocalizedString("Don't have an account? Sign Up", comment: "Sign up prompt"))
-            .foregroundColor(.white)
-            .font(.subheadline)
-            .fontWeight(.semibold)
-            .onTapGesture {
-                self.showingSignup = true
+        HStack {
+            Text(NSLocalizedString("Don't have an account?", comment: ""))
+                .foregroundColor(.gray)
+            NavigationLink(destination: SignupView()) {
+                Text("Sign Up")
+                    .foregroundColor(.blue)
+                    .fontWeight(.semibold)
             }
-            .navigationDestination(isPresented: $showingSignup) {
-                SignupView()
-            }
+        }
+        .font(.subheadline)
     }
     
     private func signIn() {
@@ -132,16 +125,16 @@ struct SigninView: View {
     
     private func handleResetPassword() {
         if email.isEmpty || !isValidEmail(email) {
-            alertMessage = NSLocalizedString("Please enter a valid email address.", comment: "Invalid email error message")
+            alertMessage = NSLocalizedString("Please enter a valid email address.", comment: "")
             showAlert = true
         } else {
             Task {
                 do {
                     try await authModel.resetPassword(email: email)
-                    alertMessage = NSLocalizedString("Password reset email sent.", comment: "Password reset success message")
+                    alertMessage = NSLocalizedString("Password reset email sent.", comment: "")
                     showAlert = true
                 } catch {
-                    alertMessage = NSLocalizedString("Failed to send password reset email, please try again.", comment: "Password reset failure message")
+                    alertMessage = NSLocalizedString("Failed to send password reset email, please try again.", comment: "")
                     showAlert = true
                 }
             }
@@ -149,24 +142,25 @@ struct SigninView: View {
     }
     
     private func handleSignInError(_ error: Error) {
+        let errorMessage: String
         switch (error as NSError).code {
         case 17004:
-            alertMessage = NSLocalizedString("Incorrect email address or password, please try again", comment: "Incorrect credentials error message")
+            errorMessage = NSLocalizedString("Incorrect email address or password, please try again", comment: "")
         case 17008:
-            alertMessage = NSLocalizedString("The email is not in the correct format, please try again", comment: "Invalid email format error message")
+            errorMessage = NSLocalizedString("The email is not in the correct format, please try again", comment: "")
         case 17009:
-            alertMessage = NSLocalizedString("The email or the password is missing, please try again", comment: "Missing credentials error message")
+            errorMessage = NSLocalizedString("The email or the password is missing, please try again", comment: "")
         default:
-            alertMessage = NSLocalizedString("Something went wrong, please try again", comment: "Generic error message")
+            errorMessage = NSLocalizedString("Something went wrong, please try again", comment: "")
         }
+        alertMessage = errorMessage
         showAlert = true
         password = ""
     }
     
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-        return emailPredicate.evaluate(with: email)
+        return NSPredicate(format: "SELF MATCHES %@", emailRegEx).evaluate(with: email)
     }
 }
 
@@ -178,20 +172,18 @@ struct CustomTextField: View {
     
     var body: some View {
         HStack {
-            Image(systemName: icon).foregroundColor(.white)
+            Image(systemName: icon).foregroundColor(.gray)
             if isSecure {
                 SecureField(placeholder, text: $text)
             } else {
                 TextField(placeholder, text: $text)
-                    .keyboardType(placeholder == NSLocalizedString("Email", comment: "Email field placeholder") ? .emailAddress : .default)
+                    .keyboardType(placeholder == "Email" ? .emailAddress : .default)
                     .autocapitalization(.none)
             }
         }
         .padding()
-        .background(Color.white.opacity(0.2))
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.white, lineWidth: 1))
-        .fontWeight(.semibold)
+        .background(Color(UIColor.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 

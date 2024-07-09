@@ -17,49 +17,41 @@ struct SignupView: View {
     @State private var selectedCurrency: Currency? = Currency(name: "Euro", code: "EUR")
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                backgroundGradient
-                
-                VStack(spacing: 25) {
-                    logoView
-                    welcomeText
-                    inputFields
-                    pickers
-                    signupButton
-                }
-                .padding(.horizontal, 30)
-                .frame(minHeight: geometry.size.height)
+        NavigationView {
+            VStack(spacing: 30) {
+                logoView
+                welcomeText
+                inputFields
+                pickers
+                signupButton
+                divider
+                signinPrompt
+            }
+            .padding(.horizontal, 30)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+            .navigationBarHidden(true)
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text(NSLocalizedString("Error", comment: "Error alert title")),
+                      message: Text(alertMessage),
+                      dismissButton: .default(Text(NSLocalizedString("OK", comment: "Alert dismiss button"))))
             }
         }
-        .navigationBarHidden(true)
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text(NSLocalizedString("Error", comment: "Error alert title")),
-                  message: Text(alertMessage),
-                  dismissButton: .default(Text(NSLocalizedString("OK", comment: "Alert dismiss button"))))
-        }
-    }
-    
-    private var backgroundGradient: some View {
-        LinearGradient(gradient: Gradient(colors: [Color.orange.opacity(1), Color.red.opacity(1)]),
-                       startPoint: .topLeading,
-                       endPoint: .bottomTrailing)
-            .ignoresSafeArea()
     }
     
     private var logoView: some View {
         Image("logosmall")
             .resizable()
             .scaledToFit()
-            .frame(width: 100, height: 100)
-            .foregroundColor(.white)
+            .frame(width: 80, height: 80)
+            .padding(.top, 50)
     }
     
     private var welcomeText: some View {
         Text(NSLocalizedString("Join the adventure!", comment: "Signup welcome message"))
             .font(.largeTitle)
             .fontWeight(.bold)
-            .foregroundColor(.white)
+            .foregroundColor(.primary)
     }
     
     private var inputFields: some View {
@@ -71,26 +63,10 @@ struct SignupView: View {
     }
     
     private var pickers: some View {
-        VStack(spacing: 20) {
-            Picker(NSLocalizedString("Country", comment: "Country picker label"), selection: $selectedCountry) {
-                ForEach(Country.allCountries, id: \.self) { country in
-                    Text(country.name).tag(country as Country?)
-                }
-            }
-            .pickerStyle(MenuPickerStyle())
-            .padding()
-            .background(Color.gray.opacity(0.2))
-            .cornerRadius(5.0)
-            
-            Picker(NSLocalizedString("Currency", comment: "Currency picker label"), selection: $selectedCurrency) {
-                ForEach(Currency.allCurrencies, id: \.self) { currency in
-                    Text("\(currency.code) - \(currency.name)").tag(currency as Currency?)
-                }
-            }
-            .pickerStyle(MenuPickerStyle())
-            .padding()
-            .background(Color.gray.opacity(0.2))
-            .cornerRadius(5.0)
+        HStack(spacing: 20) {
+            CustomPicker(selection: $selectedCountry, placeholder: NSLocalizedString("Country", comment: "Country picker label"), options: Country.allCountries)
+                
+            CustomPicker(selection: $selectedCurrency, placeholder: NSLocalizedString("Currency", comment: "Currency picker label"), options: Currency.allCurrencies)
         }
     }
     
@@ -99,11 +75,31 @@ struct SignupView: View {
             Text(NSLocalizedString("Sign Up", comment: "Sign up button"))
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.white)
-                .foregroundColor(.red)
+                .background(Color.blue)
+                .foregroundColor(.white)
                 .fontWeight(.bold)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
         }
+    }
+    
+    private var divider: some View {
+        HStack {
+            Divider().background(Color.white.opacity(0.0))
+            Divider().background(Color.white.opacity(0.0))
+        }
+    }
+    
+    private var signinPrompt: some View {
+        HStack {
+            Text(NSLocalizedString("Already have an account?", comment: ""))
+                .foregroundColor(.gray)
+            NavigationLink(destination: SigninView()) {
+                Text("Sign In")
+                    .foregroundColor(.blue)
+                    .fontWeight(.semibold)
+            }
+        }
+        .font(.subheadline)
     }
     
     private func signup() {
@@ -151,12 +147,12 @@ struct CustomPicker<T: Hashable & Identifiable>: View {
                 Text(String(describing: option)).tag(option as T?)
             }
         }
+        .frame(height: 20)
         .pickerStyle(MenuPickerStyle())
         .padding()
-        .background(Color.white.opacity(0.2))
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.white, lineWidth: 1))
-        .accentColor(.white)
+        .background(Color(UIColor.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+       
     }
 }
 
@@ -164,5 +160,4 @@ struct SignupView_Previews: PreviewProvider {
     static var previews: some View {
         SignupView().environmentObject(AuthModel())
     }
-} 
- 
+}

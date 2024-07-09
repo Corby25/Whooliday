@@ -146,7 +146,7 @@ struct HotelRowView: View {
                     VStack(alignment: .leading) {
                         Text(hotel.name ?? "Unknown Hotel")
                             .font(.headline)
-                            .foregroundColor(.black)
+                            
                             .lineLimit(1) // Ensure the hotel name stays on a single line
 
                         Text("\(hotel.city ?? "City")")
@@ -176,18 +176,18 @@ struct HotelRowView: View {
                         if hotel.newPrice == 0 {
                             Text(NSLocalizedString("Sold Out", comment: ""))
                                 .font(.subheadline)
-                                .foregroundColor(.red)
+                                
                         } else if hotel.newPrice != hotel.oldPrice {
                             Text("€\(hotel.oldPrice, specifier: "%.2f")")
                                 .font(.subheadline)
                                 .strikethrough(true, color: .red)
                             Text("€\(hotel.newPrice, specifier: "%.2f")")
                                 .font(.subheadline)
-                                .foregroundColor(.black)
+                              
                         } else {
                             Text("€\(hotel.newPrice, specifier: "%.2f")")
                                 .font(.subheadline)
-                                .foregroundColor(.black)
+                                
                         }
                     }
                     if hotel.isNew {
@@ -204,7 +204,7 @@ struct HotelRowView: View {
                         .opacity(0.4)
                 }
             }
-            .background(Color.white)
+           
             .cornerRadius(10)
         }
     }
@@ -265,7 +265,7 @@ struct FiltersListView: View {
                                 .frame(width: 30, height: 30)
                             
                             Text("\(index + 1)")
-                                .foregroundColor(.white)
+                                
                                 .font(.headline)
                         }
                         .padding(.leading, -5)
@@ -392,3 +392,4 @@ struct FilterHotelsListView: View {
             }
         }
 }
+
