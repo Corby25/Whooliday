@@ -106,6 +106,15 @@ class ExploreViewModel: ObservableObject {
     @Published var showDailyPrices = true
     
     @Published var priceCalendar: [String: PriceData] = [:]
+    @Published var weeklyAverages: [(String, Double)] = []
+       
+    private let dateFormatter: DateFormatter = {
+           let formatter = DateFormatter()
+           formatter.dateFormat = "MMM d yyyy"
+           return formatter
+       }()
+       
+     
        
        func fetchPriceCalendar(for listing: Listing) {
            let baseURLString = "http://34.16.172.170:3000/api/fetchCalendarPrices"
@@ -115,51 +124,85 @@ class ExploreViewModel: ObservableObject {
                return
            }
            
-           
            urlComponents.queryItems = [
-               //URLQueryItem(name: "children_number", value: String(listing.nChildren)),
+               listing.nChildren != 0 ? URLQueryItem(name: "children_number", value: String(listing.nChildren!)) : nil,
                URLQueryItem(name: "checkout_date", value: listing.checkout),
                URLQueryItem(name: "locale", value: "it"),
-               //URLQueryItem(name: "children_ages", value:  listing.childrenAge),
+               listing.nChildren != 0 ? URLQueryItem(name: "children_ages", value: listing.childrenAge) : nil,
                URLQueryItem(name: "hotel_id", value: String(listing.id)),
                URLQueryItem(name: "adults_number", value: String(listing.nAdults)),
                URLQueryItem(name: "currency_code", value: listing.currency),
                URLQueryItem(name: "checkin_date", value: listing.checkin)
-           ]
+           ].compactMap { $0 }
            
            guard let url = urlComponents.url else {
                print("Could not create URL")
                return
            }
            
-           if let encodedURLString = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-               print("URL codificato: \(encodedURLString)")
-           }
            URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                  guard let data = data, error == nil else {
-                      print("Error fetching price calendar: \(error?.localizedDescription ?? "Unknown error")")
-                      return
-                  }
-                  
-                  do {
-                      let decoder = JSONDecoder()
-                      let priceCalendar = try decoder.decode([String: PriceData].self, from: data)
-                      DispatchQueue.main.async {
-                          self?.priceCalendar = priceCalendar
-                          self?.dailyPrices = priceCalendar.map { (formattedDate($0.key), $0.value.daily) }
-                          self?.weeklyPrices = priceCalendar.compactMap {
-                              if let weekly = $0.value.weekly {
-                                  return (formattedDate($0.key), weekly)
-                              }
-                              return nil
-                          }
-                      }
-                  } catch {
-                      print("Error decoding price calendar: \(error.localizedDescription)")
-                  }
-              }.resume()
+               guard let data = data, error == nil else {
+                   print("Error fetching price calendar: \(error?.localizedDescription ?? "Unknown error")")
+                   return
+               }
+               
+               do {
+                   let decoder = JSONDecoder()
+                   let priceCalendar = try decoder.decode([String: PriceData].self, from: data)
+                   DispatchQueue.main.async {
+                       self?.priceCalendar = priceCalendar
+                       self?.updatePrices()
+                   }
+               } catch {
+                   print("Error decoding price calendar: \(error.localizedDescription)")
+               }
+           }.resume()
        }
-    
+       
+       private func updatePrices() {
+           dailyPrices = priceCalendar.map { (formattedDate($0.key), $0.value.daily) }
+               .sorted { dateFormatter.date(from: $0.0)! < dateFormatter.date(from: $1.0)! }
+           calculateWeeklyAverages()
+       }
+       
+    func calculateWeeklyAverages() {
+           let sortedDailyPrices = dailyPrices.sorted {
+               dateFormatter.date(from: $0.0)! < dateFormatter.date(from: $1.0)!
+           }
+           
+           var weeklyAverages: [(String, Double)] = []
+           var currentWeekPrices: [Double] = []
+           var weekStartDate = ""
+           
+           for (index, (date, price)) in sortedDailyPrices.enumerated() {
+               if index % 7 == 0 {
+                   if !currentWeekPrices.isEmpty {
+                       let average = currentWeekPrices.reduce(0, +) / Double(currentWeekPrices.count)
+                       weeklyAverages.append((weekStartDate, average))
+                   }
+                   currentWeekPrices = []
+                   weekStartDate = date
+               }
+               currentWeekPrices.append(price)
+           }
+           
+           if !currentWeekPrices.isEmpty {
+               let average = currentWeekPrices.reduce(0, +) / Double(currentWeekPrices.count)
+               weeklyAverages.append((weekStartDate, average))
+           }
+           
+           self.weeklyAverages = weeklyAverages
+       }
+       
+       private func formattedDate(_ dateString: String) -> String {
+           let inputFormatter = DateFormatter()
+           inputFormatter.dateFormat = "yyyy-MM-dd"
+           
+           if let date = inputFormatter.date(from: dateString) {
+               return dateFormatter.string(from: date)
+           }
+           return dateString
+       }
     
     
 }
@@ -175,8 +218,6 @@ protocol ExploreDetailServiceProtocol{
 
 struct PriceData: Codable {
     let daily: Double
-    let weekly: Double?
-    let monthly: Double?
 }
 
 private func formattedDate(_ dateString: String) -> String {
@@ -184,10 +225,12 @@ private func formattedDate(_ dateString: String) -> String {
     inputFormatter.dateFormat = "yyyy-MM-dd"
     
     let outputFormatter = DateFormatter()
-    outputFormatter.dateFormat = "MMM d"
+    outputFormatter.dateFormat = "MMM d yyyy"
     
     if let date = inputFormatter.date(from: dateString) {
         return outputFormatter.string(from: date)
     }
     return dateString
 }
+
+

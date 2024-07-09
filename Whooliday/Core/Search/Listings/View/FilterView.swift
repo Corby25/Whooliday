@@ -78,21 +78,21 @@ struct FilterButton: View {
                     .minimumScaleFactor(0.5)
                     .foregroundColor(
                         isSelected
-                            ? (colorScheme == .dark ? .orange : .white)
-                            : .primary
+                        ? .orange
+                        : (colorScheme == .dark ? .white : .black)
                     )
             }
             
             .frame(width: 78, height: 50)
             .foregroundColor(
                 isSelected
-                    ? (colorScheme == .dark ? .orange : .white)
-                    : .primary
+                ? .orange
+                    : (colorScheme == .dark ? .white : .black)
             )
         }
     }
 }
 
 #Preview {
-    FilterView(selectedPropertyType: .constant(String("Tutto")), selectedTypeID: .constant(0))
+    FilterView(selectedPropertyType: .constant(String("Hotel")), selectedTypeID: .constant(0))
 }

@@ -17,7 +17,28 @@ struct ExploreView: View {
     @State private var isFavorite: Bool = false
     @State private var selectedPropertyType: String = "Tutto"
     @State private var selectedTypeID: Int = 0 // Default to 0 for "Tutto"
+    @Environment(\.colorScheme) var colorScheme
+    @State private var selectedSorting: SortOption = .none
     
+    enum SortOption: String, CaseIterable {
+        case none = "Nessun ordine"
+        case priceAscending = "Prezzo crescente"
+        case priceDescending = "Prezzo decrescente"
+        case ratingDescending = "Valutazione decrescente"
+        
+        var iconName: String {
+            switch self {
+            case .none:
+                return "arrow.up.arrow.down"
+            case .priceAscending:
+                return "arrow.up.circle"
+            case .priceDescending:
+                return "arrow.down.circle"
+            case .ratingDescending:
+                return "star.fill"
+            }
+        }
+    }
     
     @State private var listingsByType: [Listing] = []
     
@@ -46,38 +67,45 @@ struct ExploreView: View {
                         LazyVStack(spacing: 32) {
                             ForEach(listingsByType.isEmpty ? viewModel.listings : listingsByType) { listing in
                                 NavigationLink(destination: ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))) {
-                                    if showCompactView {
-                                        CompactListingView(listing: listing)
-                                    } else {
                                         ListingItemView(listing: listing)
                                             .frame(height: 300)
                                             .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    }
+                                    
                                 }
-                                .foregroundColor(.black)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
                             }
                         }
-                    }
+                    }.id(UUID())
                     
-                    Picker("View Style", selection: $showCompactView) {
-                        Image(systemName: "square.grid.2x2").tag(false)
-                        Image(systemName: "list.bullet").tag(true)
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding()
-                    .padding(.horizontal, 90)
+                        .overlay(
+                            VStack {
+                                Spacer()
+                                Picker("Ordina per", selection: $selectedSorting) {
+                                    ForEach(SortOption.allCases, id: \.self) { option in
+                                        Image(systemName: option.iconName)
+                                            .tag(option)
+                                    }
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                                .padding(.horizontal, 60)
+                                .padding(.bottom, 16)
+                                .background(Color(UIColor.systemBackground)) // Colore adattabile alla modalità
+                            }
+                        )
+
                 }
                 
                 if viewModel.isLoading {
                     LoadingView(isPresented: $viewModel.isLoading)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.white)
+                        .background(colorScheme == .dark ? .black : .white)
                         .edgesIgnoringSafeArea(.all)
                 }
             }
             .navigationBarHidden(hasPerformedSearch)
+            
             .overlay(
-                ZStack {
+                ZStack() {
                     if showDestinationSearchView {
                         Color.black.opacity(0.3)
                             .ignoresSafeArea()
@@ -89,7 +117,7 @@ struct ExploreView: View {
                         
                         DestinationSearchView(searchParameters: $searchParameters, show: $showDestinationSearchView, navigateToExplore: .constant(false))
                             .transition(.move(edge: .bottom))
-                            .background(Color.white)
+                           
                             .cornerRadius(16)
                             .padding()
                     }
@@ -99,12 +127,15 @@ struct ExploreView: View {
                             performSearch()
                         }
                         .transition(.move(edge: .bottom))
-                        .background(Color.white)
+                        .background(colorScheme == .dark ? .black : .white)
                         .cornerRadius(16)
                         .padding()
                     }
                 }
             )
+        }
+        .onChange(of: selectedSorting) { _, _ in
+            sortListings()
         }
         .onAppear {
             if(!hasPerformedSearch){
@@ -124,7 +155,31 @@ struct ExploreView: View {
             }
         }
     }
+    
+    private func sortListings() {
+        let listingsToSort = listingsByType.isEmpty ? viewModel.listings : listingsByType
+        
+        switch selectedSorting {
+        case .priceAscending:
+            let sortedListings = listingsToSort.sorted { $0.price < $1.price }
+            updateListings(sortedListings)
+        case .priceDescending:
+            let sortedListings = listingsToSort.sorted { $0.price > $1.price }
+            updateListings(sortedListings)
+        case .ratingDescending:
+            let sortedListings = listingsToSort.sorted { $0.review_score > $1.review_score }
+            updateListings(sortedListings)
+        case .none:
+            updateListings(viewModel.listings)
+        }
+    }
 
+    private func updateListings(_ sortedListings: [Listing]) {
+        DispatchQueue.main.async {
+            self.listingsByType = sortedListings
+            self.viewModel.listings = sortedListings
+        }
+    }
     private func performSearch() {
         var updatedParameters = searchParameters
         updatedParameters.filters = appliedFilters

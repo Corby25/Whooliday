@@ -15,9 +15,11 @@ struct PriceChartView: View {
     var body: some View {
         VStack {
             BarChartView(
-                data: ChartData(values: viewModel.showDailyPrices ? viewModel.dailyPrices : viewModel.weeklyPrices),
-                title: viewModel.showDailyPrices ? "Prezzo Giornaliero - €" : "Prezzo Settimanale - €",
-                legend: viewModel.showDailyPrices ? "Prezzo Giornaliero" : "Prezzo Settimanale",
+                data: ChartData(values: viewModel.showDailyPrices ?
+                    viewModel.dailyPrices.map { ($0.0, $0.1) } :
+                    viewModel.weeklyAverages.map { ($0.0, $0.1) }),
+                title: viewModel.showDailyPrices ? "Prezzo Giornaliero - €" : "Media Settimanale - €",
+                legend: viewModel.showDailyPrices ? "Prezzo Giornaliero" : "Media Settimanale",
                 form: ChartForm.extraLarge
             )
             
@@ -25,12 +27,11 @@ struct PriceChartView: View {
             
             Picker("Tipo di prezzo", selection: $viewModel.showDailyPrices) {
                 Text("Giornaliero").tag(true)
-                Text("Settimanale").tag(false)
+                Text("Media Settimanale").tag(false)
             }
             .pickerStyle(SegmentedPickerStyle())
             .frame(width: 200)
             .padding()
-            
         }
         .frame(height: 300)
     }
@@ -42,24 +43,19 @@ struct PriceChartView: View {
     
     // Add example data to priceCalendar
     exampleViewModel.priceCalendar = [
-        "2024-06-24": PriceData(daily: 141.05, weekly: 996.85, monthly: 5198.05),
-        "2024-06-25": PriceData(daily: 141.05, weekly: 1034.85, monthly: 5237.00),
-        "2024-06-26": PriceData(daily: 141.05, weekly: 1072.85, monthly: 5275.95),
-        "2024-06-27": PriceData(daily: 141.05, weekly: 1110.85, monthly: 5314.90),
-        "2024-06-28": PriceData(daily: 141.05, weekly: 1148.85, monthly: 5371.85),
-        "2024-06-29": PriceData(daily: 141.05, weekly: 1072.85, monthly: 5275.95),
-        "2024-06-30": PriceData(daily: 141.05, weekly: 1110.85, monthly: 5314.90),
-        "2024-07-01": PriceData(daily: 141.05, weekly: 1148.85, monthly: 5371.85)
+        "2024-06-24": PriceData(daily: 141.05),
+        "2024-06-25": PriceData(daily: 141.05),
+        "2024-06-26": PriceData(daily: 141.05),
+        "2024-06-27": PriceData(daily: 141.05),
+        "2024-06-28": PriceData(daily: 141.05),
+        "2024-06-29": PriceData(daily: 141.05),
+        "2024-06-30": PriceData(daily: 141.05),
+        "2024-07-01": PriceData(daily: 141.05)
     ]
     
-    // Populate dailyPrices and weeklyPrices
-    exampleViewModel.dailyPrices = exampleViewModel.priceCalendar.map { (formattedDate($0.key), $0.value.daily) }
-    exampleViewModel.weeklyPrices = exampleViewModel.priceCalendar.compactMap {
-        if let weekly = $0.value.weekly {
-            return (formattedDate($0.key), weekly)
-        }
-        return nil
-    }
+    // Populate dailyPrices and calculate weekly averages
+    exampleViewModel.dailyPrices = exampleViewModel.priceCalendar.map { (formattedDate($0.key), $0.value.daily) }.sorted { $0.0 < $1.0 }
+    exampleViewModel.calculateWeeklyAverages()
     
     return PriceChartView(viewModel: exampleViewModel)
 }
