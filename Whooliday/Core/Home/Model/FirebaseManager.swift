@@ -14,6 +14,7 @@ class FirebaseManager: ObservableObject {
     
     static let shared = FirebaseManager()
     private let db = Firestore.firestore()
+    
     @Published var favorites: Set<Int> = []
     
     var isUserLoggedIn: Bool {
@@ -156,3 +157,4 @@ class FirebaseManager: ObservableObject {
     }
 
 }
+
