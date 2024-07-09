@@ -16,9 +16,9 @@ struct WelcomeView2: View {
     @State private var displayedTextSecond = ""
     @State private var displayedTextThird = ""
     
-    private let fullTextFirst = "Goditi."
-    private let fullTextSecond = "Ogni."
-    private let fullTextThird = "Momento."
+    private let fullTextFirst = NSLocalizedString("Enjoy.", comment: "");
+    private let fullTextSecond = NSLocalizedString("Every.", comment: "");
+    private let fullTextThird = NSLocalizedString("Moment.", comment: "")
     
     let generator = UIImpactFeedbackGenerator(style: .light)
     @State private var itr = 0
@@ -119,7 +119,7 @@ struct WelcomeView2: View {
                     }
             }
             
-            Text("Per il resto ci pensiamo noi. Controlliamo per te e ti aggiorniamo.")
+            Text(NSLocalizedString("We'll take care of the rest. We check for you and update you.", comment: ""))
                 .frame(width: 300, alignment: .leading)
                 .font(.custom("TT Hoves Pro Trial Regular", size: 18, relativeTo: .headline))
                 .padding(.top, 10)

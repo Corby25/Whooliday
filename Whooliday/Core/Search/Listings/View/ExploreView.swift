@@ -4,6 +4,7 @@
 //
 //  Created by Fabio Tagliani on 20/06/24.
 //
+
 import SwiftUI
 
 struct ExploreView: View {
@@ -28,14 +29,10 @@ struct ExploreView: View {
         
         var iconName: String {
             switch self {
-            case .none:
-                return "arrow.up.arrow.down"
-            case .priceAscending:
-                return "arrow.up.circle"
-            case .priceDescending:
-                return "arrow.down.circle"
-            case .ratingDescending:
-                return "star.fill"
+            case .none: return "arrow.up.arrow.down"
+            case .priceAscending: return "arrow.up.circle"
+            case .priceDescending: return "arrow.down.circle"
+            case .ratingDescending: return "star.fill"
             }
         }
     }
@@ -47,98 +44,22 @@ struct ExploreView: View {
     init(searchParameters: SearchParameters) {
         self._viewModel = StateObject(wrappedValue: ExploreViewModel(service: ExploreService()))
         self._searchParameters = State(initialValue: searchParameters)
-        
     }
     
     var body: some View {
         NavigationStack {
             ZStack {
-                VStack(spacing: 0) {
-                    SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: $isFavorite, onFavoriteToggle: toggleFavorite, showFilterAndFavorite: true)
-                        .onTapGesture {
-                            withAnimation(.snappy) {
-                                showDestinationSearchView.toggle()
-                            }
-                        }
-                    
-                    FilterView(selectedPropertyType: $selectedPropertyType, selectedTypeID: $selectedTypeID)
-                    
-                    ScrollView {
-                        LazyVStack(spacing: 32) {
-                            ForEach(listingsByType.isEmpty ? viewModel.listings : listingsByType) { listing in
-                                NavigationLink(destination: ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))) {
-                                        ListingItemView(listing: listing)
-                                            .frame(height: 300)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    
-                                }
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                            }
-                        }
-                    }.id(UUID())
-                    
-                        .overlay(
-                            VStack {
-                                Spacer()
-                                Picker("Ordina per", selection: $selectedSorting) {
-                                    ForEach(SortOption.allCases, id: \.self) { option in
-                                        Image(systemName: option.iconName)
-                                            .tag(option)
-                                    }
-                                }
-                                .pickerStyle(SegmentedPickerStyle())
-                                .padding(.horizontal, 60)
-                                .padding(.bottom, 16)
-                                .background(Color(UIColor.systemBackground)) // Colore adattabile alla modalità
-                            }
-                        )
-
-                }
-                
-                if viewModel.isLoading {
-                    LoadingView(isPresented: $viewModel.isLoading)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(colorScheme == .dark ? .black : .white)
-                        .edgesIgnoringSafeArea(.all)
-                }
+                mainContent
+                loadingOverlay
             }
             .navigationBarHidden(hasPerformedSearch)
-            
-            .overlay(
-                ZStack() {
-                    if showDestinationSearchView {
-                        Color.black.opacity(0.3)
-                            .ignoresSafeArea()
-                            .onTapGesture {
-                                withAnimation(.spring()) {
-                                    showDestinationSearchView = false
-                                }
-                            }
-                        
-                        DestinationSearchView(searchParameters: $searchParameters, show: $showDestinationSearchView, navigateToExplore: .constant(false))
-                            .transition(.move(edge: .bottom))
-                           
-                            .cornerRadius(16)
-                            .padding()
-                    }
-                    
-                    if showAddFilterView {
-                        AddFilterView(show: $showAddFilterView, appliedFilters: $appliedFilters) {
-                            performSearch()
-                        }
-                        .transition(.move(edge: .bottom))
-                        .background(colorScheme == .dark ? .black : .white)
-                        .cornerRadius(16)
-                        .padding()
-                    }
-                }
-            )
+            .overlay(searchAndFilterOverlay)
         }
         .onChange(of: selectedSorting) { _, _ in
             sortListings()
         }
         .onAppear {
-            if(!hasPerformedSearch){
+            if (!hasPerformedSearch) {
                 performSearch()
             }
         }
@@ -156,6 +77,114 @@ struct ExploreView: View {
         }
     }
     
+    private var mainContent: some View {
+        VStack(spacing: 0) {
+            searchAndFilterBar
+            filterView
+            listingsScrollView
+        }
+    }
+
+    private var searchAndFilterBar: some View {
+        SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: $isFavorite, onFavoriteToggle: toggleFavorite, showFilterAndFavorite: true)
+            .onTapGesture {
+                withAnimation(.snappy) {
+                    showDestinationSearchView.toggle()
+                }
+            }
+    }
+
+    private var filterView: some View {
+        FilterView(selectedPropertyType: $selectedPropertyType, selectedTypeID: $selectedTypeID)
+    }
+
+    private var listingsScrollView: some View {
+        ScrollView {
+            LazyVStack(spacing: 32) {
+                ForEach(listingsByType.isEmpty ? viewModel.listings : listingsByType) { listing in
+                    listingNavigationLink(for: listing)
+                }
+            }
+        }
+        .id(UUID())
+        .overlay(sortingPicker)
+    }
+
+    private func listingNavigationLink(for listing: Listing) -> some View {
+        NavigationLink(destination: ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))) {
+            ListingItemView(listing: listing)
+                .frame(height: 300)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+        .foregroundColor(colorScheme == .dark ? .white : .black)
+    }
+
+    private var sortingPicker: some View {
+        VStack {
+            Spacer()
+            Picker("Ordina per", selection: $selectedSorting) {
+                ForEach(SortOption.allCases, id: \.self) { option in
+                    Image(systemName: option.iconName)
+                        .tag(option)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .background(colorScheme == .dark ? Color.black : Color.white)
+            .frame(width: 260, alignment: .center)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
+    }
+
+    private var loadingOverlay: some View {
+        Group {
+            if viewModel.isLoading {
+                LoadingView(isPresented: $viewModel.isLoading)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(colorScheme == .dark ? Color.black : Color.white)
+                    .edgesIgnoringSafeArea(.all)
+            }
+        }
+    }
+
+    private var searchAndFilterOverlay: some View {
+        ZStack {
+            if showDestinationSearchView {
+                destinationSearchOverlay
+            }
+            
+            if showAddFilterView {
+                addFilterOverlay
+            }
+        }
+    }
+
+    private var destinationSearchOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.3)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation(.spring()) {
+                        showDestinationSearchView = false
+                    }
+                }
+            
+            DestinationSearchView(searchParameters: $searchParameters, show: $showDestinationSearchView, navigateToExplore: .constant(false))
+                .transition(.move(edge: .bottom))
+                .cornerRadius(16)
+                .padding()
+        }
+    }
+
+    private var addFilterOverlay: some View {
+        AddFilterView(show: $showAddFilterView, appliedFilters: $appliedFilters) {
+            performSearch()
+        }
+        .transition(.move(edge: .bottom))
+        .background(colorScheme == .dark ? Color.black : Color.white)
+        .cornerRadius(16)
+        .padding()
+    }
+
     private func sortListings() {
         let listingsToSort = listingsByType.isEmpty ? viewModel.listings : listingsByType
         
@@ -180,6 +209,7 @@ struct ExploreView: View {
             self.viewModel.listings = sortedListings
         }
     }
+
     private func performSearch() {
         var updatedParameters = searchParameters
         updatedParameters.filters = appliedFilters
@@ -206,17 +236,12 @@ struct ExploreView: View {
             }
             viewModel.isLoading = false
             return result
-            
         }
         
         DispatchQueue.main.async {
             self.listingsByType = filteredListings
         }
-        
     }
-    
-    
-  
     
     private func toggleFavorite() {
         isFavorite.toggle()
@@ -228,21 +253,18 @@ struct ExploreView: View {
     }
 
     private func saveSearch() {
-           
-           
-           if let firstListing = viewModel.listings.first {
-               firebaseManager.addFavoriteFilter(listing: firstListing, appliedFilters: appliedFilters, listings: viewModel.listings)
-               print("Ricerca salvata")
-           } else {
-               print("No listings available to save as favorite filter")
-           }
-       }
+        if let firstListing = viewModel.listings.first {
+            firebaseManager.addFavoriteFilter(listing: firstListing, appliedFilters: appliedFilters, listings: viewModel.listings)
+            print("Ricerca salvata")
+        } else {
+            print("No listings available to save as favorite filter")
+        }
+    }
        
-       private func removeSearch() {
-           // Implementa la logica per rimuovere la ricerca dai preferiti
-           print("Ricerca rimossa dai preferiti")
-           // You might want to implement a method to remove the favorite filter from Firebase
-       }
+    private func removeSearch() {
+        print("Ricerca rimossa dai preferiti")
+        // You might want to implement a method to remove the favorite filter from Firebase
+    }
 }
 
 struct ExploreView_Previews: PreviewProvider {

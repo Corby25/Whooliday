@@ -52,7 +52,8 @@ struct ListingDetailView: View {
                                         Image(systemName: "star.fill")
                                         Text(String(format: "%.1f", listing.review_score))
                                         Text(" - ")
-                                        Text("\(listing.review_count) Recensioni")
+                                        Text(String(format: NSLocalizedString("%d reviews", comment: "Number of reviews"),
+                                                    listing.review_count))
                                             .underline()
                                             .fontWeight(.semibold)
                                     }
@@ -81,7 +82,7 @@ struct ListingDetailView: View {
 
                             // Rooms
                             VStack(alignment: .leading) {
-                                Text("Ospiti")
+                                Text(NSLocalizedString("Guests", comment: ""))
                                     .font(.headline)
                                 Spacer()
 
@@ -94,11 +95,12 @@ struct ListingDetailView: View {
                                                     .fontWeight(.bold)
                                             }
                                         }
-                                        Text("Adulti: \(listing.nAdults)")
+                                        Text(String(format: NSLocalizedString("Adults: %d", comment: "Number of adults"),
+                                                    listing.nAdults))
                                             .font(.headline)
                                             .fontWeight(.semibold)
                                     }
-
+ 
                                     Spacer()
 
                                     if ((listing.nChildren ?? 0) > 0) {
@@ -110,7 +112,8 @@ struct ListingDetailView: View {
                                                         .fontWeight(.bold)
                                                 }
                                             }
-                                            Text("Bambini: \(listing.nChildren ?? 0)")
+                                            Text(String(format: NSLocalizedString("Children: %d", comment: "Number of children"),
+                                                        listing.nChildren ?? 0))
                                                 .font(.headline)
                                                 .fontWeight(.semibold)
                                         }
@@ -125,7 +128,7 @@ struct ListingDetailView: View {
 
                             // Listing amenities
                             VStack(alignment: .leading, spacing: 16) {
-                                Text("Cosa offre")
+                                Text(NSLocalizedString("What it offers", comment: ""))
                                     .font(.headline)
 
                                 if viewModel.isLoadingFacilities {
@@ -173,7 +176,7 @@ struct ListingDetailView: View {
                                             }
                                         }) {
                                             HStack {
-                                                Text(showAllFacilities ? "Mostra meno" : "Vedi altre")
+                                                Text(showAllFacilities ? NSLocalizedString("Show less", comment: "") : NSLocalizedString("Show more", comment: ""))
                                                     .font(.footnote)
                                                     .foregroundColor(.orange)
                                                     .fontWeight(.bold)
@@ -187,7 +190,7 @@ struct ListingDetailView: View {
                                         .padding(.top, 8)
                                     }
                                 } else {
-                                    Text("Nessuna facility disponibile")
+                                    Text(NSLocalizedString("No any facility available", comment: ""))
                                         .font(.footnote)
                                         .foregroundColor(.secondary)
                                 }
@@ -214,7 +217,7 @@ struct ListingDetailView: View {
 
                             // Map view
                             VStack(alignment: .leading, spacing: 24) {
-                                Text("Dove alloggerai")
+                                Text(NSLocalizedString("Where you will stay", comment: ""))
                                     .font(.headline)
 
                                 Map(coordinateRegion: $region, annotationItems: [listing]) { item in
@@ -290,7 +293,7 @@ struct ListingDetailView: View {
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
 
-                            Text("Totale")
+                            Text(NSLocalizedString("Total", comment: ""))
                             Text("\(listing.checkin) - \(listing.checkout)")
                                 .font(.footnote)
                                 .fontWeight(.semibold)
@@ -302,7 +305,7 @@ struct ListingDetailView: View {
                         Button {
                             openGoogleSearch()
                         } label: {
-                            Text("Cercalo su Google")
+                            Text(NSLocalizedString("Book it now", comment: ""))
                                 .foregroundStyle(.white)
                                 .font(.subheadline)
                                 .fontWeight(.semibold)

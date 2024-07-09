@@ -37,16 +37,16 @@ struct FilterView: View {
     }
     
     let filterButtons: [(icon: String, text: String, isCustomIcon: Bool, typeID: Int)] = [
-        ("logosmall", "Tutto", true, 0),
-        ("bed.double", "Hotel", false, 204),
-        ("house", "Casa", false, 201),
-        ("building", "Hostel", false, 203),
-        ("sun.horizon", "Resort", false, 206),
-        ("capsule", "Capsule", false, 225),
-        ("cup.and.saucer", "B&B", false, 208),
-        ("leaf", "Fattoria", false, 210),
-        ("tree", "Chalet", false, 228),
-        ("sailboat", "Barca", false, 234),
+        ("logosmall", NSLocalizedString("All", comment: "Filter button for all types"), true, 0),
+        ("bed.double", NSLocalizedString("Hotel", comment: "Filter button for hotels"), false, 204),
+        ("house", NSLocalizedString("House", comment: "Filter button for houses"), false, 201),
+        ("building", NSLocalizedString("Hostel", comment: "Filter button for hostels"), false, 203),
+        ("sun.horizon", NSLocalizedString("Resort", comment: "Filter button for resorts"), false, 206),
+        ("capsule", NSLocalizedString("Capsule", comment: "Filter button for capsule hotels"), false, 225),
+        ("cup.and.saucer", NSLocalizedString("B&B", comment: "Filter button for bed and breakfasts"), false, 208),
+        ("leaf", NSLocalizedString("Farm", comment: "Filter button for farms"), false, 210),
+        ("tree", NSLocalizedString("Chalet", comment: "Filter button for chalets"), false, 228),
+        ("sailboat", NSLocalizedString("Boat", comment: "Filter button for boats"), false, 234),
     ]
 }
 

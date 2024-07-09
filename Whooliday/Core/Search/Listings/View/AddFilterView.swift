@@ -35,14 +35,14 @@ struct AddFilterView: View {
                         
                         Spacer()
                         
-                        Text("Filters")
+                        Text(NSLocalizedString("Filters", comment: ""))
                             .font(.title2)
                             .fontWeight(.bold)
                             .frame(maxWidth: .infinity)
                         
                         Spacer()
                         
-                        Button("Clear") {
+                        Button(NSLocalizedString("Clear", comment: "")) {
                             selectedFilters.removeAll()
                             priceRange = PriceRange(min: 0, max: 1000)
                         }
@@ -98,7 +98,7 @@ struct AddFilterView: View {
                 Button(action: {
                     applyFilters()
                 }) {
-                    Text("Apply Filters")
+                    Text(NSLocalizedString("Apply Filters",  comment: ""))
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -173,7 +173,7 @@ struct FilterButton2: View {
                     .fontWeight(.semibold)
                     .foregroundColor(
                         isSelected
-                            ? (colorScheme == .dark ? .black : .white)
+                            ? (colorScheme == .dark ? .orange : .white)
                             : .primary
                     )
             }
@@ -195,7 +195,7 @@ struct PriceRangeView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Price Range")
+            Text(NSLocalizedString("Price Range", comment: ""))
                 .font(.subheadline)
                 .fontWeight(.semibold)
             

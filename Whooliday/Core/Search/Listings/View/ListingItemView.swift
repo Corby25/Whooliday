@@ -123,12 +123,12 @@ struct HeartButton: View {
         }
         .alert(isPresented: $showLoginAlert) {
             Alert(
-                title: Text("Accesso richiesto"),
-                message: Text("Per aggiungere questo hotel ai preferiti, devi effettuare l'accesso."),
-                primaryButton: .default(Text("Accedi"), action: {
+                title: Text(NSLocalizedString("Login required", comment: "")),
+                message: Text(NSLocalizedString("Login required to add to favorite", comment: "")),
+                primaryButton: .default(Text(NSLocalizedString("Login", comment: "")), action: {
                     // Implementa l'azione per mostrare la vista di login
                 }),
-                secondaryButton: .cancel(Text("Annulla"))
+                secondaryButton: .cancel(Text(NSLocalizedString("Cancel", comment: "")))
             )
         }
     }

@@ -65,11 +65,11 @@ struct HomeView: View {
     private var headerView: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Cerca il tuo Hotel")
+                Text(NSLocalizedString("Search your hotel", comment: ""))
                     .font(.title)
                     .fontWeight(.bold)
                 
-                Text("Partendo da qui")
+                Text(NSLocalizedString("Start here", comment: ""))
                     .font(.title2)
                     .fontWeight(.semibold)
             }
@@ -149,7 +149,7 @@ struct ContinentButtons: View {
                     }) {
                         HStack {
                             Image(systemName: String(continentSymbol[continent] ?? ""))
-                            Text(continent)
+                            Text(NSLocalizedString(continent, comment: ""))
                         }
                         .fontWeight(.semibold)
                         .frame(width: 120, height: 45)

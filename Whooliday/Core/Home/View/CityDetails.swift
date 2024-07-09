@@ -115,7 +115,7 @@ struct CityDetailView: View {
             Spacer()
             
             Button(action: { showRatingSheet = true }) {
-                Text("Valuta")
+                Text(NSLocalizedString("give a score", comment: ""))
                     .font(.subheadline)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
@@ -133,7 +133,7 @@ struct CityDetailView: View {
                 .font(.body)
             
             Button(action: { showFullDescription.toggle() }) {
-                Text(showFullDescription ? "Leggi meno" : "Leggi di più")
+                Text(showFullDescription ? NSLocalizedString("Read less", comment: "") : NSLocalizedString("Read more", comment: ""))
                     .font(.caption)
                     .foregroundColor(.blue)
             }
@@ -217,14 +217,14 @@ struct CityDetailView: View {
     
     private var weatherView: some View {
            VStack(alignment: .leading, spacing: 10) {
-               Text("Previsioni meteo (media degli ultimi 5 anni)")
+               Text(NSLocalizedString("Monthly temperature (average of the last 5 years)", comment: ""))
                    .font(.headline)
                
                if let errorMessage = viewModel.errorMessage {
                    Text(errorMessage)
                        .foregroundColor(.red)
                } else if viewModel.monthlyAverageTemperatures.isEmpty {
-                   Text("Caricamento dati meteo...")
+                   Text(NSLocalizedString("Loading weather data...", comment: ""))
                } else {
                    TemperatureChartView(monthlyTemperatures: viewModel.monthlyAverageTemperatures)
                    
@@ -237,12 +237,17 @@ struct CityDetailView: View {
                    }
                    
                    VStack(alignment: .leading) {
-                       Text("Media annuale: \(String(format: "%.1f°C", viewModel.monthlyAverageTemperatures.averageTemperature()))")
+                       Text(String(format: NSLocalizedString("Annual average: %.1f°C", comment: "Annual average temperature"),
+                                   viewModel.monthlyAverageTemperatures.averageTemperature()))
                        if let hottest = viewModel.monthlyAverageTemperatures.hottestMonth() {
-                           Text("Mese più caldo: \(hottest.monthName) (\(String(format: "%.1f°C", hottest.temperature)))")
+                           Text(String(format: NSLocalizedString("Hottest month: %@ (%.1f°C)", comment: "Hottest month with temperature"),
+                                       NSLocalizedString(hottest.monthName, comment: "Month name"),
+                                       hottest.temperature))
                        }
                        if let coldest = viewModel.monthlyAverageTemperatures.coldestMonth() {
-                           Text("Mese più freddo: \(coldest.monthName) (\(String(format: "%.1f°C", coldest.temperature)))")
+                           Text(String(format: NSLocalizedString("Coldest month: %@ (%.1f°C)", comment: "Coldest month with temperature"),
+                                       NSLocalizedString(coldest.monthName, comment: "Month name"),
+                                       coldest.temperature))
                        }
                    }
                    .padding(.top)
@@ -259,7 +264,7 @@ struct RatingView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Valuta questo posto")
+            Text(NSLocalizedString("Rate this place", comment: ""))
                 .font(.title2)
                 .fontWeight(.bold)
             
@@ -274,14 +279,15 @@ struct RatingView: View {
                 }
             }
             
-            Text(String(format: "%.1f stelle", rating))
+            Text(String(format: NSLocalizedString("%.1f stars", comment: "Rating in stars"),
+                        rating))
                 .font(.headline)
             
             Slider(value: $rating, in: 1...5, step: 0.5)
                 .accentColor(.yellow)
             
             HStack(spacing: 20) {
-                Button("Annulla") {
+                Button(NSLocalizedString("Cancel", comment: "")) {
                     isPresented = false
                 }
                 .foregroundColor(.red)

@@ -7,11 +7,11 @@ struct FavoritesView: View {
     private var headerView: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Cogli le occasioni")
+                Text(NSLocalizedString("Discover deals", comment: ""))
                     .font(.title)
                     .fontWeight(.bold)
                 
-                Text("Seleziona un hotel o un filtro")
+                Text(NSLocalizedString("Select a hotel or filter", comment: ""))
                     .font(.title2)
                     .fontWeight(.semibold)
             }
@@ -31,8 +31,8 @@ struct FavoritesView: View {
                 headerView // Custom header view
 
                 Picker(selection: $selectedTab, label: Text("Select")) {
-                    Text("Hotels").tag(0)
-                    Text("Places").tag(1)
+                    Text(NSLocalizedString("Hotels", comment: "")).tag(0)
+                    Text(NSLocalizedString("Places", comment: "")).tag(1)
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding(.horizontal) // Only add horizontal padding
@@ -74,7 +74,7 @@ struct HotelsListView: View {
                                     Button {
                                         favoritesModel.makeHotelAsSeen(hotel)
                                     } label: {
-                                        Label("Visualizza", systemImage: "eye")
+                                        Label(NSLocalizedString("Visualize", comment: ""), systemImage: "eye")
                                     }
                                     .tint(.blue)
                                 }
@@ -85,7 +85,7 @@ struct HotelsListView: View {
                                 Button(role: .destructive) {
                                     favoritesModel.deleteHotel(hotel)
                                 } label: {
-                                    Label("Rimuovi", systemImage: "trash")
+                                    Label(NSLocalizedString("Delete", comment: ""), systemImage: "trash")
                                 }
                             }
                         }
@@ -153,20 +153,20 @@ struct HotelRowView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
 
-                        Text("Da: \(hotel.checkIn)")
+                        Text(NSLocalizedString("From:", comment: "Check-in date label prefix") + " " + hotel.checkIn)
                             .font(.subheadline)
                             .foregroundColor(.gray)
 
-                        Text("A: \(hotel.checkOut)")
+                        Text(NSLocalizedString("A:", comment: "") + " " + hotel.checkOut)
                             .font(.subheadline)
                             .foregroundColor(.gray)
 
                         if let childrenNumber = hotel.childrenNumber {
-                            Text("Numero di ospiti: \(hotel.adultsNumber + childrenNumber)")
+                            Text(NSLocalizedString("Guest number:", comment: "") + " " + "\(hotel.adultsNumber + childrenNumber)")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         } else {
-                            Text("Numero di ospiti: \(hotel.adultsNumber)")
+                            Text(NSLocalizedString("Guest number:", comment: "") + " " + "\(hotel.adultsNumber)")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }
@@ -174,7 +174,7 @@ struct HotelRowView: View {
                     Spacer()
                     VStack(alignment: .trailing) {
                         if hotel.newPrice == 0 {
-                            Text("Esaurito")
+                            Text(NSLocalizedString("Sold Out", comment: ""))
                                 .font(.subheadline)
                                 .foregroundColor(.red)
                         } else if hotel.newPrice != hotel.oldPrice {
@@ -272,12 +272,12 @@ struct FiltersListView: View {
                         
                         VStack(alignment: .leading, spacing: 5) {
                             HStack {
-                                Text("Da:")
+                                Text(NSLocalizedString("From:", comment: ""))
                                     .font(.caption)
                                     .foregroundColor(.gray)
                                 Text(filter.checkIn)
                                     .font(.subheadline)
-                                Text("A:")
+                                Text(NSLocalizedString("To:", comment: ""))
                                     .font(.caption)
                                     .foregroundColor(.gray)
                                     .padding(.leading,1)
@@ -285,12 +285,12 @@ struct FiltersListView: View {
                                     .font(.subheadline)
                             }
                             HStack {
-                                Text("Prezzo massimo:")
+                                Text(NSLocalizedString("Max price:", comment: ""))
                                     .font(.caption)
                                     .foregroundColor(.gray)
 
                                 if filter.maxPrice == 0 {
-                                    Text("Non selezionato")
+                                    Text(NSLocalizedString("Not selected", comment: ""))
                                         .font(.subheadline)
                                 } else {
                                     Text("\(filter.maxPrice, specifier: "%.2f") \(favoritesModel.userCurrency)")
@@ -298,14 +298,14 @@ struct FiltersListView: View {
                                 }
                             }
                             HStack {
-                                Text("Numero di ospiti:")
+                                    Text(NSLocalizedString("Guest number:", comment: ""))
                                     .font(.caption)
                                     .foregroundColor(.gray)
                                 Text("\(filter.adultsNumber + filter.childrenNumber)")
                                     .font(.subheadline)
                             }
                             HStack {
-                                Text("Dove:")
+                                    Text(NSLocalizedString("Where:", comment: ""))
                                     .font(.caption2)
                                     .foregroundColor(.gray)
                                 Text("\(filter.city)")
@@ -327,7 +327,7 @@ struct FiltersListView: View {
                                    favoritesModel.markFilterAsNotNew(withId: id)
                                }
                            } label: {
-                               Label("Visualizza", systemImage: "eye")
+                               Label(NSLocalizedString("Visualize", comment: ""), systemImage: "eye")
                            }
                            .tint(.blue)
                        }
@@ -338,7 +338,7 @@ struct FiltersListView: View {
                                favoritesModel.deleteFilter(withId: id)
                            }
                        } label: {
-                           Label("Rimuovi", systemImage: "trash")
+                           Label(NSLocalizedString("Delete", comment: ""), systemImage: "trash")
                        }
                    }
             }

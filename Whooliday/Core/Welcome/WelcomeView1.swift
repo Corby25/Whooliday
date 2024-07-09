@@ -26,16 +26,16 @@ struct WelcomeView1: View {
                     }
                     .frame(width: 350, alignment: .center)
                 
-                Text("Risparmia ora.")
+                Text(NSLocalizedString("Save now.", comment: ""))
                     .font(.custom("TT Hoves Pro Trial Bold", size: 30, relativeTo: .headline))
                     .frame(width: 300, alignment: .center)
                 
-                Text("Senza fatica.")
+                Text(NSLocalizedString("Effortlessly.", comment: ""))
                     .font(.custom("TT Hoves Pro Trial DemiBold", size: 30, relativeTo: .headline))
                     .frame(width: 300, alignment: .center)
                     .padding(.bottom, 20)
                 
-                Text("E' semplice, cerca un luogo o seleziona un hotel. Riceverai una notifica quando il prezzo si abbassa.")
+                Text(NSLocalizedString("simple", comment: ""))
                     .font(.custom("TT Hoves Pro Trial Regular", size: 18, relativeTo: .body))
                     .multilineTextAlignment(.center)
                     .frame(width: 350, alignment: .center)
@@ -44,11 +44,12 @@ struct WelcomeView1: View {
                 
                 Spacer()
                 
-                Button("Next") {
+                Button(NSLocalizedString("Next", comment: "")) {
                     path.append("WelcomeView2")
                 }
-                .foregroundColor(.blue)
+                .foregroundColor(.orange)
                 .font(.custom("TT Hoves Pro Trial Regular", size: 18, relativeTo: .body))
+                .fontWeight(.bold)
                 .padding(.bottom, 30)
                                 
                 HStack(spacing: 8) {

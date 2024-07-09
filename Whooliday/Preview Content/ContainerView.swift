@@ -44,16 +44,17 @@ struct ContentView: View {
                 }
             
             
+            
             FavoritesView()
                 .tabItem {
                     Image(systemName: "star.fill")
-                    Text("Favorites")
+                    Text(NSLocalizedString("Favorites", comment: ""))
                 }
             
             ProfileView()
                 .tabItem {
                     Image(systemName: "person.fill")
-                    Text("Profile")
+                    Text(NSLocalizedString("Profile", comment: ""))
                 }
         }
     }

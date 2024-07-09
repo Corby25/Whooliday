@@ -12,7 +12,7 @@ import Lottie
 struct LoadingView: View {
     
     @Binding var isPresented: Bool
-    let phrases = ["Sai che il 20% delle prenotazioni vengono annullate nel mese precendete alla data prenotata?", "Caricamento in corso... prendetevi un caffè e rilassatevi!", "Caricare è il nuovo cardio!", "Non c'è bisogno di un personal trainer quando hai un caricamento che ti fa aspettare."]
+    let phrases = [NSLocalizedString("Did you know that 20 of bookings are canceled in the month before the booked date?", comment: ""), NSLocalizedString("Loading... have a coffee and relax!", comment: ""), NSLocalizedString("Loading is the new cardio!", comment: ""), NSLocalizedString("There's no need for a personal trainer when you have a load that makes you sweat.", comment: "")]
     @State private var selectedPhrase: String = ""
     @State private var opacity: Double = 1.0
     

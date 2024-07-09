@@ -68,7 +68,7 @@ struct DestinationSearchView: View {
                     // Location Section
                     VStack(alignment: .leading, spacing: 8) {
                         if selectedOption == .location {
-                            Text("Dove?")
+                            Text(NSLocalizedString("Where?", comment: ""))
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
@@ -78,7 +78,7 @@ struct DestinationSearchView: View {
                                     .imageScale(.small)
                                     .foregroundColor(colorScheme == .dark ? .white : .black)
                                 
-                                TextField("Cerca Destinazione", text: $destination)
+                                TextField(NSLocalizedString("Search Destination", comment: ""), text: $destination)
                                     .font(.subheadline)
                                     .foregroundColor(colorScheme == .dark ? .white : .black)
                                     .onChange(of: destination) { oldValue, newValue in
@@ -127,7 +127,7 @@ struct DestinationSearchView: View {
                     // Date Section
                     VStack(alignment: .leading, spacing: 8) {
                         if selectedOption == .dates {
-                            Text("Quando vuoi partire?")
+                            Text(NSLocalizedString("When do you want to leave?", comment: ""))
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
@@ -135,7 +135,7 @@ struct DestinationSearchView: View {
                             CalendarView(startDate: $startDate, endDate: $endDate)
                                 .frame(height: 300)
                         } else {
-                            CollapsedPickerView(title: "Quando", description: getDateDescription())
+                            CollapsedPickerView(title: NSLocalizedString("When?", comment: ""), description: getDateDescription())
                         }
                     }
                     .modifier(CollapsibleDestinationViewModifier())
@@ -149,17 +149,17 @@ struct DestinationSearchView: View {
                     // Guests Section
                     VStack(alignment: .leading, spacing: 8) {
                         if selectedOption == .guests {
-                            Text("Quanti")
+                            Text(NSLocalizedString("How many", comment: ""))
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
                             
-                            GuestCounterView(title: "Adulti", count: $numAdults, minimum: 1)
+                            GuestCounterView(title:   NSLocalizedString("Adults", comment: ""), count: $numAdults, minimum: 1)
                             
-                            GuestCounterView(title: "Bambini", count: $numChildren, minimum: 0)
+                            GuestCounterView(title: NSLocalizedString("Children", comment: ""), count: $numChildren, minimum: 0)
                             
                             if numChildren > 0 {
-                                Text("Età dei bambini")
+                                Text(NSLocalizedString("Children Age", comment: ""))
                                     .font(.title3)
                                     .fontWeight(.medium)
                                     .foregroundColor(colorScheme == .dark ? .white : .black)
@@ -185,7 +185,7 @@ struct DestinationSearchView: View {
                                 }
                             }
                         } else {
-                            CollapsedPickerView(title: "Chi", description: getGuestsDescription())
+                            CollapsedPickerView(title: NSLocalizedString("Who", comment: ""), description: getGuestsDescription())
                         }
                     }
                     .modifier(CollapsibleDestinationViewModifier())
@@ -217,7 +217,7 @@ struct DestinationSearchView: View {
                         show = false
                     }
                 }) {
-                    Text("Cerca")
+                    Text(NSLocalizedString("Search", comment: ""))
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.white)

@@ -20,10 +20,10 @@ struct SearchAndFilterBar: View {
             Image(systemName: "magnifyingglass")
             
             VStack(alignment: .leading, spacing: 2) {
-                Text("Dove?")
+                Text(NSLocalizedString("Where?", comment: ""))
                     .font(.footnote)
                     .fontWeight(.semibold)
-                Text("Ovunque - Sempre - Ospiti")
+                Text(NSLocalizedString("Everywhere - Always - Guests", comment: ""))
                     .font(.caption2)
                     .foregroundStyle(.gray)
             }

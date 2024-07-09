@@ -26,8 +26,8 @@ struct PriceChartView: View {
             Spacer()
             
             Picker("Tipo di prezzo", selection: $viewModel.showDailyPrices) {
-                Text("Giornaliero").tag(true)
-                Text("Media Settimanale").tag(false)
+                Text(NSLocalizedString("Daily", comment: "")).tag(true)
+                Text(NSLocalizedString("Weekly", comment: "")).tag(false)
             }
             .pickerStyle(SegmentedPickerStyle())
             .frame(width: 200)
