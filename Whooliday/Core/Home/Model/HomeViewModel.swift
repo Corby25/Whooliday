@@ -170,6 +170,7 @@ class HomeViewModel: ObservableObject {
         return places.first(where: { $0.id == place.id })?.nLikes ?? place.nLikes
     }
     
+    
     private func loadUserPreferences() {
         if let favorites = UserDefaults.standard.array(forKey: "userFavorites") as? [String] {
             userFavorites = Set(favorites)
