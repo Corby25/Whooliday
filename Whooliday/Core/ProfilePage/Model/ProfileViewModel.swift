@@ -1,8 +1,6 @@
 import Foundation
 import Firebase
-
-import Foundation
-import Firebase
+import FirebaseFirestore
 import Combine
 
 class ProfileViewModel: ObservableObject {

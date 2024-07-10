@@ -7,12 +7,12 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject private var viewModel: HomeViewModel
-    @State private var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
-    @State private var showDestinationSearch = false
-    @State private var navigateToExplore = false
-    @State private var selectedPlace: Place? = nil
-    @State private var showAddFilterView = false
+    @StateObject  var viewModel: HomeViewModel
+    @State var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
+    @State  var showDestinationSearch = false
+    @State  var navigateToExplore = false
+    @State  var selectedPlace: Place? = nil
+    @State  var showAddFilterView = false
     
     
     init(viewModel: HomeViewModel = HomeViewModel()) {
@@ -30,7 +30,9 @@ struct HomeView: View {
                     ErrorView()
                 } else {
                     
-                    SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: .constant(false), onFavoriteToggle: {}, showFilterAndFavorite: false)
+                    SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite:
+                            .constant(false), onFavoriteToggle: {}, showFilterAndFavorite: false)
+                        .accessibilityIdentifier("SearchAndFilterBar")
                         .onTapGesture {
                             withAnimation(.spring()) {
                                 showDestinationSearch = true
@@ -54,6 +56,9 @@ struct HomeView: View {
                     }
                     .sheet(item: $selectedPlace) { place in
                         CityDetailView(viewModel: viewModel, place: place)
+                            .accessibilityIdentifier("CityDetailView")
+
+
                     }
                     .onAppear {
                         viewModel.fetchPlaces()
@@ -89,6 +94,8 @@ struct HomeView: View {
                     .onTapGesture {
                         selectedPlace = viewModel.places[0]
                     }
+                    .accessibilityIdentifier("CardViewBig")
+
                 
                 ForEach(0..<rowsCount(), id: \.self) { rowIndex in
                     createCardRow(startingAt: rowIndex * columnsCount())
@@ -198,6 +205,8 @@ struct DestinationSearchOverlay: View {
                     .background(colorScheme == .dark ? Color.black: Color.white)
                     .cornerRadius(25)
                     .padding()
+                    .accessibilityIdentifier("DestinationSearchView")
+
             }
         }
     }

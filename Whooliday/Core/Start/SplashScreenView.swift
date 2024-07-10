@@ -3,14 +3,12 @@ import RiveRuntime
 import CoreHaptics
 
 struct SplashScreenView: View {
-    //@EnvironmentObject var model: AuthModel()
-
-    
+    //@EnvironmentObject var model: AuthModel()    
     let textAnimationIntro = RiveViewModel(fileName: "introSplash")
     
     // Timer properties
     @State private var timer: Timer?
-    @State private var navigateToContentView = false
+    @State var navigateToContentView = false
     
     let generator = UIImpactFeedbackGenerator(style: .light)
     
@@ -43,6 +41,7 @@ struct SplashScreenView: View {
                     .ignoresSafeArea()
             }
         }
+        .accessibilityIdentifier("SplashScreenView")
     }
 }
 

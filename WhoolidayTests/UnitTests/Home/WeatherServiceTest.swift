@@ -24,8 +24,8 @@ class WeatherServiceTests: XCTestCase {
 
     func testFetchWeatherData() async throws {
         // Test del metodo fetchWeatherData
-        let latitude = 45.4642
-        let longitude = 9.1900
+        let latitude = 41.8967
+        let longitude = 12.4822
         
         let response = try await weatherService.fetchWeatherData(latitude: latitude, longitude: longitude)
         

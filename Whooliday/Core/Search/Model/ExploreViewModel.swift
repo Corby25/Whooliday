@@ -159,40 +159,44 @@ class ExploreViewModel: ObservableObject {
            }.resume()
        }
        
-       private func updatePrices() {
+    func updatePrices() {
            dailyPrices = priceCalendar.map { (formattedDate($0.key), $0.value.daily) }
                .sorted { dateFormatter.date(from: $0.0)! < dateFormatter.date(from: $1.0)! }
            calculateWeeklyAverages()
        }
        
     func calculateWeeklyAverages() {
-           let sortedDailyPrices = dailyPrices.sorted {
-               dateFormatter.date(from: $0.0)! < dateFormatter.date(from: $1.0)!
-           }
-           
-           var weeklyAverages: [(String, Double)] = []
-           var currentWeekPrices: [Double] = []
-           var weekStartDate = ""
-           
-           for (index, (date, price)) in sortedDailyPrices.enumerated() {
-               if index % 7 == 0 {
-                   if !currentWeekPrices.isEmpty {
-                       let average = currentWeekPrices.reduce(0, +) / Double(currentWeekPrices.count)
-                       weeklyAverages.append((weekStartDate, average))
-                   }
-                   currentWeekPrices = []
-                   weekStartDate = date
-               }
-               currentWeekPrices.append(price)
-           }
-           
-           if !currentWeekPrices.isEmpty {
-               let average = currentWeekPrices.reduce(0, +) / Double(currentWeekPrices.count)
-               weeklyAverages.append((weekStartDate, average))
-           }
-           
-           self.weeklyAverages = weeklyAverages
-       }
+        let sortedDailyPrices = dailyPrices.compactMap { dateString, price -> (Date, Double)? in
+            if let date = dateFormatter.date(from: dateString) {
+                return (date, price)
+            }
+            print("Warning: Unable to parse date: \(dateString)")
+            return nil
+        }.sorted { $0.0 < $1.0 }
+        
+        var weeklyAverages: [(String, Double)] = []
+        var currentWeekPrices: [Double] = []
+        var weekStartDate = ""
+        
+        for (index, (date, price)) in sortedDailyPrices.enumerated() {
+            if index % 7 == 0 {
+                if !currentWeekPrices.isEmpty {
+                    let average = currentWeekPrices.reduce(0, +) / Double(currentWeekPrices.count)
+                    weeklyAverages.append((weekStartDate, average))
+                }
+                currentWeekPrices = []
+                weekStartDate = dateFormatter.string(from: date)
+            }
+            currentWeekPrices.append(price)
+        }
+        
+        if !currentWeekPrices.isEmpty {
+            let average = currentWeekPrices.reduce(0, +) / Double(currentWeekPrices.count)
+            weeklyAverages.append((weekStartDate, average))
+        }
+        
+        self.weeklyAverages = weeklyAverages
+    }
        
        private func formattedDate(_ dateString: String) -> String {
            let inputFormatter = DateFormatter()

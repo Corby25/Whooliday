@@ -30,8 +30,9 @@ struct ContainerView: View {
                     ContentViewNoLogged();
                 }
             }
-        }
+        }.accessibilityIdentifier("ContainerView")
     }
+       
 }
 
 struct ContentView: View {
