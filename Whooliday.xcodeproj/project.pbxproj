@@ -15,7 +15,6 @@
 		6C39E1582C2273E500B83BBD /* AuthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C39E1572C2273E500B83BBD /* AuthModel.swift */; };
 		6C39E15D2C227C9300B83BBD /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C39E15C2C227C9300B83BBD /* SignupView.swift */; };
 		6C39E1602C227E8D00B83BBD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C39E15F2C227E8D00B83BBD /* User.swift */; };
-		6C95A5282C24809D0098ECAC /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C95A5272C24809D0098ECAC /* FavoritesView.swift */; };
 		6C95A52C2C2480E00098ECAC /* FavoritesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C95A52B2C2480E00098ECAC /* FavoritesModel.swift */; };
 		6C95A52E2C248BEA0098ECAC /* Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C95A52D2C248BEA0098ECAC /* Favorites.swift */; };
 		6CAB273E2C29BCDC00122C3E /* ShimmeringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAB273D2C29BCDC00122C3E /* ShimmeringView.swift */; };
@@ -90,6 +89,7 @@
 		B42A45C12C40162200433683 /* ListingItemViewUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A45C02C40162200433683 /* ListingItemViewUITest.swift */; };
 		B42A45C32C401C2E00433683 /* SignInViewUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A45C22C401C2E00433683 /* SignInViewUITest.swift */; };
 		B42A45C52C40211300433683 /* ProfileViewUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A45C42C40211300433683 /* ProfileViewUITest.swift */; };
+		B42A45C72C40370D00433683 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42A45C62C40370D00433683 /* FavoritesView.swift */; };
 		B43E786E2C2EA4F5009D5233 /* BookingSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E786D2C2EA4F5009D5233 /* BookingSymbols.swift */; };
 		B4572E942C3188E000324B4F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4572E932C3188E000324B4F /* FirebaseManager.swift */; };
 		B4572E9C2C33E23800324B4F /* ListingFavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4572E9B2C33E23800324B4F /* ListingFavoriteView.swift */; };
@@ -154,7 +154,6 @@
 		6C39E1572C2273E500B83BBD /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		6C39E15C2C227C9300B83BBD /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		6C39E15F2C227E8D00B83BBD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		6C95A5272C24809D0098ECAC /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		6C95A52B2C2480E00098ECAC /* FavoritesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesModel.swift; sourceTree = "<group>"; };
 		6C95A52D2C248BEA0098ECAC /* Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorites.swift; sourceTree = "<group>"; };
 		6CAB273D2C29BCDC00122C3E /* ShimmeringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringView.swift; sourceTree = "<group>"; };
@@ -202,6 +201,7 @@
 		B42A45C02C40162200433683 /* ListingItemViewUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingItemViewUITest.swift; sourceTree = "<group>"; };
 		B42A45C22C401C2E00433683 /* SignInViewUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewUITest.swift; sourceTree = "<group>"; };
 		B42A45C42C40211300433683 /* ProfileViewUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewUITest.swift; sourceTree = "<group>"; };
+		B42A45C62C40370D00433683 /* FavoritesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		B43E786D2C2EA4F5009D5233 /* BookingSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSymbols.swift; sourceTree = "<group>"; };
 		B4572E932C3188E000324B4F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		B4572E9B2C33E23800324B4F /* ListingFavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingFavoriteView.swift; sourceTree = "<group>"; };
@@ -391,7 +391,7 @@
 		6C95A5292C2480C80098ECAC /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6C95A5272C24809D0098ECAC /* FavoritesView.swift */,
+				B42A45C62C40370D00433683 /* FavoritesView.swift */,
 				B4572E9B2C33E23800324B4F /* ListingFavoriteView.swift */,
 			);
 			path = View;
@@ -959,7 +959,6 @@
 				B4572E9C2C33E23800324B4F /* ListingFavoriteView.swift in Sources */,
 				6C39E1582C2273E500B83BBD /* AuthModel.swift in Sources */,
 				B482FAB62C2C14AC00D6A0E2 /* HomeViewModel.swift in Sources */,
-				6C95A5282C24809D0098ECAC /* FavoritesView.swift in Sources */,
 				FF620DFF2C2ACF7B006371DF /* ShimmeringViewDetail.swift in Sources */,
 				B41A9F702C2B6E8B00C8F1E3 /* LoadingView.swift in Sources */,
 				B42A44DE2C36822A00433683 /* WeatherService.swift in Sources */,
@@ -968,6 +967,7 @@
 				B43E786E2C2EA4F5009D5233 /* BookingSymbols.swift in Sources */,
 				B482FAB02C2B8B1400D6A0E2 /* CardViewBig.swift in Sources */,
 				B4572EA22C3492EA00324B4F /* FilterModel.swift in Sources */,
+				B42A45C72C40370D00433683 /* FavoritesView.swift in Sources */,
 				B41A9F622C2B6D4400C8F1E3 /* Listing.swift in Sources */,
 				6CAB274B2C2A38C000122C3E /* Currency.swift in Sources */,
 				B4572E942C3188E000324B4F /* FirebaseManager.swift in Sources */,

@@ -44,8 +44,7 @@ final class SignInViewUITest: XCTestCase {
         app.launch()
         
         sleep(4)
-        app.tabBars["Tab Bar"].buttons["Profile"].tap()
-        app/*@START_MENU_TOKEN@*/.buttons["Logout"]/*[[".otherElements[\"SplashScreenView\"].buttons[\"Logout\"]",".buttons[\"Logout\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+    
         
         app.tabBars["Tab Bar"].buttons["Login"].tap()
 
@@ -57,7 +56,7 @@ final class SignInViewUITest: XCTestCase {
         app.textFields["Name"].typeText("ttest1")
         
         app.textFields["Email"].tap()
-        app.textFields["Email"].typeText("ttest14@gmail.com")
+        app.textFields["Email"].typeText("ttest15@gmail.com")
         
         let passwordSecureTextField = app.secureTextFields["Password"]
 
