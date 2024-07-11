@@ -9,17 +9,17 @@ import SwiftUI
 
 struct ExploreView: View {
     @StateObject var viewModel: ExploreViewModel
-    @State private var searchParameters: SearchParameters
+    @State   var searchParameters: SearchParameters
     @State private var showDestinationSearchView = false
-    @State private var hasPerformedSearch = false
+    @State  var hasPerformedSearch = false
     @State private var showCompactView = false
     @State private var appliedFilters: String = ""
     @State private var showAddFilterView = false
-    @State private var isFavorite: Bool = false
-    @State private var selectedPropertyType: String = "Tutto"
-    @State private var selectedTypeID: Int = 0 // Default to 0 for "Tutto"
+    @State var isFavorite: Bool = false
+    @State  var selectedPropertyType: String = "Tutto"
+    @State  var selectedTypeID: Int = 0 // Default to 0 for "Tutto"
     @Environment(\.colorScheme) var colorScheme
-    @State private var selectedSorting: SortOption = .none
+    @State  var selectedSorting: SortOption = .none
     
     enum SortOption: String, CaseIterable {
         case none = "Nessun ordine"
@@ -134,6 +134,8 @@ struct ExploreView: View {
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
     }
+    
+   
 
     private var loadingOverlay: some View {
         Group {
@@ -185,7 +187,7 @@ struct ExploreView: View {
         .padding()
     }
 
-    private func sortListings() {
+     func sortListings() {
         let listingsToSort = listingsByType.isEmpty ? viewModel.listings : listingsByType
         
         switch selectedSorting {
@@ -210,7 +212,7 @@ struct ExploreView: View {
         }
     }
 
-    private func performSearch() {
+     func performSearch() {
         var updatedParameters = searchParameters
         updatedParameters.filters = appliedFilters
         updatedParameters.propertyType = selectedPropertyType
@@ -218,7 +220,11 @@ struct ExploreView: View {
         hasPerformedSearch = true
     }
     
-    private func performSearchType() async {
+    func getIsFavorite() -> Bool{
+        return self.isFavorite
+    }
+    
+     func performSearchType() async {
         viewModel.isLoading = true
         let filteredListings = await withTaskGroup(of: (Listing, Bool).self) { group in
             for listing in viewModel.listings {
@@ -243,7 +249,7 @@ struct ExploreView: View {
         }
     }
     
-    private func toggleFavorite() {
+     func toggleFavorite() {
         isFavorite.toggle()
         if isFavorite {
             saveSearch()
@@ -252,7 +258,7 @@ struct ExploreView: View {
         }
     }
 
-    private func saveSearch() {
+    func saveSearch() {
         if let firstListing = viewModel.listings.first {
             firebaseManager.addFavoriteFilter(listing: firstListing, appliedFilters: appliedFilters, listings: viewModel.listings)
             print("Ricerca salvata")

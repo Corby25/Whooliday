@@ -12,7 +12,7 @@ import Combine
 
 class FirebaseManager: ObservableObject {
     
-    static let shared = FirebaseManager()
+    static var shared = FirebaseManager()
     private let db = Firestore.firestore()
     
     @Published var favorites: Set<Int> = []

@@ -34,7 +34,7 @@ class AuthModelTests: XCTestCase {
     
     func testSignUp() async throws {
         do {
-            try await authModel.signUp(withEmail: "new4@example.com", password: "newpassword", name: "New User", country: nil, currency: nil)
+            try await authModel.signUp(withEmail: "new11@example.com", password: "newpassword", name: "New User", country: nil, currency: nil)
             XCTAssertNotNil(authModel.userSession)
             XCTAssertNotNil(authModel.currentUser)
             XCTAssertEqual(authModel.currentUser?.name, "New User")
@@ -62,5 +62,6 @@ class AuthModelTests: XCTestCase {
         // Assumiamo che l'utente sia già autenticato
         await authModel.fetchUser()
         XCTAssertNotNil(authModel.currentUser)
+        
     }
 }

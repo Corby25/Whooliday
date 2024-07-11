@@ -8,7 +8,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject  var viewModel: HomeViewModel
-    @State var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
+    @State public var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
     @State  var showDestinationSearch = false
     @State  var navigateToExplore = false
     @State  var selectedPlace: Place? = nil

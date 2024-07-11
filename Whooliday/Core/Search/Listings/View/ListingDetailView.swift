@@ -14,11 +14,11 @@ struct ListingDetailView: View {
     @State private var scrollOffset: CGFloat = 0
     let listing: Listing
     @StateObject var viewModel: ExploreViewModel
-    @State private var showAllFacilities = false
+    @State var showAllFacilities = false
     @Namespace private var animation
-    @State private var region: MKCoordinateRegion
-    @State private var isFavorite: Bool = false
-    @ObservedObject private var firebaseManager = FirebaseManager.shared
+    @State  var region: MKCoordinateRegion
+    @State  var isFavorite: Bool = false
+    @ObservedObject var firebaseManager = FirebaseManager.shared
     @Environment(\.colorScheme) var colorScheme
     init(listing: Listing, viewModel: ExploreViewModel) {
         self.listing = listing
@@ -328,7 +328,7 @@ struct ListingDetailView: View {
             }
         }
 
-        private func checkFavoriteStatus() {
+         func checkFavoriteStatus() {
             firebaseManager.isListingFavorite(listingId: listing.id) { result in
                 DispatchQueue.main.async {
                     self.isFavorite = result
@@ -336,16 +336,16 @@ struct ListingDetailView: View {
             }
         }
 
-        private func toggleFavorite() {
-            if isFavorite {
-                firebaseManager.removeFavorite(listingId: listing.id)
-            } else {
-                firebaseManager.addFavorite(listing: listing)
-            }
-            isFavorite.toggle()
+    func toggleFavorite() {
+        if isFavorite {
+            firebaseManager.removeFavorite(listingId: listing.id)
+        } else {
+            firebaseManager.addFavorite(listing: listing)
         }
+        isFavorite.toggle()
+    }
 
-        private func openGoogleSearch() {
+         func openGoogleSearch() {
             guard let url = generateGoogleSearchURL() else { return }
 
             let safariViewController = SFSafariViewController(url: url)
@@ -357,13 +357,13 @@ struct ListingDetailView: View {
             }
         }
 
-        private func generateGoogleSearchURL() -> URL? {
+         func generateGoogleSearchURL() -> URL? {
             let searchQuery = "\(listing.name) \(listing.city)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             let urlString = "https://www.google.com/search?q=\(searchQuery)"
             return URL(string: urlString)
         }
 
-        private func shareGoogleSearchURL() {
+         func shareGoogleSearchURL() {
             guard let url = generateGoogleSearchURL() else { return }
 
             let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)

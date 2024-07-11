@@ -79,6 +79,7 @@ struct DestinationSearchView: View {
                                     .foregroundColor(colorScheme == .dark ? .white : .black)
                                 
                                 TextField(NSLocalizedString("Search Destination", comment: ""), text: $destination)
+                                    .accessibility(identifier: "searchDestinationTextField")
                                     .font(.subheadline)
                                     .foregroundColor(colorScheme == .dark ? .white : .black)
                                     .onChange(of: destination) { oldValue, newValue in
