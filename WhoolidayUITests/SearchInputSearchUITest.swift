@@ -10,7 +10,7 @@ import XCTest
 final class SearchInputSearchUITest: XCTestCase {
 
 
-    func testLaunchPerformance() {
+    func testSearchDestination() {
         
         let app = XCUIApplication()
         app.launch()

@@ -451,8 +451,8 @@
 		B42A44FA2C3D291D00433683 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				B42A45112C3EC97000433683 /* Profile */,
 				B42A45102C3EC66500433683 /* Auth */,
+				B42A45112C3EC97000433683 /* Profile */,
 				B42A450B2C3EBFA800433683 /* Favorites */,
 				B42A44FB2C3D292D00433683 /* Home */,
 			);
