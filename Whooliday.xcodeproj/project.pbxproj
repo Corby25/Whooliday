@@ -99,6 +99,13 @@
 		B482FAB02C2B8B1400D6A0E2 /* CardViewBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAAF2C2B8B1400D6A0E2 /* CardViewBig.swift */; };
 		B482FAB22C2C0A4900D6A0E2 /* CardViewSmall.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */; };
 		B482FAB62C2C14AC00D6A0E2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */; };
+		B4D2B5602C4508DE00CE061E /* CountryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D2B55F2C4508DE00CE061E /* CountryTest.swift */; };
+		B4D2B5622C45099100CE061E /* UtilityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D2B5612C45099100CE061E /* UtilityTest.swift */; };
+		B4D2B5642C4509E300CE061E /* CurrencyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D2B5632C4509E300CE061E /* CurrencyTest.swift */; };
+		B4D2B5672C450A7A00CE061E /* ListingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D2B5662C450A7A00CE061E /* ListingTest.swift */; };
+		B4D2B5692C450A9A00CE061E /* UserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D2B5682C450A9A00CE061E /* UserTest.swift */; };
+		B4D2B56B2C450AE100CE061E /* FavoritesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D2B56A2C450AE100CE061E /* FavoritesTest.swift */; };
+		B4D2B56D2C450BCA00CE061E /* FavoritesUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D2B56C2C450BCA00CE061E /* FavoritesUITest.swift */; };
 		B4F722942C2D72E700D40AAB /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F722932C2D72E700D40AAB /* CalendarView.swift */; };
 		B4F722962C2D91FA00D40AAB /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = B4F722952C2D91FA00D40AAB /* loading.json */; };
 		B4F722982C2D924B00D40AAB /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F722972C2D924B00D40AAB /* FilterView.swift */; };
@@ -211,6 +218,13 @@
 		B482FAAF2C2B8B1400D6A0E2 /* CardViewBig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewBig.swift; sourceTree = "<group>"; };
 		B482FAB12C2C0A4900D6A0E2 /* CardViewSmall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewSmall.swift; sourceTree = "<group>"; };
 		B482FAB52C2C14AC00D6A0E2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		B4D2B55F2C4508DE00CE061E /* CountryTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTest.swift; sourceTree = "<group>"; };
+		B4D2B5612C45099100CE061E /* UtilityTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityTest.swift; sourceTree = "<group>"; };
+		B4D2B5632C4509E300CE061E /* CurrencyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTest.swift; sourceTree = "<group>"; };
+		B4D2B5662C450A7A00CE061E /* ListingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingTest.swift; sourceTree = "<group>"; };
+		B4D2B5682C450A9A00CE061E /* UserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTest.swift; sourceTree = "<group>"; };
+		B4D2B56A2C450AE100CE061E /* FavoritesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTest.swift; sourceTree = "<group>"; };
+		B4D2B56C2C450BCA00CE061E /* FavoritesUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesUITest.swift; sourceTree = "<group>"; };
 		B4F722932C2D72E700D40AAB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		B4F722952C2D91FA00D40AAB /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		B4F722972C2D924B00D40AAB /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
@@ -453,8 +467,10 @@
 			children = (
 				B42A45102C3EC66500433683 /* Auth */,
 				B42A45112C3EC97000433683 /* Profile */,
-				B42A450B2C3EBFA800433683 /* Favorites */,
 				B42A44FB2C3D292D00433683 /* Home */,
+				B42A450B2C3EBFA800433683 /* Favorites */,
+				B4D2B5652C450A3F00CE061E /* Lists */,
+				B4D2B55E2C4508CB00CE061E /* Utilities */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -516,6 +532,7 @@
 				B42A45C02C40162200433683 /* ListingItemViewUITest.swift */,
 				B42A45C22C401C2E00433683 /* SignInViewUITest.swift */,
 				B42A45C42C40211300433683 /* ProfileViewUITest.swift */,
+				B4D2B56C2C450BCA00CE061E /* FavoritesUITest.swift */,
 			);
 			path = WhoolidayUITests;
 			sourceTree = "<group>";
@@ -556,6 +573,26 @@
 				B42A44DD2C36822A00433683 /* WeatherService.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B4D2B55E2C4508CB00CE061E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B4D2B55F2C4508DE00CE061E /* CountryTest.swift */,
+				B4D2B5612C45099100CE061E /* UtilityTest.swift */,
+				B4D2B5632C4509E300CE061E /* CurrencyTest.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		B4D2B5652C450A3F00CE061E /* Lists */ = {
+			isa = PBXGroup;
+			children = (
+				B4D2B5662C450A7A00CE061E /* ListingTest.swift */,
+				B4D2B5682C450A9A00CE061E /* UserTest.swift */,
+				B4D2B56A2C450AE100CE061E /* FavoritesTest.swift */,
+			);
+			path = Lists;
 			sourceTree = "<group>";
 		};
 		FF620DEE2C2ACD99006371DF /* Service */ = {
@@ -904,9 +941,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B42A450D2C3EC02200433683 /* FavoriteModelTest.swift in Sources */,
+				B4D2B56B2C450AE100CE061E /* FavoritesTest.swift in Sources */,
 				B42A45132C3EC99200433683 /* ProfileModelTest.swift in Sources */,
 				B42A44F92C3D287B00433683 /* WeatherServiceTest.swift in Sources */,
 				B42A45A92C3EE92600433683 /* HomeViewTest.swift in Sources */,
+				B4D2B5692C450A9A00CE061E /* UserTest.swift in Sources */,
+				B4D2B5622C45099100CE061E /* UtilityTest.swift in Sources */,
+				B4D2B5642C4509E300CE061E /* CurrencyTest.swift in Sources */,
+				B4D2B5672C450A7A00CE061E /* ListingTest.swift in Sources */,
+				B4D2B5602C4508DE00CE061E /* CountryTest.swift in Sources */,
 				B42A45B32C3FD0C000433683 /* ExploreViewTest.swift in Sources */,
 				B42A44F72C3D22DE00433683 /* FirebaseManagerTest.swift in Sources */,
 				B42A450F2C3EC65000433683 /* AuthModelTest.swift in Sources */,
@@ -921,6 +964,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B42A45C32C401C2E00433683 /* SignInViewUITest.swift in Sources */,
+				B4D2B56D2C450BCA00CE061E /* FavoritesUITest.swift in Sources */,
 				B42A45BB2C400CAB00433683 /* ListingImageCarouseViewUITest.swift in Sources */,
 				B42A45C12C40162200433683 /* ListingItemViewUITest.swift in Sources */,
 				B42A45C52C40211300433683 /* ProfileViewUITest.swift in Sources */,
