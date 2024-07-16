@@ -264,7 +264,7 @@ struct CurrencyPickerView: View {
                 Picker(NSLocalizedString("currency", comment: ""), selection: $selectedCurrency) {
                     Text(NSLocalizedString("select_currency", comment: "")).tag("Select Currency")
                     ForEach(Currency.allCurrencies, id: \.self) { currency in
-                        Text(currency.name).tag(currency.code)
+                        Text(currency.name).tag(currency.alpha2Code)
                     }
                 }
                 .pickerStyle(WheelPickerStyle())

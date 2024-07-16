@@ -45,10 +45,10 @@ class AuthModel: ObservableObject {
                 
                 // Determine the default values for country and currency
                 let defaultCountry = country ?? Country(name: "Italy", alpha2Code: "IT")
-                let defaultCurrency = currency ?? Currency(name: "Euro", code: "EUR")
+                let defaultCurrency = currency ?? Currency(name: "Euro", alpha2Code: "EUR")
                 
                 // Create the User object with the provided or default values
-                var user = User(id: result.user.uid, name: name, email: email, currency: defaultCurrency.code, locale: defaultCountry.alpha2Code.lowercased(), numNotifications: 0, numFavorites: 0, sendEmail: true)
+                var user = User(id: result.user.uid, name: name, email: email, currency: defaultCurrency.alpha2Code, locale: defaultCountry.alpha2Code.lowercased(), numNotifications: 0, numFavorites: 0, sendEmail: true)
                 
                 // Encode and store user data in Firestore
                 let encodedUser = try Firestore.Encoder().encode(user)

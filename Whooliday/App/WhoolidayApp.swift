@@ -27,6 +27,7 @@ struct WhoolidayApp: App {
         WindowGroup {
             SplashScreenView()
                 .environmentObject(model)
+                .statusBarHidden(true)
         }
     }
     

@@ -5,7 +5,7 @@
 //  Created by Tommaso Diegoli on 25/06/24.
 //
 
-class Country: Identifiable, Codable, Hashable {
+class Country: Identifiable, Codable, Hashable, CustomStringConvertible {
     let name: String
     let alpha2Code: String
     
@@ -23,9 +23,13 @@ class Country: Identifiable, Codable, Hashable {
     static func == (lhs: Country, rhs: Country) -> Bool {
         return lhs.name == rhs.name && lhs.alpha2Code == rhs.alpha2Code
     }
-}
-
-extension Country {
+    
+    // Implementing CustomStringConvertible
+    var description: String {
+        return name
+    }
+    
+    
     static var allCountries: [Country] {
         [
             Country(name: "Afghanistan", alpha2Code: "af"),
@@ -222,7 +226,7 @@ extension Country {
             Country(name: "Zambia", alpha2Code: "zm"),
             Country(name: "Zimbabwe", alpha2Code: "zw")
         ]
+        
     }
 }
-
 

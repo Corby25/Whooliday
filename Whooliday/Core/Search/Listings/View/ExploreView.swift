@@ -9,17 +9,18 @@ import SwiftUI
 
 struct ExploreView: View {
     @StateObject var viewModel: ExploreViewModel
-    @State   var searchParameters: SearchParameters
+    @State var searchParameters: SearchParameters
     @State private var showDestinationSearchView = false
-    @State  var hasPerformedSearch = false
+    @State var hasPerformedSearch = false
     @State private var showCompactView = false
     @State private var appliedFilters: String = ""
     @State private var showAddFilterView = false
     @State var isFavorite: Bool = false
-    @State  var selectedPropertyType: String = "Tutto"
-    @State  var selectedTypeID: Int = 0 // Default to 0 for "Tutto"
+    @State var selectedPropertyType: String = "Tutto"
+    @State var selectedTypeID: Int = 0 // Default to 0 for "Tutto"
     @Environment(\.colorScheme) var colorScheme
-    @State  var selectedSorting: SortOption = .none
+    @State var selectedSorting: SortOption = .none
+    @Environment(\.presentationMode) var presentationMode
     
     enum SortOption: String, CaseIterable {
         case none = "Nessun ordine"
@@ -54,6 +55,14 @@ struct ExploreView: View {
             }
             .navigationBarHidden(hasPerformedSearch)
             .overlay(searchAndFilterOverlay)
+            .gesture(
+                DragGesture()
+                    .onEnded { gesture in
+                        if gesture.translation.width > 100 {
+                            handleSwipe(translation: gesture.translation.width)
+                        }
+                    }
+            )
         }
         .onChange(of: selectedSorting) { _, _ in
             sortListings()
@@ -135,8 +144,6 @@ struct ExploreView: View {
         }
     }
     
-   
-
     private var loadingOverlay: some View {
         Group {
             if viewModel.isLoading {
@@ -187,7 +194,7 @@ struct ExploreView: View {
         .padding()
     }
 
-     func sortListings() {
+    func sortListings() {
         let listingsToSort = listingsByType.isEmpty ? viewModel.listings : listingsByType
         
         switch selectedSorting {
@@ -212,7 +219,7 @@ struct ExploreView: View {
         }
     }
 
-     func performSearch() {
+    func performSearch() {
         var updatedParameters = searchParameters
         updatedParameters.filters = appliedFilters
         updatedParameters.propertyType = selectedPropertyType
@@ -220,11 +227,11 @@ struct ExploreView: View {
         hasPerformedSearch = true
     }
     
-    func getIsFavorite() -> Bool{
+    func getIsFavorite() -> Bool {
         return self.isFavorite
     }
     
-     func performSearchType() async {
+    func performSearchType() async {
         viewModel.isLoading = true
         let filteredListings = await withTaskGroup(of: (Listing, Bool).self) { group in
             for listing in viewModel.listings {
@@ -249,7 +256,7 @@ struct ExploreView: View {
         }
     }
     
-     func toggleFavorite() {
+    func toggleFavorite() {
         isFavorite.toggle()
         if isFavorite {
             saveSearch()
@@ -270,6 +277,12 @@ struct ExploreView: View {
     private func removeSearch() {
         print("Ricerca rimossa dai preferiti")
         // You might want to implement a method to remove the favorite filter from Firebase
+    }
+    
+    private func handleSwipe(translation: CGFloat) {
+        if translation > 100 {
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 

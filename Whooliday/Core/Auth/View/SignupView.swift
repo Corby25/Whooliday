@@ -14,7 +14,7 @@ struct SignupView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var selectedCountry: Country? = Country(name: "Italy", alpha2Code: "IT")
-    @State private var selectedCurrency: Currency? = Currency(name: "Euro", code: "EUR")
+    @State private var selectedCurrency: Currency? = Currency(name: "Euro", alpha2Code: "EUR")
     
     var body: some View {
         NavigationView {
@@ -63,9 +63,9 @@ struct SignupView: View {
     }
     
     private var pickers: some View {
-        HStack(spacing: 20) {
+        VStack(spacing: 20) {
             CustomPicker(selection: $selectedCountry, placeholder: NSLocalizedString("Country", comment: "Country picker label"), options: Country.allCountries)
-                
+            
             CustomPicker(selection: $selectedCurrency, placeholder: NSLocalizedString("Currency", comment: "Currency picker label"), options: Currency.allCurrencies)
         }
     }
@@ -136,25 +136,26 @@ struct SignupView: View {
     }
 }
 
-struct CustomPicker<T: Hashable & Identifiable>: View {
+struct CustomPicker<T: Hashable & Identifiable & CustomStringConvertible>: View {
     @Binding var selection: T?
     let placeholder: String
     let options: [T]
     
     var body: some View {
         Picker(placeholder, selection: $selection) {
+            Text(placeholder).tag(nil as T?)
             ForEach(options) { option in
-                Text(String(describing: option)).tag(option as T?)
+                Text(option.description).tag(option as T?)
             }
         }
-        .frame(height: 20)
+        .frame(maxWidth: .infinity)
         .pickerStyle(MenuPickerStyle())
         .padding()
         .background(Color(UIColor.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12))
-       
     }
 }
+
 
 struct SignupView_Previews: PreviewProvider {
     static var previews: some View {
