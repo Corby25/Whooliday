@@ -3,7 +3,7 @@ import SwiftUI
 struct FavoritesView: View {
     @StateObject private var favoritesModel = FavoritesModel()
     @State private var selectedTab = 0 // 0: Hotels, 1: Filters
-
+    
     private var headerView: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -24,12 +24,12 @@ struct FavoritesView: View {
         }
         .padding()
     }
-
+    
     var body: some View {
         NavigationView {
             VStack {
                 headerView // Custom header view
-
+                
                 Picker(selection: $selectedTab, label: Text("Select")) {
                     Text(NSLocalizedString("Hotels", comment: "")).tag(0)
                     Text(NSLocalizedString("Places", comment: "")).tag(1)
@@ -37,7 +37,7 @@ struct FavoritesView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding(.horizontal) // Only add horizontal padding
                 .padding(.vertical, 8) // Reduce vertical padding
-
+                
                 if selectedTab == 0 {
                     // Display main hotels list with deletion enabled and filtering deleted hotels
                     HotelsListView(hotels: favoritesModel.hotels, favoritesModel: favoritesModel, isMain: true)
@@ -100,7 +100,7 @@ struct HotelsListView: View {
         .sheet(item: $selectedHotel) { listing in
             ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))
         }
-         
+        
     }
 }
 
@@ -120,7 +120,7 @@ struct HotelRowView: View {
     var isMain: Bool
     var favoritesModel: FavoritesModel
     @Binding var selectedHotel: Listing?
-
+    
     var body: some View {
         Button(action: {
             selectedHotel = hotelToListing(hotel: hotel)
@@ -146,21 +146,21 @@ struct HotelRowView: View {
                     VStack(alignment: .leading) {
                         Text(hotel.name ?? "Unknown Hotel")
                             .font(.headline)
-                            
+                        
                             .lineLimit(1) // Ensure the hotel name stays on a single line
-
+                        
                         Text("\(hotel.city ?? "City")")
                             .font(.subheadline)
                             .foregroundColor(.gray)
-
+                        
                         Text(NSLocalizedString("From:", comment: "Check-in date label prefix") + " " + hotel.checkIn)
                             .font(.subheadline)
                             .foregroundColor(.gray)
-
+                        
                         Text(NSLocalizedString("A:", comment: "") + " " + hotel.checkOut)
                             .font(.subheadline)
                             .foregroundColor(.gray)
-
+                        
                         if let childrenNumber = hotel.childrenNumber {
                             Text(NSLocalizedString("Guest number:", comment: "") + " " + "\(hotel.adultsNumber + childrenNumber)")
                                 .font(.subheadline)
@@ -176,18 +176,18 @@ struct HotelRowView: View {
                         if hotel.newPrice == 0 {
                             Text(NSLocalizedString("Sold Out", comment: ""))
                                 .font(.subheadline)
-                                
+                            
                         } else if hotel.newPrice != hotel.oldPrice {
                             Text("€\(hotel.oldPrice, specifier: "%.2f")")
                                 .font(.subheadline)
                                 .strikethrough(true, color: .red)
                             Text("€\(hotel.newPrice, specifier: "%.2f")")
                                 .font(.subheadline)
-                              
+                            
                         } else {
                             Text("€\(hotel.newPrice, specifier: "%.2f")")
                                 .font(.subheadline)
-                                
+                            
                         }
                     }
                     if hotel.isNew {
@@ -204,11 +204,11 @@ struct HotelRowView: View {
                         .opacity(0.4)
                 }
             }
-           
+            
             .cornerRadius(10)
         }
     }
-
+    
     private func hotelToListing(hotel: Hotel) -> Listing {
         return Listing(
             id: Int(hotel.hotelID) ?? 0,
@@ -230,7 +230,7 @@ struct HotelRowView: View {
             
         )
     }
-
+    
     private func deleteHotel(_ hotel: Hotel) {
         favoritesModel.deleteHotel(hotel)
     }
@@ -253,8 +253,8 @@ struct FiltersListView: View {
                         set: { newValue in
                             self.selectedFilter = favoritesModel.filters.first(where: { $0.id == newValue })
                             /*if let id = filter.id {
-                                favoritesModel.markFilterAsNotNew(withId: id)
-                            }*/
+                             favoritesModel.markFilterAsNotNew(withId: id)
+                             }*/
                         }
                     )
                 ) {
@@ -265,7 +265,7 @@ struct FiltersListView: View {
                                 .frame(width: 30, height: 30)
                             
                             Text("\(index + 1)")
-                                
+                            
                                 .font(.headline)
                         }
                         .padding(.leading, -5)
@@ -288,7 +288,7 @@ struct FiltersListView: View {
                                 Text(NSLocalizedString("Max price:", comment: ""))
                                     .font(.caption)
                                     .foregroundColor(.gray)
-
+                                
                                 if filter.maxPrice == 0 {
                                     Text(NSLocalizedString("Not selected", comment: ""))
                                         .font(.subheadline)
@@ -298,14 +298,14 @@ struct FiltersListView: View {
                                 }
                             }
                             HStack {
-                                    Text(NSLocalizedString("Guest number:", comment: ""))
+                                Text(NSLocalizedString("Guest number:", comment: ""))
                                     .font(.caption)
                                     .foregroundColor(.gray)
                                 Text("\(filter.adultsNumber + filter.childrenNumber)")
                                     .font(.subheadline)
                             }
                             HStack {
-                                    Text(NSLocalizedString("Where:", comment: ""))
+                                Text(NSLocalizedString("Where:", comment: ""))
                                     .font(.caption2)
                                     .foregroundColor(.gray)
                                 Text("\(filter.city)")
@@ -321,26 +321,26 @@ struct FiltersListView: View {
                     }
                 }
                 .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                       if filter.isNew {
-                           Button {
-                               if let id = filter.id {
-                                   favoritesModel.markFilterAsNotNew(withId: id)
-                               }
-                           } label: {
-                               Label(NSLocalizedString("Visualize", comment: ""), systemImage: "eye")
-                           }
-                           .tint(.blue)
-                       }
-                   }
-                   .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                       Button(role: .destructive) {
-                           if let id = filter.id {
-                               favoritesModel.deleteFilter(withId: id)
-                           }
-                       } label: {
-                           Label(NSLocalizedString("Delete", comment: ""), systemImage: "trash")
-                       }
-                   }
+                    if filter.isNew {
+                        Button {
+                            if let id = filter.id {
+                                favoritesModel.markFilterAsNotNew(withId: id)
+                            }
+                        } label: {
+                            Label(NSLocalizedString("Visualize", comment: ""), systemImage: "eye")
+                        }
+                        .tint(.blue)
+                    }
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    Button(role: .destructive) {
+                        if let id = filter.id {
+                            favoritesModel.deleteFilter(withId: id)
+                        }
+                    } label: {
+                        Label(NSLocalizedString("Delete", comment: ""), systemImage: "trash")
+                    }
+                }
             }
         }
         .refreshable {
@@ -366,30 +366,30 @@ struct FilterHotelsListView: View {
     @State private var isLoading = false
     
     var body: some View {
-            Group {
-                if isLoading {
-                    List {
-                        ForEach(dummyHotels) { hotel in
-                            HotelRowView(hotel: hotel, isMain: false, favoritesModel: favoritesModel, selectedHotel: .constant(nil))
-                                .shimmering()
-                        }
+        Group {
+            if isLoading {
+                List {
+                    ForEach(dummyHotels) { hotel in
+                        HotelRowView(hotel: hotel, isMain: false, favoritesModel: favoritesModel, selectedHotel: .constant(nil))
+                            .shimmering()
                     }
-                } else {
-                    HotelsListView(hotels: localHotels, favoritesModel: favoritesModel, isMain: false)
                 }
+            } else {
+                HotelsListView(hotels: localHotels, favoritesModel: favoritesModel, isMain: false)
             }
-            .onAppear {
-                isLoading = true
-                Task {
-                    await favoritesModel.fetchHotelsForFilter(filter)
-                    DispatchQueue.main.async {
-                        if let updatedFilter = favoritesModel.filters.first(where: { $0.id == filter.id }) {
-                            localHotels = updatedFilter.hotels
-                        }
-                        isLoading = false
+        }
+        .onAppear {
+            isLoading = true
+            Task {
+                await favoritesModel.fetchHotelsForFilter(filter)
+                DispatchQueue.main.async {
+                    if let updatedFilter = favoritesModel.filters.first(where: { $0.id == filter.id }) {
+                        localHotels = updatedFilter.hotels
                     }
+                    isLoading = false
                 }
             }
         }
+    }
 }
 

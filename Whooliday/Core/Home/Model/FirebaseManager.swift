@@ -10,6 +10,7 @@ import Foundation
 import FirebaseAuth
 import Combine
 
+// manage interaction with firestore for the homepage
 class FirebaseManager: ObservableObject {
     
     static var shared = FirebaseManager()
@@ -140,13 +141,13 @@ class FirebaseManager: ObservableObject {
         
         
     }
-
+    
     func isListingFavorite(listingId: Int, completion: @escaping (Bool) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
             completion(false)
             return
         }
-
+        
         db.collection("users").document(userId).collection("favorites").document("hotels").collection("all").document(String(listingId)).getDocument { (document, error) in
             if let document = document, document.exists {
                 completion(true)
@@ -155,6 +156,6 @@ class FirebaseManager: ObservableObject {
             }
         }
     }
-
+    
 }
 

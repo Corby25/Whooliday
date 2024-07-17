@@ -4,6 +4,8 @@
 //
 //  Created by Tommaso Diegoli on 25/06/24.
 //
+
+// list of all currency available
 class Currency: Identifiable, Codable, Hashable, CustomStringConvertible {
     let name: String
     let alpha2Code: String

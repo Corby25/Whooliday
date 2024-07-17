@@ -5,6 +5,8 @@
 //  Created by Tommaso Diegoli on 25/06/24.
 //
 
+
+// list of all countries available
 class Country: Identifiable, Codable, Hashable, CustomStringConvertible {
     let name: String
     let alpha2Code: String

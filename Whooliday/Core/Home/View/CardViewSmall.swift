@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+// small card for the home page used to show summary details
 struct CardViewSmall: View {
     let place: Place
     @Environment(\.colorScheme) var colorScheme

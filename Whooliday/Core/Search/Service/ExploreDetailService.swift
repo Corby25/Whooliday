@@ -7,16 +7,16 @@
 
 import Foundation
 
-
+// used to retrive additional information about an hotel
 class HotelDetailsService {
     func fetchHotelDetails(for listing: Listing) async throws -> HotelDetails {
         
-            let baseURLString = "http://34.16.172.170:3000/api/fetchFullHotelByIDSummary"
-            
-            guard var urlComponents = URLComponents(string: baseURLString) else {
-                throw URLError(.badURL)
-            }
-            
+        let baseURLString = "http://34.16.172.170:3000/api/fetchFullHotelByIDSummary"
+        
+        guard var urlComponents = URLComponents(string: baseURLString) else {
+            throw URLError(.badURL)
+        }
+        
         urlComponents.queryItems = [
             listing.nChildren != 0 ? URLQueryItem(name: "children_number", value: String(listing.nChildren ?? 0)) : nil,
             URLQueryItem(name: "locale", value: "it"),
@@ -34,33 +34,33 @@ class HotelDetailsService {
         /*
          http://34.16.172.170:3000/api/fetchFullHotelByID?children_number=2&locale=it&children_ages=5%2C0&filter_by_currency=EUR&checkin_date=2024-09-17&hotel_id=9481490&adults_number=4&checkout_date=2024-09-20&units=metric
          */
-         
-            guard let url = urlComponents.url else {
-                throw URLError(.badURL)
-            }
+        
+        guard let url = urlComponents.url else {
+            throw URLError(.badURL)
+        }
         
         print(url)
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
             
-            do {
-                let (data, response) = try await URLSession.shared.data(from: url)
-                
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                    throw URLError(.badServerResponse)
-                }
-                
-                let hotelDetails = try JSONDecoder().decode(HotelDetails.self, from: data)
-                return hotelDetails
-            } catch {
-                throw error
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                throw URLError(.badServerResponse)
             }
+            
+            let hotelDetails = try JSONDecoder().decode(HotelDetails.self, from: data)
+            return hotelDetails
+        } catch {
+            throw error
         }
+    }
     
-       // Funzione helper per formattare le date
-       private func formatDate(_ date: Date) -> String {
-           let formatter = DateFormatter()
-           formatter.dateFormat = "yyyy-MM-dd"
-           return formatter.string(from: date)
-       }
+    // Funzione helper per formattare le date
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: date)
+    }
     
     func fetchListings() async throws -> [Listing] {
         let urlString = "http://34.16.172.170:3000/api/search"

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// corouse images view
 struct ListingImageCarouseView: View {
     let listing: Listing
     

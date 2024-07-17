@@ -5,13 +5,13 @@ import CoreHaptics
 
 private let button = RiveViewModel(fileName: "welcomeButton")
 
+// second welcome page
 struct WelcomeView2: View {
     @Binding var isFirstLaunch: Bool
     
     // Timer properties
     @State private var timer: Timer?
-
-    // Text
+    
     @State private var displayedTextFirst = ""
     @State private var displayedTextSecond = ""
     @State private var displayedTextThird = ""
@@ -22,7 +22,7 @@ struct WelcomeView2: View {
     
     let generator = UIImpactFeedbackGenerator(style: .light)
     @State private var itr = 0
-
+    
     func startTypingAnimation() {
         var index = 0
         generator.prepare()
@@ -146,7 +146,7 @@ struct WelcomeView2: View {
                     }
                 }
                 .padding(.top, 50)
-
+            
             
             HStack(spacing: 8) {
                 Circle()

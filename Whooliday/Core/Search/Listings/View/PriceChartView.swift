@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftUICharts
 
-
+// price chart, it uses SwiftUICharts library from GitHub
 struct PriceChartView: View {
     @ObservedObject var viewModel: ExploreViewModel
     
@@ -16,8 +16,8 @@ struct PriceChartView: View {
         VStack {
             BarChartView(
                 data: ChartData(values: viewModel.showDailyPrices ?
-                    viewModel.dailyPrices.map { ($0.0, $0.1) } :
-                    viewModel.weeklyAverages.map { ($0.0, $0.1) }),
+                                viewModel.dailyPrices.map { ($0.0, $0.1) } :
+                                    viewModel.weeklyAverages.map { ($0.0, $0.1) }),
                 title: viewModel.showDailyPrices ? "Prezzo Giornaliero - €" : "Media Settimanale - €",
                 legend: viewModel.showDailyPrices ? "Prezzo Giornaliero" : "Media Settimanale",
                 form: ChartForm.extraLarge

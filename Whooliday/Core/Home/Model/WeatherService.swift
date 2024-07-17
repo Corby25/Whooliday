@@ -7,9 +7,11 @@
 
 import Foundation
 
+// used when details on a city are shown...
+// retreive historical and average temperatures from API 
 struct WeatherService {
     private let baseURL = "https://archive-api.open-meteo.com/v1/archive"
-
+    
     func fetchWeatherData(latitude: Double, longitude: Double) async throws -> WeatherResponse {
         let currentDate = Date()
         let calendar = Calendar.current
@@ -24,14 +26,14 @@ struct WeatherService {
         }
         
         print(url)
-
+        
         let (data, _) = try await URLSession.shared.data(from: url)
         
         let decoder = JSONDecoder()
         let response = try decoder.decode(WeatherResponse.self, from: data)
         return response
     }
-
+    
     func calculateMonthlyAverages(from response: WeatherResponse) -> [MonthlyTemperature] {
         let groupedByMonth = Dictionary(grouping: zip(response.daily.time, response.daily.temperature_2m_mean)) { dateString, _ in
             let components = dateString.split(separator: "-")
@@ -43,7 +45,7 @@ struct WeatherService {
             let averageTemp = validTemperatures.reduce(0.0, +) / Double(validTemperatures.count)
             return MonthlyTemperature(month: month, temperature: averageTemp)
         }.sorted { $0.month < $1.month }
-
+        
         return monthlyAverages
     }
 }

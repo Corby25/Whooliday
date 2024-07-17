@@ -1,6 +1,8 @@
 import FirebaseFirestoreSwift
 import Foundation
 
+
+// hotel's data structure
 struct Hotel: Identifiable, Codable {
     @DocumentID var id: String? // Use DocumentID to automatically map Firestore document ID
     var hotelID: String

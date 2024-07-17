@@ -9,6 +9,8 @@ import SwiftUI
 
 import Lottie
 
+
+// loading view used to show some phrases while waiting for a response from customAPI
 struct LoadingView: View {
     
     @Binding var isPresented: Bool
@@ -17,7 +19,7 @@ struct LoadingView: View {
     @State private var opacity: Double = 1.0
     
     let timer = Timer.publish(every: 4, on: .main, in: .common).autoconnect()
-
+    
     
     
     var body: some View {
@@ -34,56 +36,56 @@ struct LoadingView: View {
                     .padding(.top, 20)
                     .padding(.horizontal, 20)
                     .multilineTextAlignment(.center)
-                    
+                
             }
             
         }
         .onAppear {
-                    selectedPhrase = phrases.randomElement() ?? ""
-                }
-                .onReceive(timer) { _ in
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        opacity = 0
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        selectedPhrase = phrases.randomElement() ?? ""
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            opacity = 1
-                        }
-                    }
-                }
+            selectedPhrase = phrases.randomElement() ?? ""
         }
+        .onReceive(timer) { _ in
+            withAnimation(.easeInOut(duration: 0.5)) {
+                opacity = 0
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                selectedPhrase = phrases.randomElement() ?? ""
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    opacity = 1
+                }
+            }
+        }
+    }
 }
-    
-    
-    private struct LottieView: UIViewRepresentable {
-        var name: String
-        
-        func makeUIView(context: Context) -> some UIView {
-            let view = UIView(frame: .zero)
-            
-            let animationView = LottieAnimationView()
-            animationView.animation = LottieAnimation.named(name)
-            animationView.contentMode = .scaleAspectFit
-            animationView.loopMode = .autoReverse
-            animationView.play()
-            
-            animationView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(animationView)
-            NSLayoutConstraint.activate([
-                animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
-                animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
-            ])
-            
-            return view
-        }
-        
-        func updateUIView(_ uiView: UIViewType, context: Context) {}
-    }
 
 
-    #Preview {
-        LoadingView(isPresented: .constant(false))
+private struct LottieView: UIViewRepresentable {
+    var name: String
+    
+    func makeUIView(context: Context) -> some UIView {
+        let view = UIView(frame: .zero)
+        
+        let animationView = LottieAnimationView()
+        animationView.animation = LottieAnimation.named(name)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .autoReverse
+        animationView.play()
+        
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+        
+        return view
     }
     
+    func updateUIView(_ uiView: UIViewType, context: Context) {}
+}
+
+
+#Preview {
+    LoadingView(isPresented: .constant(false))
+}
+

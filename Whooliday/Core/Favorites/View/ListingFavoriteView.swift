@@ -14,17 +14,17 @@ struct ListingFavoriteView: View {
     var body: some View {
         
         HStack(){
-          
+            
             ListingImageCarouseView(listing: listing)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .frame(width: 160)
-               
+            
             
             VStack(alignment: .leading){
                 Text("Hotel Example")
                     .padding(.bottom, 25)
                     .fontWeight(.semibold)
-                    
+                
                 HStack(spacing: 2) {
                     Image(systemName: "star.fill")
                         .foregroundColor(.orange)
@@ -40,9 +40,9 @@ struct ListingFavoriteView: View {
             
             HeartButtonFavourite(isFavorite: $isFavorite, listing: listing)
                 .padding(8)
-                    
             
-                
+            
+            
             
             
         }
@@ -51,8 +51,8 @@ struct ListingFavoriteView: View {
         .cornerRadius(10) // Arrotonda gli angoli se desiderato
         .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 1)
         .padding()
-
-      
+        
+        
     }
 }
 
@@ -93,25 +93,25 @@ struct HeartButtonFavourite: View {
                         )
                 )
         }
-              
-                 }
-                 
+        
+    }
     
     
-private func toggleFavorite() {
-       isFavorite.toggle()
-       animationAmount = 0
-       withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.3)) {
-           animationAmount = 1
-           generator.impactOccurred()
-       }
-       
-       if isFavorite {
-           firebaseManager.addFavorite(listing: listing)
-       } else {
-           firebaseManager.removeFavorite(listingId: listing.id)
-       }
-   }
+    
+    private func toggleFavorite() {
+        isFavorite.toggle()
+        animationAmount = 0
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.3)) {
+            animationAmount = 1
+            generator.impactOccurred()
+        }
+        
+        if isFavorite {
+            firebaseManager.addFavorite(listing: listing)
+        } else {
+            firebaseManager.removeFavorite(listingId: listing.id)
+        }
+    }
 }
 
 

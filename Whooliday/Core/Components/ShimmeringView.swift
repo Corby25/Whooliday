@@ -16,14 +16,14 @@ public struct ShimmeringView: ViewModifier {
         /// Places the gradient behind the content.
         case background
     }
-
+    
     private let animation: Animation
     private let gradient: Gradient
     private let min, max: CGFloat
     private let mode: Mode
     @State private var isInitialState = true
     @Environment(\.layoutDirection) private var layoutDirection
-
+    
     /// Initializes his modifier with a custom animation,
     /// - Parameters:
     ///   - animation: A custom animation. Defaults to ``Shimmer/defaultAnimation``.
@@ -43,37 +43,37 @@ public struct ShimmeringView: ViewModifier {
         self.max = 1 + bandSize
         self.mode = mode
     }
-
+    
     /// The default animation effect.
     public static let defaultAnimation = Animation.linear(duration: 1.5).delay(0.25).repeatForever(autoreverses: false)
-
+    
     // A default gradient for the animated mask.
     public static let defaultGradient = Gradient(colors: [
         .black.opacity(0.3), // translucent
         .black, // opaque
         .black.opacity(0.3) // translucent
     ])
-
+    
     /*
      Calculating the gradient's animated start and end unit points:
      min,min
-        \
-         ┌───────┐         ┌───────┐
-         │0,0    │ Animate │       │  "forward" gradient
+     \
+     ┌───────┐         ┌───────┐
+     │0,0    │ Animate │       │  "forward" gradient
      LTR │       │ ───────►│    1,1│  / // /
-         └───────┘         └───────┘
-                                    \
-                                  max,max
-                max,min
-                  /
-         ┌───────┐         ┌───────┐
-         │    1,0│ Animate │       │  "backward" gradient
+     └───────┘         └───────┘
+     \
+     max,max
+     max,min
+     /
+     ┌───────┐         ┌───────┐
+     │    1,0│ Animate │       │  "backward" gradient
      RTL │       │ ───────►│0,1    │  \ \\ \
-         └───────┘         └───────┘
-                          /
-                       min,max
+     └───────┘         └───────┘
+     /
+     min,max
      */
-
+    
     /// The start unit point of our gradient, adjusting for layout direction.
     var startPoint: UnitPoint {
         if layoutDirection == .rightToLeft {
@@ -82,7 +82,7 @@ public struct ShimmeringView: ViewModifier {
             isInitialState ? UnitPoint(x: min, y: min) : UnitPoint(x: 1, y: 1)
         }
     }
-
+    
     /// The end unit point of our gradient, adjusting for layout direction.
     var endPoint: UnitPoint {
         if layoutDirection == .rightToLeft {
@@ -91,7 +91,7 @@ public struct ShimmeringView: ViewModifier {
             isInitialState ? UnitPoint(x: 0, y: 0) : UnitPoint(x: max, y: max)
         }
     }
-
+    
     public func body(content: Content) -> some View {
         applyingGradient(to: content)
             .animation(animation, value: isInitialState)
@@ -103,7 +103,7 @@ public struct ShimmeringView: ViewModifier {
                 }
             }
     }
-
+    
     @ViewBuilder public func applyingGradient(to content: Content) -> some View {
         let gradient = LinearGradient(gradient: gradient, startPoint: startPoint, endPoint: endPoint)
         switch mode {
@@ -138,7 +138,7 @@ public extension View {
             self
         }
     }
-
+    
     /// Adds an animated shimmering effect to any view, typically to show that an operation is in progress.
     /// - Parameters:
     ///   - active: Convenience parameter to conditionally enable the effect. Defaults to `true`.
@@ -174,7 +174,7 @@ struct Shimmer_Previews: PreviewProvider {
         .padding()
         .shimmering()
         .previewLayout(.sizeThatFits)
-
+        
         VStack(alignment: .leading) {
             Text("مرحبًا")
             Text("← Right-to-left layout direction").font(.body)
@@ -183,7 +183,7 @@ struct Shimmer_Previews: PreviewProvider {
         .font(.largeTitle)
         .shimmering()
         .environment(\.layoutDirection, .rightToLeft)
-
+        
         Text("Custom Gradient Mode").bold()
             .font(.largeTitle)
             .shimmering(

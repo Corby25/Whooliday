@@ -32,12 +32,12 @@ struct HomeView: View {
                     
                     SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite:
                             .constant(false), onFavoriteToggle: {}, showFilterAndFavorite: false)
-                        .accessibilityIdentifier("SearchAndFilterBar")
-                        .onTapGesture {
-                            withAnimation(.spring()) {
-                                showDestinationSearch = true
-                            }
+                    .accessibilityIdentifier("SearchAndFilterBar")
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            showDestinationSearch = true
                         }
+                    }
                     
                     ContinentButtons(selectedContinent: $viewModel.selectedContinent, viewModel: viewModel)
                     
@@ -47,24 +47,24 @@ struct HomeView: View {
                     .scrollIndicators(.hidden)
                 }
             }
-                    .padding()
-                    .overlay(DestinationSearchOverlay(showDestinationSearch: $showDestinationSearch,
-                                                      searchParameters: $searchParameters,
-                                                      navigateToExplore: $navigateToExplore))
-                    .navigationDestination(isPresented: $navigateToExplore) {
-                        ExploreView(searchParameters: searchParameters)
-                    }
-                    .sheet(item: $selectedPlace) { place in
-                        CityDetailView(viewModel: viewModel, place: place)
-                            .accessibilityIdentifier("CityDetailView")
-
-
-                    }
-                    .onAppear {
-                        viewModel.fetchPlaces()
-                    }
+            .padding()
+            .overlay(DestinationSearchOverlay(showDestinationSearch: $showDestinationSearch,
+                                              searchParameters: $searchParameters,
+                                              navigateToExplore: $navigateToExplore))
+            .navigationDestination(isPresented: $navigateToExplore) {
+                ExploreView(searchParameters: searchParameters)
             }
-
+            .sheet(item: $selectedPlace) { place in
+                CityDetailView(viewModel: viewModel, place: place)
+                    .accessibilityIdentifier("CityDetailView")
+                
+                
+            }
+            .onAppear {
+                viewModel.fetchPlaces()
+            }
+        }
+        
     }
     
     private var headerView: some View {
@@ -95,7 +95,7 @@ struct HomeView: View {
                         selectedPlace = viewModel.places[0]
                     }
                     .accessibilityIdentifier("CardViewBig")
-
+                
                 
                 ForEach(0..<rowsCount(), id: \.self) { rowIndex in
                     createCardRow(startingAt: rowIndex * columnsCount())
@@ -201,12 +201,12 @@ struct DestinationSearchOverlay: View {
                 DestinationSearchView(searchParameters: $searchParameters,
                                       show: $showDestinationSearch,
                                       navigateToExplore: $navigateToExplore)
-                    .transition(.move(edge: .bottom))
-                    .background(colorScheme == .dark ? Color.black: Color.white)
-                    .cornerRadius(25)
-                    .padding()
-                    .accessibilityIdentifier("DestinationSearchView")
-
+                .transition(.move(edge: .bottom))
+                .background(colorScheme == .dark ? Color.black: Color.white)
+                .cornerRadius(25)
+                .padding()
+                .accessibilityIdentifier("DestinationSearchView")
+                
             }
         }
     }

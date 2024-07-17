@@ -3,12 +3,14 @@ import RiveRuntime
 
 let imgAnimation = RiveViewModel(fileName: "pag1")
 
+
+// first welcome page
 struct WelcomeView1: View {
     
     @Binding var isFirstLaunch: Bool
     @State private var path = NavigationPath()
     @State private var offset: CGFloat = 0.0
-
+    
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
@@ -51,7 +53,7 @@ struct WelcomeView1: View {
                 .font(.custom("TT Hoves Pro Trial Regular", size: 18, relativeTo: .body))
                 .fontWeight(.bold)
                 .padding(.bottom, 30)
-                                
+                
                 HStack(spacing: 8) {
                     Circle()
                         .fill(Color.gray)

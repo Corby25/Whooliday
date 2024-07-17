@@ -92,11 +92,11 @@ class ProfileViewModel: ObservableObject {
                   let locale = data["locale"] as? String,
                   let currency = data["currency"] as? String,
                   let sendEmail = data["sendEmail"] as? Bool else { return }
-           
-           DispatchQueue.main.async {
-               self?.selectedCountry = locale
-               self?.selectedCurrency = currency
-               self?.sendEmail = sendEmail
+            
+            DispatchQueue.main.async {
+                self?.selectedCountry = locale
+                self?.selectedCurrency = currency
+                self?.sendEmail = sendEmail
             }
         }
     }
@@ -112,15 +112,16 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    // not available now beacuse it requires AppleDeveloperAccount
     func updateUserLocalNotificationSetting(_ value: Bool) {
         /*guard let userId = userId else { return }
-        Firestore.firestore().collection("users").document(userId).updateData(["localNotifications": value]) { error in
-            if let error = error {
-                print("Error updating local notification setting: \(error.localizedDescription)")
-            } else {
-                print("Local notification setting updated successfully")
-            }
-        }*/
+         Firestore.firestore().collection("users").document(userId).updateData(["localNotifications": value]) { error in
+         if let error = error {
+         print("Error updating local notification setting: \(error.localizedDescription)")
+         } else {
+         print("Local notification setting updated successfully")
+         }
+         }*/
     }
     
     deinit {

@@ -35,7 +35,7 @@ struct DestinationSearchView: View {
     @State private var predictionsDictionary: [String: String] = [:]
     @State private var destinationSuggestions: [String] = []
     
-
+    
     var body: some View {
         ZStack {
             ScrollView {
@@ -234,7 +234,7 @@ struct DestinationSearchView: View {
         .cornerRadius(15)
         .padding()
     }
-
+    
     private func getGuestsDescription() -> String {
         var description = "\(numAdults) adult\(numAdults > 1 ? "i" : "o")"
         if numChildren > 0 {
@@ -244,30 +244,30 @@ struct DestinationSearchView: View {
     }
     
     func fetchDestinationSuggestions(for query: String) {
-           guard !query.isEmpty else {
-               destinationSuggestions = []
-               return
-           }
-
-           cancellable?.cancel()
-
-           let apiKey = "AIzaSyBOiUNEOqhpqUt_dyQTmcCKnscHfJE1VQY"
-           let baseURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
-           let urlString = "\(baseURL)?input=\(query)&types=(cities)&key=\(apiKey)"
-
-           guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else { return }
-
+        guard !query.isEmpty else {
+            destinationSuggestions = []
+            return
+        }
+        
+        cancellable?.cancel()
+        
+        let apiKey = "AIzaSyBOiUNEOqhpqUt_dyQTmcCKnscHfJE1VQY"
+        let baseURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
+        let urlString = "\(baseURL)?input=\(query)&types=(cities)&key=\(apiKey)"
+        
+        guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else { return }
+        
         cancellable = URLSession.shared.dataTaskPublisher(for: url)
-                .map { $0.data }
-                .decode(type: GooglePlacesResponse.self, decoder: JSONDecoder())
-                .map { $0.predictions }
-                .replaceError(with: [])
-                .receive(on: DispatchQueue.main)
-                .sink { predictions in
-                    self.destinationSuggestions = predictions.map { $0.description }
-                    self.predictionsDictionary = Dictionary(uniqueKeysWithValues: predictions.map { ($0.description, $0.placeID) })
-                }
-       }
+            .map { $0.data }
+            .decode(type: GooglePlacesResponse.self, decoder: JSONDecoder())
+            .map { $0.predictions }
+            .replaceError(with: [])
+            .receive(on: DispatchQueue.main)
+            .sink { predictions in
+                self.destinationSuggestions = predictions.map { $0.description }
+                self.predictionsDictionary = Dictionary(uniqueKeysWithValues: predictions.map { ($0.description, $0.placeID) })
+            }
+    }
     
     private func getDateDescription() -> String {
         if let start = startDate, let end = endDate {
@@ -293,9 +293,9 @@ struct Prediction: Codable {
     let placeID: String
     
     enum CodingKeys: String, CodingKey {
-            case description
-            case placeID = "place_id"
-        }
+        case description
+        case placeID = "place_id"
+    }
 }
 
 struct CollapsibleDestinationViewModifier: ViewModifier {

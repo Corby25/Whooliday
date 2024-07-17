@@ -8,27 +8,28 @@
 import SwiftUI
 import CoreHaptics
 
+// list of accomodation after custom API fecthing ends
 struct ListingItemView: View {
     let listing: Listing
     @State private var isFavorite = false
     @ObservedObject private var firebaseManager = FirebaseManager.shared
-
+    
     init(listing: Listing) {
-            self.listing = listing
-        }
-        
+        self.listing = listing
+    }
+    
     
     var body: some View {
         VStack(spacing: 8) {
-                    ZStack(alignment: .topTrailing) {
-                        ListingImageCarouseView(listing: listing)
-                            .frame(height: 230)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                        
-                        HeartButton(isFavorite: isFavorite, listing: listing) {
-                                                   toggleFavorite()
-                                               }
-                    }
+            ZStack(alignment: .topTrailing) {
+                ListingImageCarouseView(listing: listing)
+                    .frame(height: 230)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                
+                HeartButton(isFavorite: isFavorite, listing: listing) {
+                    toggleFavorite()
+                }
+            }
             
             // listing details
             HStack(alignment: .top) {
@@ -57,30 +58,30 @@ struct ListingItemView: View {
             .font(.footnote)
         }
         .onAppear {
-                    checkFavoriteStatus()
-                }
+            checkFavoriteStatus()
+        }
         .padding()
-       
+        
         
     }
     
     private func checkFavoriteStatus() {
-         firebaseManager.isListingFavorite(listingId: listing.id) { result in
-             DispatchQueue.main.async {
-                 self.isFavorite = result
-             }
-         }
-     }
-     
-     private func toggleFavorite() {
-         if isFavorite {
-             firebaseManager.removeFavorite(listingId: listing.id)
-         } else {
-             firebaseManager.addFavorite(listing: listing)
-         }
-         isFavorite.toggle()
-     }
-        
+        firebaseManager.isListingFavorite(listingId: listing.id) { result in
+            DispatchQueue.main.async {
+                self.isFavorite = result
+            }
+        }
+    }
+    
+    private func toggleFavorite() {
+        if isFavorite {
+            firebaseManager.removeFavorite(listingId: listing.id)
+        } else {
+            firebaseManager.addFavorite(listing: listing)
+        }
+        isFavorite.toggle()
+    }
+    
 }
 
 

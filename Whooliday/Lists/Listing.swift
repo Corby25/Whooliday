@@ -11,6 +11,8 @@ import Foundation
 // each item has a unique identifier
 import Foundation
 
+
+// main list about search details
 struct Listing: Identifiable, Decodable, Hashable {
 
     let id: Int

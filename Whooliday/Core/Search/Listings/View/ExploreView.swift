@@ -21,6 +21,7 @@ struct ExploreView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var selectedSorting: SortOption = .none
     @Environment(\.presentationMode) var presentationMode
+    @State private var filterViewOffset: CGFloat = UIScreen.main.bounds.height
     
     enum SortOption: String, CaseIterable {
         case none = "Nessun ordine"
@@ -41,7 +42,7 @@ struct ExploreView: View {
     @State private var listingsByType: [Listing] = []
     
     private let firebaseManager = FirebaseManager.shared
-
+    
     init(searchParameters: SearchParameters) {
         self._viewModel = StateObject(wrappedValue: ExploreViewModel(service: ExploreService()))
         self._searchParameters = State(initialValue: searchParameters)
@@ -62,6 +63,10 @@ struct ExploreView: View {
                             handleSwipe(translation: gesture.translation.width)
                         }
                     }
+            )
+            .overlay(
+                backButton,
+                alignment: .topLeading
             )
         }
         .onChange(of: selectedSorting) { _, _ in
@@ -86,6 +91,20 @@ struct ExploreView: View {
         }
     }
     
+    private var backButton: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            Image(systemName: "chevron.left")
+                .foregroundColor(.primary)
+                .padding()
+                .fontWeight(.bold)
+        }
+        .padding(.top, 20)
+        .padding(.leading, 20)
+        .edgesIgnoringSafeArea(.top)
+    }
+    
     private var mainContent: some View {
         VStack(spacing: 0) {
             searchAndFilterBar
@@ -93,7 +112,7 @@ struct ExploreView: View {
             listingsScrollView
         }
     }
-
+    
     private var searchAndFilterBar: some View {
         SearchAndFilterBar(showFilterView: $showAddFilterView, isFavorite: $isFavorite, onFavoriteToggle: toggleFavorite, showFilterAndFavorite: true)
             .onTapGesture {
@@ -101,12 +120,18 @@ struct ExploreView: View {
                     showDestinationSearchView.toggle()
                 }
             }
+            .onChange(of: showAddFilterView) { newValue in
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.65, blendDuration: 0)) {
+                    showAddFilterView = newValue
+                    filterViewOffset = newValue ? 0 : UIScreen.main.bounds.height
+                }
+            }
     }
-
+    
     private var filterView: some View {
         FilterView(selectedPropertyType: $selectedPropertyType, selectedTypeID: $selectedTypeID)
     }
-
+    
     private var listingsScrollView: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
@@ -118,7 +143,7 @@ struct ExploreView: View {
         .id(UUID())
         .overlay(sortingPicker)
     }
-
+    
     private func listingNavigationLink(for listing: Listing) -> some View {
         NavigationLink(destination: ListingDetailView(listing: listing, viewModel: ExploreViewModel(service: ExploreService()))) {
             ListingItemView(listing: listing)
@@ -127,7 +152,7 @@ struct ExploreView: View {
         }
         .foregroundColor(colorScheme == .dark ? .white : .black)
     }
-
+    
     private var sortingPicker: some View {
         VStack {
             Spacer()
@@ -154,7 +179,7 @@ struct ExploreView: View {
             }
         }
     }
-
+    
     private var searchAndFilterOverlay: some View {
         ZStack {
             if showDestinationSearchView {
@@ -163,10 +188,11 @@ struct ExploreView: View {
             
             if showAddFilterView {
                 addFilterOverlay
+                    .transition(.opacity)
             }
         }
     }
-
+    
     private var destinationSearchOverlay: some View {
         ZStack {
             Color.black.opacity(0.3)
@@ -183,17 +209,32 @@ struct ExploreView: View {
                 .padding()
         }
     }
-
+    
     private var addFilterOverlay: some View {
-        AddFilterView(show: $showAddFilterView, appliedFilters: $appliedFilters) {
-            performSearch()
+        ZStack {
+            Color.black.opacity(0.3)
+                .ignoresSafeArea()
+                .opacity(showAddFilterView ? 1 : 0)
+                .animation(.easeInOut, value: showAddFilterView)
+                .onTapGesture {
+                    withAnimation(.spring()) {
+                        showAddFilterView = false
+                        filterViewOffset = UIScreen.main.bounds.height
+                    }
+                }
+            
+            AddFilterView(show: $showAddFilterView, appliedFilters: $appliedFilters) {
+                performSearch()
+            }
+            .background(colorScheme == .dark ? Color.black : Color.white)
+            .cornerRadius(16)
+            .padding()
+            .offset(y: filterViewOffset)
+            .animation(.spring(response: 0.8, dampingFraction: 1, blendDuration: 0), value: filterViewOffset)
         }
-        .transition(.move(edge: .bottom))
-        .background(colorScheme == .dark ? Color.black : Color.white)
-        .cornerRadius(16)
-        .padding()
+        .zIndex(showAddFilterView ? 1 : 0)
     }
-
+    
     func sortListings() {
         let listingsToSort = listingsByType.isEmpty ? viewModel.listings : listingsByType
         
@@ -211,14 +252,14 @@ struct ExploreView: View {
             updateListings(viewModel.listings)
         }
     }
-
+    
     private func updateListings(_ sortedListings: [Listing]) {
         DispatchQueue.main.async {
             self.listingsByType = sortedListings
             self.viewModel.listings = sortedListings
         }
     }
-
+    
     func performSearch() {
         var updatedParameters = searchParameters
         updatedParameters.filters = appliedFilters
@@ -264,7 +305,7 @@ struct ExploreView: View {
             removeSearch()
         }
     }
-
+    
     func saveSearch() {
         if let firstListing = viewModel.listings.first {
             firebaseManager.addFavoriteFilter(listing: firstListing, appliedFilters: appliedFilters, listings: viewModel.listings)
@@ -273,7 +314,7 @@ struct ExploreView: View {
             print("No listings available to save as favorite filter")
         }
     }
-       
+    
     private func removeSearch() {
         print("Ricerca rimossa dai preferiti")
         // You might want to implement a method to remove the favorite filter from Firebase

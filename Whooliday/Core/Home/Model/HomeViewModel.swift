@@ -8,6 +8,8 @@ import SwiftUI
 import MapKit
 import FirebaseFirestore
 
+
+// HomePage model
 class HomeViewModel: ObservableObject {
     @Published var places: [Place] = []
     @Published var selectedContinent: String = "Mondo"
@@ -41,30 +43,32 @@ class HomeViewModel: ObservableObject {
         "Oceania": "oceania"
     ]
     
-
     
-       
-       init(db: FirestoreProtocol = Firestore.firestore()) {
-           self.db = db
-           fetchPlaces()
-           loadUserPreferences()
-       }
     
+    
+    init(db: FirestoreProtocol = Firestore.firestore()) {
+        self.db = db
+        fetchPlaces()
+        loadUserPreferences()
+    }
+    
+    
+    // fetch static places for the db
     func fetchPlaces() {
         let continentCode = continentMapping[selectedContinent] ?? "world"
-           let path = db.getCollection("home").document("continents").collection(continentCode)
-           
-           path.getDocuments { [weak self] (querySnapshot, error) in
-               guard let self = self else { return }
-               
-               if let error = error {
-                   print("Errore nel recupero dei dati: \(error)")
-                   DispatchQueue.main.async {
-                       self.errorMessage = error.localizedDescription
-                       self.places = []  // Pulisci l'array dei luoghi in caso di errore
-                   }
-                   return
-               }
+        let path = db.getCollection("home").document("continents").collection(continentCode)
+        
+        path.getDocuments { [weak self] (querySnapshot, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Errore nel recupero dei dati: \(error)")
+                DispatchQueue.main.async {
+                    self.errorMessage = error.localizedDescription
+                    self.places = []  // Pulisci l'array dei luoghi in caso di errore
+                }
+                return
+            }
             
             guard let documents = querySnapshot?.documents else {
                 print("Nessun documento trovato")
@@ -93,37 +97,37 @@ class HomeViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorState = nil
             }
-               DispatchQueue.main.async {
-                          self.errorMessage = nil  // Pulisci il messaggio di errore in caso di successo
-                      }
+            DispatchQueue.main.async {
+                self.errorMessage = nil
+            }
         }
     }
-
     
+    // update like and ranking
     func updateLikeAndRating(for place: Place, newRating: Double) {
         guard let index = places.firstIndex(where: { $0.id == place.id }) else { return }
         
         let oldRating = userRatings[place.id] ?? 0
         let wasLiked = userFavorites.contains(place.id)
         
-        // Aggiorna il modello locale
+        // update local model
         if !wasLiked {
             places[index].nLikes += 1
             userFavorites.insert(place.id)
         }
         
+        // here to update rating, only last rate is valid
         let totalRatings = Double(places[index].nLikes)
         if oldRating == 0 {
-            // Se è una nuova valutazione, aggiungiamo semplicemente la nuova valutazione alla somma totale
+            
             places[index].rating = ((places[index].rating * (totalRatings - 1)) + newRating) / totalRatings
         } else {
-            // Se stiamo aggiornando una valutazione esistente, rimuoviamo la vecchia e aggiungiamo la nuova
             places[index].rating = ((places[index].rating * totalRatings) - oldRating + newRating) / totalRatings
         }
         
         userRatings[place.id] = newRating
         
-        // Aggiorna il database
+        // update the db
         let continentCode = continentMapping[selectedContinent] ?? "world"
         let docRef = db.getCollection("home").document("continents").collection(continentCode).document(place.id)
         
@@ -202,24 +206,24 @@ class HomeViewModel: ObservableObject {
         errorState = nil
         fetchPlaces()
     }
-
+    
     @Published var monthlyAverageTemperatures: [MonthlyTemperature] = []
-     
-
-      func fetchWeatherData(latitude: Double, longitude: Double) async {
-          do {
-              let response = try await weatherService.fetchWeatherData(latitude: latitude, longitude: longitude)
-              let averages = weatherService.calculateMonthlyAverages(from: response)
-              DispatchQueue.main.async {
-                  self.monthlyAverageTemperatures = averages
-                  self.errorMessage = nil
-              }
-          } catch {
-              DispatchQueue.main.async {
-                  self.errorMessage = error.localizedDescription
-              }
-          }
-      }
+    
+    // api to fetch average temperatures
+    func fetchWeatherData(latitude: Double, longitude: Double) async {
+        do {
+            let response = try await weatherService.fetchWeatherData(latitude: latitude, longitude: longitude)
+            let averages = weatherService.calculateMonthlyAverages(from: response)
+            DispatchQueue.main.async {
+                self.monthlyAverageTemperatures = averages
+                self.errorMessage = nil
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
 }
 struct Place: Identifiable {
     let id: String
@@ -233,7 +237,7 @@ struct Place: Identifiable {
     var nLikes: Int
     let description: String
     var monthlyTemperatures: [MonthlyTemperature]?
-
+    
     init(id: String, name: String, country: String, region: String, rating: Double, imageUrl: String, latitude: Double, longitude: Double, nLikes: Int, description: String) {
         self.id = id
         self.name = name
@@ -280,15 +284,15 @@ extension Firestore: FirestoreProtocol {
 
 class FirestoreCollectionReferenceAdapter: CollectionReferenceProtocol {
     private let collectionReference: CollectionReference
-
+    
     init(_ collectionReference: CollectionReference) {
         self.collectionReference = collectionReference
     }
-
+    
     func document(_ documentPath: String) -> DocumentReferenceProtocol {
         return FirestoreDocumentReferenceAdapter(collectionReference.document(documentPath))
     }
-
+    
     func getDocuments(completion: @escaping (QuerySnapshotProtocol?, Error?) -> Void) {
         collectionReference.getDocuments { (snapshot, error) in
             completion(snapshot.map(FirestoreQuerySnapshotAdapter.init), error)
@@ -302,15 +306,15 @@ class FirestoreDocumentReferenceAdapter: DocumentReferenceProtocol {
     }
     
     private let documentReference: DocumentReference
-
+    
     init(_ documentReference: DocumentReference) {
         self.documentReference = documentReference
     }
-
+    
     func getCollection(_ collectionPath: String) -> CollectionReferenceProtocol {
         return FirestoreCollectionReferenceAdapter(documentReference.collection(collectionPath))
     }
-
+    
     func updateData(_ data: [String : Any], completion: ((Error?) -> Void)?) {
         documentReference.updateData(data, completion: completion)
     }
@@ -318,11 +322,11 @@ class FirestoreDocumentReferenceAdapter: DocumentReferenceProtocol {
 
 class FirestoreQuerySnapshotAdapter: QuerySnapshotProtocol {
     private let querySnapshot: QuerySnapshot
-
+    
     init(_ querySnapshot: QuerySnapshot) {
         self.querySnapshot = querySnapshot
     }
-
+    
     var documents: [QueryDocumentSnapshotProtocol] {
         return querySnapshot.documents.map(FirestoreQueryDocumentSnapshotAdapter.init)
     }
@@ -330,15 +334,15 @@ class FirestoreQuerySnapshotAdapter: QuerySnapshotProtocol {
 
 class FirestoreQueryDocumentSnapshotAdapter: QueryDocumentSnapshotProtocol {
     private let queryDocumentSnapshot: QueryDocumentSnapshot
-
+    
     init(_ queryDocumentSnapshot: QueryDocumentSnapshot) {
         self.queryDocumentSnapshot = queryDocumentSnapshot
     }
-
+    
     var documentID: String {
         return queryDocumentSnapshot.documentID
     }
-
+    
     func data() -> [String : Any] {
         return queryDocumentSnapshot.data()
     }

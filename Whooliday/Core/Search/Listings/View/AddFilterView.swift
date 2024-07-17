@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// additional filters 
 struct AddFilterView: View {
     @State private var selectedFilters: Set<FilterOption> = []
     @State private var expandedCategories: Set<FilterCategory> = []
@@ -63,7 +64,7 @@ struct AddFilterView: View {
                                     Text(category.rawValue)
                                         .font(.headline)
                                         .fontWeight(.semibold)
-            
+                                    
                                     Spacer()
                                     Image(systemName: expandedCategories.contains(category) ? "chevron.up" : "chevron.down")
                                 }
@@ -120,7 +121,7 @@ struct AddFilterView: View {
             selectedFilters.insert(filter)
         }
     }
-      
+    
     private func toggleCategory(_ category: FilterCategory) {
         if expandedCategories.contains(category) {
             expandedCategories.remove(category)
@@ -173,14 +174,14 @@ struct FilterButton2: View {
                     .fontWeight(.semibold)
                     .foregroundColor(
                         isSelected
-                            ? (colorScheme == .dark ? .orange : .white)
-                            : .primary
+                        ? (colorScheme == .dark ? .orange : .white)
+                        : .primary
                     )
             }
             .foregroundColor(
                 isSelected
-                    ? (colorScheme == .dark ? .orange : .white)
-                    : .primary
+                ? (colorScheme == .dark ? .orange : .white)
+                : .primary
             )            
             .padding()
             .frame(maxWidth: .infinity)

@@ -18,7 +18,7 @@ struct ContainerView: View {
             _isFirstLaunch = State(initialValue: true)
         }
     }
-
+    
     var body: some View {
         Group {
             if isFirstLaunch {
@@ -32,7 +32,7 @@ struct ContainerView: View {
             }
         }.accessibilityIdentifier("ContainerView")
     }
-       
+    
 }
 
 struct ContentView: View {
@@ -43,10 +43,6 @@ struct ContentView: View {
                     Image(systemName: "house")
                     Text("Home")
                 }
-            
-          
-    
-            
             
             FavoritesView()
                 .tabItem {
@@ -81,7 +77,7 @@ struct ContentViewNoLogged: View {
                     Text("Login")
                 }
             
-           
+            
         }
     }
 }

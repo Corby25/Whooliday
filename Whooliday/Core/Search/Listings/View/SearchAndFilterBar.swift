@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-
+// main search bar ( it is dynamic) used in the home page and in the explore view
 struct SearchAndFilterBar: View {
     @Binding var showFilterView: Bool
     @Binding var isFavorite: Bool
@@ -30,21 +30,21 @@ struct SearchAndFilterBar: View {
             
             Spacer()
             if(showFilterAndFavorite){
-                           Button(action: onFavoriteToggle) {
-                               Image(systemName: isFavorite ? "heart.fill" : "heart")
-                                   .foregroundColor(isFavorite ? .red : .gray)
-                                   .fontWeight(.bold)
-                           }
-            
-            Button(action: {
-                showFilterView.toggle()
-            }, label: {
-                Image(systemName: "line.3.horizontal.decrease")
-                    .foregroundStyle(colorScheme == .dark ? .white : .black)
-                    .fontWeight(.bold)
-            })
-            .frame(width: 50, height: 30)
-        }
+                Button(action: onFavoriteToggle) {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .foregroundColor(isFavorite ? .red : .gray)
+                        .fontWeight(.bold)
+                }
+                
+                Button(action: {
+                    showFilterView.toggle()
+                }, label: {
+                    Image(systemName: "line.3.horizontal.decrease")
+                        .foregroundStyle(colorScheme == .dark ? .white : .black)
+                        .fontWeight(.bold)
+                })
+                .frame(width: 50, height: 30)
+            }
         }
         .padding(.horizontal)
         .padding(.vertical, 10)
@@ -57,7 +57,7 @@ struct SearchAndFilterBar: View {
         .padding()
     }
     
- 
+    
 }
 struct SearchAndFilterBar_Previews: PreviewProvider {
     static var previews: some View {

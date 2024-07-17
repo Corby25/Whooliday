@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-
+// calendar used to select date interval for the search phase 
 struct CalendarView: View {
     @Binding var startDate: Date?
     @Binding var endDate: Date?

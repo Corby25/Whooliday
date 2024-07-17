@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+// user's data structure
 struct User: Identifiable, Codable {
     let id: String
     let name: String

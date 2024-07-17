@@ -9,6 +9,8 @@ import SwiftUI
 import MapKit
 import SafariServices
 
+
+// used to the detailed view of an accomodation, it uses local info and custom API to retreive additional information about the accomodation
 struct ListingDetailView: View {
     @Environment(\.dismiss) var dismiss
     @State private var scrollOffset: CGFloat = 0
@@ -28,7 +30,7 @@ struct ListingDetailView: View {
             span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         ))
     }
-
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
@@ -40,13 +42,13 @@ struct ListingDetailView: View {
                                 .offset(y: -scrollOffset / 4)
                                 .blur(radius: scrollOffset / 100)
                                 .ignoresSafeArea()
-
+                            
                             // Contenuto principale
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(listing.name)
                                     .font(.title)
                                     .fontWeight(.semibold)
-
+                                
                                 VStack(alignment: .leading) {
                                     HStack(spacing: 2) {
                                         Image(systemName: "star.fill")
@@ -54,12 +56,12 @@ struct ListingDetailView: View {
                                         Text(" - ")
                                         Text(String(format: NSLocalizedString("%d reviews", comment: "Number of reviews"),
                                                     listing.review_count))
-                                            .underline()
-                                            .fontWeight(.semibold)
+                                        .underline()
+                                        .fontWeight(.semibold)
                                     }
                                     .font(.caption)
                                     .foregroundColor(.primary)
-
+                                    
                                     if let city = viewModel.selectedHotelDetails?.city,
                                        let state = viewModel.selectedHotelDetails?.state {
                                         Text("\(city), \(state)")
@@ -77,15 +79,15 @@ struct ListingDetailView: View {
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(Color(.systemBackground))
-
+                            
                             Divider()
-
+                            
                             // Rooms
                             VStack(alignment: .leading) {
                                 Text(NSLocalizedString("Guests", comment: ""))
                                     .font(.headline)
                                 Spacer()
-
+                                
                                 HStack(alignment: .top) {
                                     VStack {
                                         HStack(spacing: 8) {
@@ -97,12 +99,12 @@ struct ListingDetailView: View {
                                         }
                                         Text(String(format: NSLocalizedString("Adults: %d", comment: "Number of adults"),
                                                     listing.nAdults))
-                                            .font(.headline)
-                                            .fontWeight(.semibold)
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
                                     }
- 
+                                    
                                     Spacer()
-
+                                    
                                     if ((listing.nChildren ?? 0) > 0) {
                                         VStack {
                                             HStack(spacing: 8) {
@@ -114,8 +116,8 @@ struct ListingDetailView: View {
                                             }
                                             Text(String(format: NSLocalizedString("Children: %d", comment: "Number of children"),
                                                         listing.nChildren ?? 0))
-                                                .font(.headline)
-                                                .fontWeight(.semibold)
+                                            .font(.headline)
+                                            .fontWeight(.semibold)
                                         }
                                     }
                                 }
@@ -123,14 +125,14 @@ struct ListingDetailView: View {
                             }
                             .padding()
                             .background(Color(.systemBackground))
-
+                            
                             Divider()
-
+                            
                             // Listing amenities
                             VStack(alignment: .leading, spacing: 16) {
                                 Text(NSLocalizedString("What it offers", comment: ""))
                                     .font(.headline)
-
+                                
                                 if viewModel.isLoadingFacilities {
                                     HStack(alignment: .center, spacing: 10) {
                                         ForEach(0..<3) { index in
@@ -168,7 +170,7 @@ struct ListingDetailView: View {
                                             }
                                         }
                                     }
-
+                                    
                                     if facilitiesArray.count > 5 {
                                         Button(action: {
                                             withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
@@ -198,9 +200,9 @@ struct ListingDetailView: View {
                             .padding()
                             .background(Color(.systemBackground))
                             .animation(.spring(response: 0.5, dampingFraction: 0.7), value: showAllFacilities)
-
+                            
                             Divider()
-
+                            
                             // Listing features
                             VStack(alignment: .leading, spacing: 16) {
                                 PriceChartView(viewModel: viewModel)
@@ -212,14 +214,14 @@ struct ListingDetailView: View {
                             .padding(.top, 10)
                             .padding(.bottom, -10)
                             .background(Color(.systemBackground))
-
+                            
                             Divider()
-
+                            
                             // Map view
                             VStack(alignment: .leading, spacing: 24) {
                                 Text(NSLocalizedString("Where you will stay", comment: ""))
                                     .font(.headline)
-
+                                
                                 Map(coordinateRegion: $region, annotationItems: [listing]) { item in
                                     MapMarker(coordinate: CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude))
                                 }
@@ -238,7 +240,7 @@ struct ListingDetailView: View {
                 }
                 .coordinateSpace(name: "scroll")
                 .padding(.bottom, 100)
-
+                
                 VStack {
                     HStack {
                         Button {
@@ -250,9 +252,9 @@ struct ListingDetailView: View {
                                 .controlGroupStyle(.palette)
                                 .foregroundStyle(colorScheme == .dark ? .black : .white)
                         }
-
+                        
                         Spacer()
-
+                        
                         HStack(spacing: 30) {
                             Button {
                                 shareGoogleSearchURL()
@@ -262,7 +264,7 @@ struct ListingDetailView: View {
                                     .controlGroupStyle(.palette)
                                     .foregroundStyle(colorScheme == .dark ? .black : .white)
                             }
-
+                            
                             HeartButton(isFavorite: isFavorite, listing: listing) {
                                 toggleFavorite()
                             }
@@ -282,60 +284,60 @@ struct ListingDetailView: View {
         }
         .navigationBarHidden(true)
         .ignoresSafeArea(edges: .top)
-            .overlay(alignment: .bottom) {
-                VStack {
-                    Divider()
-                        .padding(.bottom)
-
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("\(Int(listing.price))€")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-
-                            Text(NSLocalizedString("Total", comment: ""))
-                            Text("\(listing.checkin) - \(listing.checkout)")
-                                .font(.footnote)
-                                .fontWeight(.semibold)
-                                .underline()
-                        }
-
-                        Spacer()
-
-                        Button {
-                            openGoogleSearch()
-                        } label: {
-                            Text(NSLocalizedString("Book it now", comment: ""))
-                                .foregroundStyle(.white)
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                                .frame(width: 160, height: 40)
-                                .background(Color.pink)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                        }
+        .overlay(alignment: .bottom) {
+            VStack {
+                Divider()
+                    .padding(.bottom)
+                
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("\(Int(listing.price))€")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                        
+                        Text(NSLocalizedString("Total", comment: ""))
+                        Text("\(listing.checkin) - \(listing.checkout)")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                            .underline()
                     }
-                    .padding(.horizontal, 32)
-                    .background(Color(.systemBackground))
+                    
+                    Spacer()
+                    
+                    Button {
+                        openGoogleSearch()
+                    } label: {
+                        Text(NSLocalizedString("Book it now", comment: ""))
+                            .foregroundStyle(.white)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .frame(width: 160, height: 40)
+                            .background(Color.pink)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
                 }
+                .padding(.horizontal, 32)
                 .background(Color(.systemBackground))
             }
-            .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                scrollOffset = max(0, -value)
-            }
-            .ignoresSafeArea(edges: .top)
-            .task {
-                await viewModel.fetchHotelDetails(for: listing)
+            .background(Color(.systemBackground))
+        }
+        .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+            scrollOffset = max(0, -value)
+        }
+        .ignoresSafeArea(edges: .top)
+        .task {
+            await viewModel.fetchHotelDetails(for: listing)
+        }
+    }
+    
+    func checkFavoriteStatus() {
+        firebaseManager.isListingFavorite(listingId: listing.id) { result in
+            DispatchQueue.main.async {
+                self.isFavorite = result
             }
         }
-
-         func checkFavoriteStatus() {
-            firebaseManager.isListingFavorite(listingId: listing.id) { result in
-                DispatchQueue.main.async {
-                    self.isFavorite = result
-                }
-            }
-        }
-
+    }
+    
     func toggleFavorite() {
         if isFavorite {
             firebaseManager.removeFavorite(listingId: listing.id)
@@ -344,45 +346,45 @@ struct ListingDetailView: View {
         }
         isFavorite.toggle()
     }
-
-         func openGoogleSearch() {
-            guard let url = generateGoogleSearchURL() else { return }
-
-            let safariViewController = SFSafariViewController(url: url)
-
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first,
-               let rootViewController = window.rootViewController {
-                rootViewController.present(safariViewController, animated: true)
-            }
-        }
-
-         func generateGoogleSearchURL() -> URL? {
-            let searchQuery = "\(listing.name) \(listing.city)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            let urlString = "https://www.google.com/search?q=\(searchQuery)"
-            return URL(string: urlString)
-        }
-
-         func shareGoogleSearchURL() {
-            guard let url = generateGoogleSearchURL() else { return }
-
-            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first,
-               let rootViewController = window.rootViewController {
-                activityViewController.popoverPresentationController?.sourceView = rootViewController.view
-                rootViewController.present(activityViewController, animated: true, completion: nil)
-            }
+    
+    func openGoogleSearch() {
+        guard let url = generateGoogleSearchURL() else { return }
+        
+        let safariViewController = SFSafariViewController(url: url)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootViewController = window.rootViewController {
+            rootViewController.present(safariViewController, animated: true)
         }
     }
-
-    struct ScrollOffsetPreferenceKey: PreferenceKey {
-        static var defaultValue: CGFloat = 0
-        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-            value += nextValue()
+    
+    func generateGoogleSearchURL() -> URL? {
+        let searchQuery = "\(listing.name) \(listing.city)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let urlString = "https://www.google.com/search?q=\(searchQuery)"
+        return URL(string: urlString)
+    }
+    
+    func shareGoogleSearchURL() {
+        guard let url = generateGoogleSearchURL() else { return }
+        
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootViewController = window.rootViewController {
+            activityViewController.popoverPresentationController?.sourceView = rootViewController.view
+            rootViewController.present(activityViewController, animated: true, completion: nil)
         }
     }
+}
+
+struct ScrollOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value += nextValue()
+    }
+}
 
 
 
@@ -421,7 +423,7 @@ struct ListingDetailView: View {
             childrenAge: "2,3",
             currency: "EUR",
             images: ["https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg", "https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg"
-                    ,"https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg",
+                     ,"https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg",
                      "https://c4.wallpaperflare.com/wallpaper/377/82/449/5bf55b183fa85-wallpaper-preview.jpg"]
         ),
         viewModel: exampleViewModel

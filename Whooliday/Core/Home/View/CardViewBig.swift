@@ -7,10 +7,12 @@
 
 import SwiftUI
 
+
+// big card for home page to show summary place details
 struct CardViewBig: View {
     
     @Environment(\.colorScheme) var colorScheme
-
+    
     let place: Place
     
     var body: some View {

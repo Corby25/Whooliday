@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+
+// basic search filters 
 struct FilterView: View {
     @Binding var selectedPropertyType: String
-        @Binding var selectedTypeID: Int
+    @Binding var selectedTypeID: Int
     
     var body: some View {
         VStack(spacing: 0) {
@@ -87,7 +89,7 @@ struct FilterButton: View {
             .foregroundColor(
                 isSelected
                 ? .orange
-                    : (colorScheme == .dark ? .white : .black)
+                : (colorScheme == .dark ? .white : .black)
             )
         }
     }

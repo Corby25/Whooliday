@@ -13,7 +13,7 @@ class FavoritesModel: ObservableObject {
     
     private var db = Firestore.firestore()
     private var userID: String
-
+    
     
     init() {
         self.userID = Auth.auth().currentUser?.uid ?? ""
@@ -88,8 +88,8 @@ class FavoritesModel: ObservableObject {
             self.isLoadingHotels = false
         }
     }
-
-
+    
+    
     private func fetchHotelDetails(with hotel: Hotel?) async -> APIHotelResponse? {
         let userDocRef = db.collection("users").document(userID)
         
@@ -117,7 +117,7 @@ class FavoritesModel: ObservableObject {
                     print("Invalid URL")
                     return nil
                 }
-
+                
                 let (data, _) = try await URLSession.shared.data(from: url)
                 let decodedResponse = try JSONDecoder().decode(APIHotelResponse.self, from: data)
                 print("Fetched hotel details from API")
@@ -153,20 +153,20 @@ class FavoritesModel: ObservableObject {
                         
                         // Extract basic properties from the snapshot data
                         guard
-                              let latitude = data["latitude"] as? Double,
-                              let longitude = data["longitude"] as? Double,
-                              let adultsNumber = data["adultsNumber"] as? Int,
-                              let orderBy = data["orderBy"] as? String,
-                              let roomNumber = data["roomNumber"] as? Int,
-                              let units = data["units"] as? String,
-                              let isDeleted = data["isDeleted"] as? Bool,
-                              let isNew = data["isNew"] as? Bool,
-                              let checkIn = data["checkIn"] as? String,
-                              let checkOut = data["checkOut"] as? String,
-                              let childrenNumber = data["childrenNumber"] as? Int,
-                              let childrenAge = data["childrenAge"] as? String,
-                              let city = data["city"] as? String,
-                              let filters = data["filters"] as? String else {
+                            let latitude = data["latitude"] as? Double,
+                            let longitude = data["longitude"] as? Double,
+                            let adultsNumber = data["adultsNumber"] as? Int,
+                            let orderBy = data["orderBy"] as? String,
+                            let roomNumber = data["roomNumber"] as? Int,
+                            let units = data["units"] as? String,
+                            let isDeleted = data["isDeleted"] as? Bool,
+                            let isNew = data["isNew"] as? Bool,
+                            let checkIn = data["checkIn"] as? String,
+                            let checkOut = data["checkOut"] as? String,
+                            let childrenNumber = data["childrenNumber"] as? Int,
+                            let childrenAge = data["childrenAge"] as? String,
+                            let city = data["city"] as? String,
+                            let filters = data["filters"] as? String else {
                             print("Failed to parse filter data.")
                             return nil
                         }
@@ -209,7 +209,7 @@ class FavoritesModel: ObservableObject {
             print("Error fetching filters: \(error)")
         }
     }
-
+    
     private static func extractMaxPrice(from filters: String) -> Double {
         let parts = filters.split(separator: ",")
         guard let firstPart = parts.first else { return 0 }
@@ -222,7 +222,7 @@ class FavoritesModel: ObservableObject {
         
         return Double(maxPriceString) ?? 0
     }
-
+    
     func fetchHotelsForFilter(_ filter: Filter) async {
         await MainActor.run {
             self.isLoadingFilterHotels = true
@@ -233,7 +233,7 @@ class FavoritesModel: ObservableObject {
             await MainActor.run { self.isLoadingFilterHotels = false }
             return
         }
-
+        
         let hotelsCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters").collection("all").document(filterID).collection("hotels")
         
         do {
@@ -296,12 +296,12 @@ class FavoritesModel: ObservableObject {
     }
     
     
-
+    
     func deleteHotel(_ hotel: Hotel) {
         let hotelCollectionRef = db.collection("users").document(userID)
-                                   .collection("favorites").document("hotels").collection("all")
+            .collection("favorites").document("hotels").collection("all")
         
-
+        
         hotelCollectionRef.document(hotel.hotelID).updateData(["isDeleted": true]) { error in
             if let error = error {
                 print("Error updating document: \(error.localizedDescription)")
@@ -318,7 +318,7 @@ class FavoritesModel: ObservableObject {
     
     func makeHotelAsSeen(_ hotel: Hotel) {
         let hotelCollectionRef = db.collection("users").document(userID)
-                                   .collection("favorites").document("hotels").collection("all")
+            .collection("favorites").document("hotels").collection("all")
         
         hotelCollectionRef.document(hotel.hotelID).updateData(["isNew": false]) { error in
             if let error = error {
@@ -333,7 +333,7 @@ class FavoritesModel: ObservableObject {
             }
         }
     }
-
+    
     
     func deleteFilter(withId id: String) {
         let filterDocumentRef = db.collection("users").document(userID)
@@ -372,14 +372,14 @@ class FavoritesModel: ObservableObject {
             }
         }
     }
-
+    
     func refreshHotels() async {
         DispatchQueue.main.async {
             self.hotels.removeAll()
         }
         await fetchHotels()
     }
-
+    
     func refreshFilters() async {
         DispatchQueue.main.async {
             self.filters.removeAll()

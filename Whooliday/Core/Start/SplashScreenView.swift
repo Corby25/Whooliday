@@ -2,8 +2,8 @@ import SwiftUI
 import RiveRuntime
 import CoreHaptics
 
+// spash screen, when app is launched
 struct SplashScreenView: View {
-    //@EnvironmentObject var model: AuthModel()    
     let textAnimationIntro = RiveViewModel(fileName: "introSplash")
     
     // Timer properties
@@ -16,15 +16,15 @@ struct SplashScreenView: View {
         var itr = 0
         generator.prepare()
         timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { timer in
-                if itr >= 2 {
-                    generator.impactOccurred()
-                }
-                if itr >= 40 {
-                    navigateToContentView = true
-                    timer.invalidate()
-                } else {
-                    itr += 1
-                }
+            if itr >= 2 {
+                generator.impactOccurred()
+            }
+            if itr >= 40 {
+                navigateToContentView = true
+                timer.invalidate()
+            } else {
+                itr += 1
+            }
         }
     }
     

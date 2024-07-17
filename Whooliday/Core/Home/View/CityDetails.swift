@@ -9,6 +9,8 @@ import SwiftUI
 import MapKit
 import Charts
 
+
+// class used when clicke either on a citySmallCard or a cityBigCard to show some details of a city including details, temperatures, map, likes and rating
 struct CityDetailView: View {
     @ObservedObject var viewModel: HomeViewModel
     var place: Place
@@ -40,7 +42,7 @@ struct CityDetailView: View {
                     MapView(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude))
                         .padding(.vertical)
                     weatherView
-
+                    
                 }
                 .padding()
             }
@@ -58,10 +60,10 @@ struct CityDetailView: View {
                 await viewModel.fetchWeatherData(latitude: place.latitude, longitude: place.longitude)
             }
         }
-       
+        
         
     }
-        
+    
     
     private var heroImage: some View {
         AsyncImage(url: URL(string: place.imageUrl)) { image in
@@ -162,14 +164,14 @@ struct CityDetailView: View {
             .cornerRadius(10)
         }
     }
-
+    
     struct PlaceAnnotation: Identifiable {
         let id = UUID()
         let coordinate: CLLocationCoordinate2D
     }
-
-   
-
+    
+    
+    
     struct TemperatureChartView: View {
         let monthlyTemperatures: [MonthlyTemperature]
         
@@ -216,45 +218,45 @@ struct CityDetailView: View {
     }
     
     private var weatherView: some View {
-           VStack(alignment: .leading, spacing: 10) {
-               Text(NSLocalizedString("Monthly temperature (average of the last 5 years)", comment: ""))
-                   .font(.headline)
-               
-               if let errorMessage = viewModel.errorMessage {
-                   Text(errorMessage)
-                       .foregroundColor(.red)
-               } else if viewModel.monthlyAverageTemperatures.isEmpty {
-                   Text(NSLocalizedString("Loading weather data...", comment: ""))
-               } else {
-                   TemperatureChartView(monthlyTemperatures: viewModel.monthlyAverageTemperatures)
-                   
-                   ForEach(viewModel.monthlyAverageTemperatures) { monthTemp in
-                       HStack {
-                           Text(monthTemp.monthName)
-                           Spacer()
-                           Text(String(format: "%.1f°C", monthTemp.temperature))
-                       }
-                   }
-                   
-                   VStack(alignment: .leading) {
-                       Text(String(format: NSLocalizedString("Annual average: %.1f°C", comment: "Annual average temperature"),
-                                   viewModel.monthlyAverageTemperatures.averageTemperature()))
-                       if let hottest = viewModel.monthlyAverageTemperatures.hottestMonth() {
-                           Text(String(format: NSLocalizedString("Hottest month: %@ (%.1f°C)", comment: "Hottest month with temperature"),
-                                       NSLocalizedString(hottest.monthName, comment: "Month name"),
-                                       hottest.temperature))
-                       }
-                       if let coldest = viewModel.monthlyAverageTemperatures.coldestMonth() {
-                           Text(String(format: NSLocalizedString("Coldest month: %@ (%.1f°C)", comment: "Coldest month with temperature"),
-                                       NSLocalizedString(coldest.monthName, comment: "Month name"),
-                                       coldest.temperature))
-                       }
-                   }
-                   .padding(.top)
-               }
-           }
-           .padding()
-       }
+        VStack(alignment: .leading, spacing: 10) {
+            Text(NSLocalizedString("Monthly temperature (average of the last 5 years)", comment: ""))
+                .font(.headline)
+            
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+            } else if viewModel.monthlyAverageTemperatures.isEmpty {
+                Text(NSLocalizedString("Loading weather data...", comment: ""))
+            } else {
+                TemperatureChartView(monthlyTemperatures: viewModel.monthlyAverageTemperatures)
+                
+                ForEach(viewModel.monthlyAverageTemperatures) { monthTemp in
+                    HStack {
+                        Text(monthTemp.monthName)
+                        Spacer()
+                        Text(String(format: "%.1f°C", monthTemp.temperature))
+                    }
+                }
+                
+                VStack(alignment: .leading) {
+                    Text(String(format: NSLocalizedString("Annual average: %.1f°C", comment: "Annual average temperature"),
+                                viewModel.monthlyAverageTemperatures.averageTemperature()))
+                    if let hottest = viewModel.monthlyAverageTemperatures.hottestMonth() {
+                        Text(String(format: NSLocalizedString("Hottest month: %@ (%.1f°C)", comment: "Hottest month with temperature"),
+                                    NSLocalizedString(hottest.monthName, comment: "Month name"),
+                                    hottest.temperature))
+                    }
+                    if let coldest = viewModel.monthlyAverageTemperatures.coldestMonth() {
+                        Text(String(format: NSLocalizedString("Coldest month: %@ (%.1f°C)", comment: "Coldest month with temperature"),
+                                    NSLocalizedString(coldest.monthName, comment: "Month name"),
+                                    coldest.temperature))
+                    }
+                }
+                .padding(.top)
+            }
+        }
+        .padding()
+    }
 }
 
 struct RatingView: View {
@@ -281,7 +283,7 @@ struct RatingView: View {
             
             Text(String(format: NSLocalizedString("%.1f stars", comment: "Rating in stars"),
                         rating))
-                .font(.headline)
+            .font(.headline)
             
             Slider(value: $rating, in: 1...5, step: 0.5)
                 .accentColor(.yellow)
