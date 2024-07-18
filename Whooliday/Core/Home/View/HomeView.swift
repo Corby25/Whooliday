@@ -6,6 +6,8 @@
 //
 import SwiftUI
 
+
+// home page view
 struct HomeView: View {
     @StateObject  var viewModel: HomeViewModel
     @State public var searchParameters = SearchParameters(destination: "", placeID: "", startDate: Date(), endDate: Date(), numAdults: 2, numChildren: 0, childrenAges: [])
@@ -131,6 +133,8 @@ struct HomeView: View {
     }
 }
 
+
+// horizontal scroll view used to select 1 continent to see its suggested places
 struct ContinentButtons: View {
     @Binding var selectedContinent: String
     let viewModel: HomeViewModel
@@ -182,6 +186,7 @@ struct ContinentButtons: View {
     }
 }
 
+// destination search view appears when a user tap into the search bar
 struct DestinationSearchOverlay: View {
     @Binding var showDestinationSearch: Bool
     @Binding var searchParameters: SearchParameters
@@ -212,6 +217,7 @@ struct DestinationSearchOverlay: View {
     }
 }
 
+// mokup for testing
 extension HomeViewModel {
     static func mock() -> HomeViewModel {
         let viewModel = HomeViewModel()

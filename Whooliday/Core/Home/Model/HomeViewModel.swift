@@ -53,7 +53,7 @@ class HomeViewModel: ObservableObject {
     }
     
     
-    // fetch static places for the db
+    // fetch static places from the db
     func fetchPlaces() {
         let continentCode = continentMapping[selectedContinent] ?? "world"
         let path = db.getCollection("home").document("continents").collection(continentCode)
@@ -151,6 +151,7 @@ class HomeViewModel: ObservableObject {
         return userRatings[place.id] ?? 0
     }
     
+
     func toggleFavorite(for place: Place) {
         if let index = places.firstIndex(where: { $0.id == place.id }) {
             if userFavorites.contains(place.id) {

@@ -9,6 +9,8 @@ import Foundation
 
 // used to retrive additional information about an hotel
 class HotelDetailsService {
+    
+    // single hotel detail fetching thought the custom accomodation API
     func fetchHotelDetails(for listing: Listing) async throws -> HotelDetails {
         
         let baseURLString = "http://34.16.172.170:3000/api/fetchFullHotelByIDSummary"
@@ -55,7 +57,7 @@ class HotelDetailsService {
         }
     }
     
-    // Funzione helper per formattare le date
+    // Helper function to format dates
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

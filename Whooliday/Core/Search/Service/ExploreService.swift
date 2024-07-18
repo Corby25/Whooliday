@@ -49,6 +49,7 @@ class ExploreService: ExploreServiceProtocol{
     }
     
     
+    // fetch accomodations in a given place by coordinates using the custom Accomodation API
     func fetchListings(with parameters: SearchParameters) async throws -> [Listing] {
         
     

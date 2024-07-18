@@ -22,6 +22,7 @@ class FirebaseManager: ObservableObject {
         return Auth.auth().currentUser != nil
     }
     
+    // function to store a preferred accomodation into db to start receiving notifications
     func addFavorite(listing: Listing) {
         guard let userId = Auth.auth().currentUser?.uid else {
             
@@ -50,6 +51,7 @@ class FirebaseManager: ObservableObject {
         }
     }
     
+    // remove favorite from the db
     func removeFavorite(listingId: Int) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
@@ -81,6 +83,8 @@ class FirebaseManager: ObservableObject {
         .eraseToAnyPublisher()
     }
     
+    
+    // used in addFilterView to add a complete research to favorites (made by different accomodations)
     func addFavoriteFilter(listing: Listing, appliedFilters: String, listings: [Listing]) {
         guard let userId = Auth.auth().currentUser?.uid else {
             
@@ -141,6 +145,7 @@ class FirebaseManager: ObservableObject {
         
         
     }
+    
     
     func isListingFavorite(listingId: Int, completion: @escaping (Bool) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {

@@ -21,6 +21,8 @@ class ExploreViewModel: ObservableObject {
         self.hotelDetailsService = hotelDetailsService
     }
     
+    
+    // fetch listing throught a customAPI
     func fetchListings(with parameters: SearchParameters) {
         isLoading = true
         Task {
@@ -41,6 +43,7 @@ class ExploreViewModel: ObservableObject {
         }
     }
     
+    // find hotel type (hotel, hostel, house, villa and so on)
     func fetchHotelType(listing: Listing, accomodationType: Int) async throws -> Bool {
         
         let baseURLString = "http://34.16.172.170:3000/api/fetchFullHotelByIDSummary"
@@ -117,7 +120,7 @@ class ExploreViewModel: ObservableObject {
     }()
     
     
-    
+    // used to fetch future price (daily and weekly) through the custom accomodation API
     func fetchPriceCalendar(for listing: Listing) {
         let baseURLString = "http://34.16.172.170:3000/api/fetchCalendarPrices"
         
@@ -167,6 +170,7 @@ class ExploreViewModel: ObservableObject {
         calculateWeeklyAverages()
     }
     
+    // calculate weekly averages
     func calculateWeeklyAverages() {
         let sortedDailyPrices = dailyPrices.compactMap { dateString, price -> (Date, Double)? in
             if let date = dateFormatter.date(from: dateString) {
@@ -213,6 +217,7 @@ class ExploreViewModel: ObservableObject {
     
 }
 
+// protocols used for testing
 protocol ExploreServiceProtocol {
     func getLatLong(with pid: String) async throws
     func fetchListings(with parameters: SearchParameters) async throws -> [Listing]
@@ -225,6 +230,8 @@ protocol ExploreDetailServiceProtocol{
 struct PriceData: Codable {
     let daily: Double
 }
+
+// date formatted to be compatible with the SwiftChart Library
 
 private func formattedDate(_ dateString: String) -> String {
     let inputFormatter = DateFormatter()

@@ -6,7 +6,7 @@
 //
 
 
-// useless class to test case-error
+// error case view
 import SwiftUI
 
 struct ErrorView: View {
