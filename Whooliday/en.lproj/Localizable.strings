@@ -143,3 +143,4 @@
 "select_country" = "Select Country";
 "select_currency" = "Select Currency";
 "done" = "Done";
+"Error getting hotels / no results" = "Error getting hotels / no results";

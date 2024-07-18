@@ -143,3 +143,4 @@
 "select_country" = "Seleziona Paese";
 "select_currency" = "Seleziona Valuta";
 "done" = "Fatto";
+"Error getting hotels / no results" = "Nessun risultato / Errore Caricamento";

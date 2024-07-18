@@ -22,6 +22,7 @@ struct ExploreView: View {
     @State var selectedSorting: SortOption = .none
     @Environment(\.presentationMode) var presentationMode
     @State private var filterViewOffset: CGFloat = UIScreen.main.bounds.height
+    @State private var showEmptyListError = false
     
     enum SortOption: String, CaseIterable {
         case none = "Nessun ordine"
@@ -53,6 +54,12 @@ struct ExploreView: View {
             ZStack {
                 mainContent
                 loadingOverlay
+                
+                if showEmptyListError {
+                    Color.black.opacity(0.4)
+                        .edgesIgnoringSafeArea(.all)
+                    errorPopup
+                }
             }
             .navigationBarHidden(hasPerformedSearch)
             .overlay(searchAndFilterOverlay)
@@ -87,6 +94,14 @@ struct ExploreView: View {
         .onChange(of: selectedPropertyType) { oldValue, newValue in
             Task {
                 await performSearchType()
+            }
+        }
+        .onChange(of: viewModel.listings) { _, _ in
+            checkEmptyList()
+        }
+        .onChange(of: viewModel.isLoading) { _, newValue in
+            if !newValue { // Se il caricamento è terminato
+                checkEmptyList()
             }
         }
     }
@@ -235,6 +250,28 @@ struct ExploreView: View {
         .zIndex(showAddFilterView ? 1 : 0)
     }
     
+    private var errorPopup: some View {
+        VStack {
+            Text(NSLocalizedString("Error getting hotels / no results", comment: ""))
+                .font(.headline)
+                .padding()
+                .fontWeight(.bold)
+            
+            Button("Return to Home") {
+                showEmptyListError = false
+                presentationMode.wrappedValue.dismiss()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        .frame(width: 300, height: 200)
+        .background(Color.white)
+        .cornerRadius(20)
+        .shadow(radius: 10)
+    }
+    
     func sortListings() {
         let listingsToSort = listingsByType.isEmpty ? viewModel.listings : listingsByType
         
@@ -261,6 +298,7 @@ struct ExploreView: View {
     }
     
     func performSearch() {
+        showEmptyListError = false
         var updatedParameters = searchParameters
         updatedParameters.filters = appliedFilters
         updatedParameters.propertyType = selectedPropertyType
@@ -288,12 +326,13 @@ struct ExploreView: View {
                     result.append(listing)
                 }
             }
-            viewModel.isLoading = false
             return result
         }
         
         DispatchQueue.main.async {
             self.listingsByType = filteredListings
+            self.viewModel.isLoading = false
+            self.checkEmptyList()
         }
     }
     
@@ -323,6 +362,22 @@ struct ExploreView: View {
     private func handleSwipe(translation: CGFloat) {
         if translation > 100 {
             presentationMode.wrappedValue.dismiss()
+        }
+    }
+    
+    private func checkEmptyList() {
+        if !viewModel.isLoading {
+            checkListStateAfterLoading()
+        }
+    }
+    
+    private func checkListStateAfterLoading() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Breve ritardo per assicurarsi che l'UI sia aggiornata
+            if viewModel.listings.isEmpty && !viewModel.isLoading {
+                showEmptyListError = true
+            } else {
+                showEmptyListError = false
+            }
         }
     }
 }
