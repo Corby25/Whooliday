@@ -108,7 +108,7 @@ struct HomeView: View {
     private func createCardRow(startingAt index: Int) -> some View {
         HStack(spacing: 15) {
             ForEach(0..<columnsCount(), id: \.self) { columnIndex in
-                let placeIndex = index + columnIndex
+                let placeIndex = index + columnIndex + 1
                 if placeIndex < viewModel.places.count {
                     CardViewSmall(place: viewModel.places[placeIndex])
                         .onTapGesture {
