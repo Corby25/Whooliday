@@ -18,7 +18,6 @@ struct SigninView: View {
                 inputFields
                 signinButtons
                 forgotPasswordButton
-                divider
                 signupPrompt
             }
             .padding(.horizontal, 30)
@@ -78,9 +77,7 @@ struct SigninView: View {
             }
         
             .frame(width: 200)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding()
-            
+            .clipShape(RoundedRectangle(cornerRadius: 10))            
         }
     }
     
@@ -89,14 +86,7 @@ struct SigninView: View {
             Text("Forgot Password?")
                 .foregroundColor(.blue)
                 .font(.subheadline)
-        }
-    }
-    
-    private var divider: some View {
-        HStack {
-            Divider().background(Color.white.opacity(0.0))
-           
-            Divider().background(Color.white.opacity(0.0))
+                .padding(.bottom, 50)
         }
     }
     

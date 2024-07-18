@@ -11,7 +11,7 @@ struct FavoritesView: View {
                     .font(.title)
                     .fontWeight(.bold)
                 
-                Text(NSLocalizedString("Select a hotel or filter", comment: ""))
+                Text(NSLocalizedString("Select an hotel or filter", comment: ""))
                     .font(.title2)
                     .fontWeight(.semibold)
             }

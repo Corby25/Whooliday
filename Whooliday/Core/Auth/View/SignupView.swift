@@ -13,7 +13,7 @@ struct SignupView: View {
     @EnvironmentObject var authModel: AuthModel
     @State private var showAlert = false
     @State private var alertMessage = ""
-    @State private var selectedCountry: Country? = Country(name: "Italy", alpha2Code: "IT")
+    @State private var selectedCountry: Country? = Country(name: "Italy", alpha2Code: "it")
     @State private var selectedCurrency: Currency? = Currency(name: "Euro", alpha2Code: "EUR")
     
     var body: some View {
@@ -24,8 +24,6 @@ struct SignupView: View {
                 inputFields
                 pickers
                 signupButton
-                divider
-                signinPrompt
             }
             .padding(.horizontal, 30)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -44,7 +42,6 @@ struct SignupView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 80, height: 80)
-            .padding(.top, 50)
     }
     
     private var welcomeText: some View {
@@ -63,10 +60,14 @@ struct SignupView: View {
     }
     
     private var pickers: some View {
-        VStack(spacing: 20) {
+        HStack(spacing: 20) {
             CustomPicker(selection: $selectedCountry, placeholder: NSLocalizedString("Country", comment: "Country picker label"), options: Country.allCountries)
+                .frame(height: 50)
+                .padding(.vertical, 4)
             
             CustomPicker(selection: $selectedCurrency, placeholder: NSLocalizedString("Currency", comment: "Currency picker label"), options: Currency.allCurrencies)
+                .frame(height: 50)
+                .padding(.vertical, 4)
         }
     }
     
@@ -80,26 +81,6 @@ struct SignupView: View {
                 .fontWeight(.bold)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
         }
-    }
-    
-    private var divider: some View {
-        HStack {
-            Divider().background(Color.white.opacity(0.0))
-            Divider().background(Color.white.opacity(0.0))
-        }
-    }
-    
-    private var signinPrompt: some View {
-        HStack {
-            Text(NSLocalizedString("Already have an account?", comment: ""))
-                .foregroundColor(.gray)
-            NavigationLink(destination: SigninView()) {
-                Text("Sign In")
-                    .foregroundColor(.blue)
-                    .fontWeight(.semibold)
-            }
-        }
-        .font(.subheadline)
     }
     
     private func signup() {
