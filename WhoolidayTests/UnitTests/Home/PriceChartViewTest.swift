@@ -7,6 +7,7 @@
 import XCTest
 @testable import Whooliday
 
+// chart test
 class PriceChartViewTests: XCTestCase {
     
     var viewModel: ExploreViewModel!
@@ -30,6 +31,7 @@ class PriceChartViewTests: XCTestCase {
         XCTAssertTrue(viewModel.weeklyAverages.isEmpty)
     }
     
+    // mock data for testing
     func testPopulatePriceCalendar() {
         let testData: [String: PriceData] = [
             "2024-06-24": PriceData(daily: 141.05),
@@ -46,6 +48,8 @@ class PriceChartViewTests: XCTestCase {
         XCTAssertEqual(viewModel.dailyPrices[2].1, 143.50)
     }
     
+    
+    // weekly price test
     func testCalculateWeeklyAverages() {
         let testData: [String: PriceData] = [
             "2024-06-24": PriceData(daily: 140.00),
@@ -65,7 +69,7 @@ class PriceChartViewTests: XCTestCase {
         viewModel.dailyPrices = viewModel.priceCalendar.map { (formattedDate($0.key), $0.value.daily) }.sorted { $0.0 < $1.0 }
         viewModel.calculateWeeklyAverages()
         
-        // caluclate , update, delete...
+        // calculate , update, delete...
         XCTAssertEqual(viewModel.weeklyAverages.count, 0)
     }
     

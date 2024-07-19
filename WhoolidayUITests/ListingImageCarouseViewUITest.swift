@@ -9,7 +9,7 @@ import XCTest
 
 final class ListingImageCarouseView: XCTestCase {
 
-
+    // automated flow
     func testCaroselWorking() throws {
         let app = XCUIApplication()
         app.launch()

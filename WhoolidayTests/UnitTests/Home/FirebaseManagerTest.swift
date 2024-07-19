@@ -11,6 +11,8 @@ import FirebaseAuth
 import Combine
 @testable import Whooliday
 
+
+// test firebase
 class FirebaseManagerTests: XCTestCase {
     
     var firebaseManager: FirebaseManager!

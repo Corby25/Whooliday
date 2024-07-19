@@ -7,8 +7,7 @@
 
 import XCTest
 import Combine
-@testable import Whooliday // Sostituisci con il nome del tuo modulo
-
+@testable import Whooliday 
 // MARK: - Protocols
 
 protocol FavoritesModelProtocol: ObservableObject {

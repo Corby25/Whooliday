@@ -10,6 +10,7 @@ import SwiftUI
 import MapKit
 @testable import Whooliday
 
+// test listing after fetch is completed
 class ListingDetailViewTests: XCTestCase {
     
     var sut: ListingDetailView!

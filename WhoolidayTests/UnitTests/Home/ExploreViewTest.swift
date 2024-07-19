@@ -9,6 +9,7 @@ import XCTest
 @testable import Whooliday
 import SwiftUI
 
+// test explore view class
 class ExploreViewTests: XCTestCase {
 
     var sut: ExploreView!
@@ -16,6 +17,7 @@ class ExploreViewTests: XCTestCase {
     var mockExploreService: MockExploreService!
     var mockHotelDetailsService: MockHotelDetailsService!
 
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         mockExploreService = MockExploreService()
@@ -39,7 +41,7 @@ class ExploreViewTests: XCTestCase {
     }
 
     
-
+    // add favorites
     func testToggleFavorite() {
         sut.isFavorite = true
         sut.toggleFavorite()
@@ -47,7 +49,7 @@ class ExploreViewTests: XCTestCase {
         XCTAssertFalse(sut.getIsFavorite(), "toggleFavorite should toggle isFavorite")
     }
     
-    
+    // test successfull search
     @MainActor
     func testPerformSearchType() async {
         sut.selectedPropertyType = "Hotel"
@@ -60,7 +62,6 @@ class ExploreViewTests: XCTestCase {
         let listing = Listing(id: 1, latitude: 41.9028, longitude: 12.4964, city: "Roma", state: "IT", name: "Test Hotel", strikethrough_price: 100.0, review_count: 100, review_score: 4.0, checkin: "2024-07-01", checkout: "2024-07-05", nAdults: 2, nChildren: 0, childrenAge: "", currency: "EUR", images: [])
         sut.viewModel.listings = [listing]
         sut.saveSearch()
-        // Here you would typically verify that the Firebase method was called
-        // This might require mocking the FirebaseManager or using a dependency injection
+        
     }
 }

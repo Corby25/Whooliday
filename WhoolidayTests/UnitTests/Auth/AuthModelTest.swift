@@ -7,6 +7,7 @@
 import XCTest
 @testable import Whooliday
 
+// test authentication 
 @MainActor
 class AuthModelTests: XCTestCase {
     

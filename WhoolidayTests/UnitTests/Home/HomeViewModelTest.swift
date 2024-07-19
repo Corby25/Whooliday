@@ -31,14 +31,14 @@ class HomeViewModelTests: XCTestCase {
      }
 
     func testFetchPlaces() {
-        // Prepara i dati mock
+        // Prepare mock data
         let mockPlace = Place(id: "1", name: "Roma", country: "Italia", region: "Lazio", rating: 4.5, imageUrl: "roma.jpg", latitude: 41.9028, longitude: 12.4964, nLikes: 1000, description: "La Città Eterna")
         mockFirestore.mockPlaces = [mockPlace]
 
-        // Esegui il fetch
+        // Fetch execution
         viewModel.fetchPlaces()
 
-        // Usa un'aspettativa per gestire l'operazione asincrona
+        // async operation
         let expectation = XCTestExpectation(description: "Fetch places")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             XCTAssertEqual(self.viewModel.places.count, 1)
@@ -50,7 +50,7 @@ class HomeViewModelTests: XCTestCase {
     }
 
     func testToggleFavorite() {
-        // Prepara i dati mock
+        // mock data preparation
         let mockPlace = Place(id: "2", name: "Firenze", country: "Italia", region: "Toscana", rating: 4.5, imageUrl: "firenze.jpg", latitude: 41.9028, longitude: 12.4964, nLikes: 1000, description: "La Città Eterna")
         mockFirestore.mockPlaces = [mockPlace]
         viewModel.fetchPlaces()
@@ -58,16 +58,16 @@ class HomeViewModelTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Toggle favorite")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            // Verifica lo stato iniziale
+            // check initial state
             XCTAssertFalse(self.viewModel.isPlaceFavorite(mockPlace))
             XCTAssertEqual(self.viewModel.getUpdatedLikes(for: mockPlace), 1000)
 
-            // Primo toggle: aggiungi ai preferiti
+            // add to favorite
             self.viewModel.toggleFavorite(for: mockPlace)
             XCTAssertTrue(self.viewModel.isPlaceFavorite(mockPlace))
             XCTAssertEqual(self.viewModel.getUpdatedLikes(for: mockPlace), 1001)
 
-            // Secondo toggle: rimuovi dai preferiti
+            // remove from favorites
             self.viewModel.toggleFavorite(for: mockPlace)
             XCTAssertFalse(self.viewModel.isPlaceFavorite(mockPlace))
             XCTAssertEqual(self.viewModel.getUpdatedLikes(for: mockPlace), 1000)
@@ -86,7 +86,7 @@ class HomeViewModelTests: XCTestCase {
         
         viewModel.places = [testPlace]
         
-        // Simula che il posto non sia già nei preferiti
+        // Place not anymore into favorites
         viewModel.userFavorites.remove(testPlace.id)
         viewModel.userRatings[testPlace.id] = nil
         

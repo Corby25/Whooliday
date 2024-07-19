@@ -23,7 +23,7 @@ class WeatherServiceTests: XCTestCase {
     }
 
     func testFetchWeatherData() async throws {
-        // Test del metodo fetchWeatherData
+        // fetchWeatherData test
         let latitude = 41.8967
         let longitude = 12.4822
         
@@ -36,7 +36,7 @@ class WeatherServiceTests: XCTestCase {
     }
 
     func testCalculateMonthlyAverages() {
-        // Test del metodo calculateMonthlyAverages
+        // calculateMonthlyAverages test
         let mockResponse = WeatherResponse(
             latitude: 45.4642,
             longitude: 9.1900,

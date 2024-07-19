@@ -9,7 +9,7 @@ import XCTest
 
 final class SearchInputSearchUITest: XCTestCase {
 
-
+    // operation flow
     func testSearchDestination() {
         
         let app = XCUIApplication()
