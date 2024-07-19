@@ -48,7 +48,7 @@ struct ListingItemView: View {
                 Spacer()
                 
                 HStack(spacing: 2) {
-                    Image(systemName: "star.fill")
+                    Image(systemName: "bookmark.circle.fill")
                         .foregroundColor(.orange)
                     
                     Text(String(format: "%.1f", listing.review_score))

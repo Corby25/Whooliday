@@ -51,7 +51,7 @@ struct ListingDetailView: View {
                                 
                                 VStack(alignment: .leading) {
                                     HStack(spacing: 2) {
-                                        Image(systemName: "star.fill")
+                                        Image(systemName: "bookmark.circle.fill")
                                         Text(String(format: "%.1f", listing.review_score))
                                         Text(" - ")
                                         Text(String(format: NSLocalizedString("%d reviews", comment: "Number of reviews"),

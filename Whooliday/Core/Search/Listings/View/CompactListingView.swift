@@ -26,7 +26,7 @@ struct CompactListingView: View {
                     .lineLimit(2)
                 
                 HStack {
-                    Image(systemName: "star.fill")
+                    Image(systemName: "bookmark.circle.fill")
                         .foregroundColor(.yellow)
                     Text(String(format: "%.1f", listing.review_score))
                         .fontWeight(.semibold)
