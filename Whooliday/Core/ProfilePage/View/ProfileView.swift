@@ -1,6 +1,7 @@
 import SwiftUI
 import SafariServices
 
+// view to show the profile page in the app
 struct ProfileView: View {
     @EnvironmentObject var model: AuthModel
     @StateObject private var viewModel = ProfileViewModel()
@@ -123,14 +124,7 @@ struct ProfileView: View {
     }
 }
 
-struct HelloWorldView: View {
-    var body: some View {
-        Text(NSLocalizedString("hello_world", comment: ""))
-            .font(.largeTitle)
-            .padding()
-    }
-}
-
+// show stats with an increasing number animation
 struct AnimatedStatView: View {
     let title: String
     let value: Int
@@ -279,6 +273,7 @@ struct CurrencyPickerView: View {
     }
 }
 
+// view to define the graphic of a single element in the list 
 struct ListItemButton: View {
     let title: String
     let action: () -> Void

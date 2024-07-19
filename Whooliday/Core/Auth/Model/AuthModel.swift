@@ -12,6 +12,7 @@ import GoogleSignIn
 import GoogleSignInSwift
 import FirebaseAuth
 
+// model to handle the signup and signin functions
 @MainActor
 class AuthModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
@@ -25,6 +26,7 @@ class AuthModel: ObservableObject {
         }
     }
     
+    // use the firebase auth component to add an user
     func signIn(withEmail email: String, password: String) async throws {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -38,6 +40,7 @@ class AuthModel: ObservableObject {
         }
     }
     
+    // add the user infos to firestore
     func signUp(withEmail email: String, password: String, name: String, country: Country?, currency: Currency?) async throws {
             do {
                 let result = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -47,7 +50,6 @@ class AuthModel: ObservableObject {
                 let defaultCountry = country ?? Country(name: "Italy", alpha2Code: "IT")
                 let defaultCurrency = currency ?? Currency(name: "Euro", alpha2Code: "EUR")
                 
-                // Create the User object with the provided or default values
                 var user = User(id: result.user.uid, name: name, email: email, currency: defaultCurrency.alpha2Code, locale: defaultCountry.alpha2Code.lowercased(), numNotifications: 0, numFavorites: 0, sendEmail: true)
                 
                 // Encode and store user data in Firestore
@@ -61,6 +63,7 @@ class AuthModel: ObservableObject {
             }
         }
     
+    // use the google sign in to auth an user and add the user infos to firestore if it's the first access
     func signInGoogle() async throws {
         guard let topVC = Utilities.shared.topViewController() else {
             throw URLError(.cannotFindHost)
@@ -96,6 +99,7 @@ class AuthModel: ObservableObject {
         }
     }
      
+    // use the firebase auth to reset the pw
     func resetPassword(email: String) async throws {
         do {
             try await Auth.auth().sendPasswordReset(withEmail: email)
@@ -107,6 +111,7 @@ class AuthModel: ObservableObject {
         }
     }
     
+    // sign out the user locally using the firebase auth component
     func signOut() {
         do {
             try Auth.auth().signOut()

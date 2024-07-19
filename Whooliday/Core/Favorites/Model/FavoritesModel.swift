@@ -4,6 +4,7 @@ import Combine
 import FirebaseAuth
 import Foundation
 
+// model to handle operations in the favorites page in the app
 class FavoritesModel: ObservableObject {
     @Published var hotels: [Hotel] = []
     @Published var filters: [Filter] = []
@@ -28,7 +29,7 @@ class FavoritesModel: ObservableObject {
         await fetchFilters()
     }
     
-    
+    // fetch all the hotels in the favorites collection of the user from Firestore
     func fetchHotels() async {
         await MainActor.run {
             self.isLoadingHotels = true
@@ -89,7 +90,7 @@ class FavoritesModel: ObservableObject {
         }
     }
     
-    
+    // use the accommodation api to fetch infos about the hotel given the hotelID and staying infos
     private func fetchHotelDetails(with hotel: Hotel?) async -> APIHotelResponse? {
         let userDocRef = db.collection("users").document(userID)
         
@@ -133,7 +134,7 @@ class FavoritesModel: ObservableObject {
         }
     }
     
-    
+    // fetch all the filters inside the favorites collection of the user from Firestore
     private func fetchFilters() async {
         let filtersCollectionRef = db.collection("users").document(userID).collection("favorites").document("filters").collection("all")
         
@@ -210,6 +211,7 @@ class FavoritesModel: ObservableObject {
         }
     }
     
+    // get the max price for the selected filter from the "filter" entry of the filter
     private static func extractMaxPrice(from filters: String) -> Double {
         let parts = filters.split(separator: ",")
         guard let firstPart = parts.first else { return 0 }
@@ -223,6 +225,7 @@ class FavoritesModel: ObservableObject {
         return Double(maxPriceString) ?? 0
     }
     
+    // fetch all the hotels in inside a filter from Firestore
     func fetchHotelsForFilter(_ filter: Filter) async {
         await MainActor.run {
             self.isLoadingFilterHotels = true
@@ -296,7 +299,8 @@ class FavoritesModel: ObservableObject {
     }
     
     
-    
+    // function to delete the hotel. It removes the hotel from the local array and set the hotel
+    // entry isDeleted as true in Firestore
     func deleteHotel(_ hotel: Hotel) {
         let hotelCollectionRef = db.collection("users").document(userID)
             .collection("favorites").document("hotels").collection("all")
@@ -316,6 +320,7 @@ class FavoritesModel: ObservableObject {
         }
     }
     
+    // set the hotel entry "isNew" as true in Firestore and in the local array
     func makeHotelAsSeen(_ hotel: Hotel) {
         let hotelCollectionRef = db.collection("users").document(userID)
             .collection("favorites").document("hotels").collection("all")
@@ -334,7 +339,8 @@ class FavoritesModel: ObservableObject {
         }
     }
     
-    
+    // function to delete a filter. It removes the filter from the local array and set the filter
+    // entry isDeleted as true in Firestore
     func deleteFilter(withId id: String) {
         let filterDocumentRef = db.collection("users").document(userID)
             .collection("favorites").document("filters").collection("all").document(id)
@@ -354,6 +360,7 @@ class FavoritesModel: ObservableObject {
         }
     }
     
+    // set the filter entry "isNew" as true in Firestore and in the local array
     func markFilterAsNotNew(withId id: String) {
         let filterDocumentRef = db.collection("users").document(userID)
             .collection("favorites").document("filters").collection("all").document(id)
@@ -373,6 +380,7 @@ class FavoritesModel: ObservableObject {
         }
     }
     
+    // used to refresh the hotels list in the view to fetch for updated data
     func refreshHotels() async {
         DispatchQueue.main.async {
             self.hotels.removeAll()
@@ -380,6 +388,7 @@ class FavoritesModel: ObservableObject {
         await fetchHotels()
     }
     
+    // used to refresh the filters list in the view to fetch for updated data
     func refreshFilters() async {
         DispatchQueue.main.async {
             self.filters.removeAll()
@@ -387,6 +396,7 @@ class FavoritesModel: ObservableObject {
         await fetchFilters()
     }
     
+    // fetch the currency of the user from Firestore
     private func fetchUserCurrency() async {
         let userDocRef = db.collection("users").document(userID)
         do {

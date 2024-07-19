@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+// view for the signup page
 struct SignupView: View {
     @State private var email: String = ""
     @State private var password: String = ""
@@ -59,6 +60,7 @@ struct SignupView: View {
         }
     }
     
+    // pickers for the country and the currency
     private var pickers: some View {
         HStack(spacing: 20) {
             CustomPicker(selection: $selectedCountry, placeholder: NSLocalizedString("Country", comment: "Country picker label"), options: Country.allCountries)
@@ -99,6 +101,7 @@ struct SignupView: View {
         }
     }
     
+    // different alert messages for different types of errors
     private func handleSignUpError(_ error: Error) {
         switch (error as NSError).code {
         case 17026:

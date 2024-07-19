@@ -3,7 +3,9 @@ import Firebase
 import FirebaseFirestore
 import Combine
 
+// model to handle operations in the profile page
 class ProfileViewModel: ObservableObject {
+    // load the current settings
     @Published(wrappedValue: "Select Country") var selectedCountry: String {
         didSet {
             if selectedCountry != "Select Country" {
@@ -47,6 +49,7 @@ class ProfileViewModel: ObservableObject {
         fetchUserSettings()
     }
     
+    // delay the loading of the elements to fetch the data first
     private func setupDebounce() {
         localeUpdateSubject
             .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
@@ -71,16 +74,19 @@ class ProfileViewModel: ObservableObject {
         currencyUpdateSubject.send(selectedCurrency)
     }
     
+    // update the locale of the user in Firestore
     func updateUserLocale(_ locale: String) {
         guard let userId = userId else { return }
         Firestore.firestore().collection("users").document(userId).updateData(["locale": locale])
     }
     
+    // update the currency of the user in Firestore
     func updateUserCurrency(_ currency: String) {
         guard let userId = userId else { return }
         Firestore.firestore().collection("users").document(userId).updateData(["currency": currency])
     }
     
+    // fetch the current settings
     private func fetchUserSettings() {
         guard let userId = userId else { return }
         userListener = Firestore.firestore().collection("users").document(userId).addSnapshotListener { [weak self] snapshot, error in
@@ -101,6 +107,7 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    // update the notifications settings of the user in Firestore
     func updateUserEmailNotificationSetting(_ value: Bool) {
         guard let userId = userId else { return }
         Firestore.firestore().collection("users").document(userId).updateData(["sendEmail": value]) { error in

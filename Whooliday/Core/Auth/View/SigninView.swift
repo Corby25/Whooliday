@@ -2,6 +2,7 @@ import SwiftUI
 import Firebase
 import GoogleSignInSwift
 
+// view for the signin page
 struct SigninView: View {
     @State private var email: String = ""
     @State private var password: String = ""
@@ -54,6 +55,7 @@ struct SigninView: View {
         }
     }
     
+    // buttons for the normal signin and the one with Google
     private var signinButtons: some View {
         VStack(spacing: 15) {
             Button(action: signIn) {
@@ -90,6 +92,7 @@ struct SigninView: View {
         }
     }
     
+    // link to the signup page
     private var signupPrompt: some View {
         HStack {
             Text(NSLocalizedString("Don't have an account?", comment: ""))
@@ -131,6 +134,7 @@ struct SigninView: View {
         }
     }
     
+    // different alert messages for different types of errors
     private func handleSignInError(_ error: Error) {
         let errorMessage: String
         switch (error as NSError).code {

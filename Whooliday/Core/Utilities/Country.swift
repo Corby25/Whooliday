@@ -16,7 +16,6 @@ class Country: Identifiable, Codable, Hashable, CustomStringConvertible {
         self.alpha2Code = alpha2Code
     }
     
-    // Implementing Hashable
     func hash(into hasher: inout Hasher) {
         hasher.combine(name)
         hasher.combine(alpha2Code)
@@ -26,7 +25,6 @@ class Country: Identifiable, Codable, Hashable, CustomStringConvertible {
         return lhs.name == rhs.name && lhs.alpha2Code == rhs.alpha2Code
     }
     
-    // Implementing CustomStringConvertible
     var description: String {
         return name
     }

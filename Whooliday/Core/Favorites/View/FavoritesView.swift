@@ -1,9 +1,11 @@
 import SwiftUI
 
+// view for the favorites page of the app
 struct FavoritesView: View {
     @StateObject private var favoritesModel = FavoritesModel()
     @State private var selectedTab = 0 // 0: Hotels, 1: Filters
     
+    // header with some graphic to present the page
     private var headerView: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -28,15 +30,16 @@ struct FavoritesView: View {
     var body: some View {
         NavigationView {
             VStack {
-                headerView // Custom header view
+                headerView
                 
+                // picker to show either the hotels or the filter list
                 Picker(selection: $selectedTab, label: Text("Select")) {
                     Text(NSLocalizedString("Hotels", comment: "")).tag(0)
                     Text(NSLocalizedString("Places", comment: "")).tag(1)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal) // Only add horizontal padding
-                .padding(.vertical, 8) // Reduce vertical padding
+                .padding(.horizontal)
+                .padding(.vertical, 8)
                 
                 if selectedTab == 0 {
                     // Display main hotels list with deletion enabled and filtering deleted hotels
@@ -51,6 +54,8 @@ struct FavoritesView: View {
     }
 }
 
+// view to show the list of the hotels. While loading it shows a dummy list with the shimmering effect.
+// once loaded it shows the actual hotels list and once an hotel is clicked it redirects to the ListingDetailView
 struct HotelsListView: View {
     @State private var selectedHotel: Listing?
     var hotels: [Hotel]
@@ -115,6 +120,7 @@ extension View {
     }
 }
 
+// single element of the hotels list, it shows some infos about the hotel
 struct HotelRowView: View {
     var hotel: Hotel
     var isMain: Bool
@@ -146,8 +152,7 @@ struct HotelRowView: View {
                     VStack(alignment: .leading) {
                         Text(hotel.name ?? "Unknown Hotel")
                             .font(.headline)
-                        
-                            .lineLimit(1) // Ensure the hotel name stays on a single line
+                            .lineLimit(1)
                         
                         Text("\(hotel.city ?? "City")")
                             .font(.subheadline)
@@ -209,6 +214,7 @@ struct HotelRowView: View {
         }
     }
     
+    // transform an hotel struct to Listing one
     private func hotelToListing(hotel: Hotel) -> Listing {
         return Listing(
             id: Int(hotel.hotelID) ?? 0,
@@ -236,6 +242,7 @@ struct HotelRowView: View {
     }
 }
 
+// view to show the list of the filters
 struct FiltersListView: View {
     @ObservedObject var favoritesModel: FavoritesModel
     @State private var selectedFilter: Filter?
@@ -359,6 +366,7 @@ struct FiltersListView: View {
     }
 }
 
+// view to handle the loading and the display of the hotels inside a filter
 struct FilterHotelsListView: View {
     let filter: Filter
     @ObservedObject var favoritesModel: FavoritesModel
